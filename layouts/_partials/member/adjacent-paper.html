@@ -1,0 +1,10 @@
+{{ $paper := .paper }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $previous := .previous }}
+{{ $detail := site.GetPage (printf "/team/%s-publication-%s" .member $paper.File.ContentBaseName) }}
+{{ $url := $paper.RelPermalink }}{{ with $detail }}{{ $url = .RelPermalink }}{{ end }}
+<a class="mp-adjacent-paper {{ cond $previous "mp-previous" "mp-next" }}" href="{{ $url }}" rel="{{ cond $previous "prev" "next" }}">
+  <span class="mp-adjacent-label">{{ if $previous }}<span aria-hidden="true">←</span> {{ cond $zh "上一篇" "Previous Paper" }}{{ else }}{{ cond $zh "下一篇" "Next Paper" }} <span aria-hidden="true">→</span>{{ end }}</span>
+  <h2>{{ $paper.Title }}</h2>
+  <time class="mp-meta" datetime="{{ $paper.Date.Format "2006-01-02" }}">{{ $paper.Date.Format "2006" }}</time>
+</a>

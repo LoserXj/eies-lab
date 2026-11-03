@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: jiang-yujie
+weight: 19
+user_groups: [PhD Students]
+name:
+  display: JIANG Yujie
+  given: Yujie
+  family: JIANG
+  alternate: ''  # TODO: Chinese name
+role: PhD Student (Year 1)
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Physics-grounded world models
+  - Building & storage dynamics
+# TODO: bio, education, links, avatar (assets/media/authors/jiang-yujie.jpg)

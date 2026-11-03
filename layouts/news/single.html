@@ -1,0 +1,26 @@
+{{/* News article: same reading layout as paper pages (#member-paper styles), linked back to the News index. */}}
+{{ define "main" }}
+{{ $zh := eq site.Language.Lang "zh" }}
+<section id="member-paper" class="hbb-section">
+<div class="mp-shell mp-detail">
+  <article class="mp-reading">
+    <a class="hs-link mp-back-link" href="{{ "news/" | relLangURL }}"><span aria-hidden="true">←</span> <span class="mp-back-label">{{ cond $zh "全部新闻" "All News" }}</span></a>
+    <h1>{{ .Title }}</h1>
+    <div class="mp-paper-byline">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ if $zh }}{{ .Date.Format "2006年1月2日" }}{{ else }}{{ .Date.Format "January 2, 2006" }}{{ end }}</time>
+    </div>
+    {{ with .Resources.GetMatch "featured*" }}<figure class="mp-detail-figure"><img src="{{ .RelPermalink }}" alt="{{ $.Title }}"{{ if ne .MediaType.SubType "svg+xml" }} width="{{ .Width }}" height="{{ .Height }}"{{ end }}></figure>{{ end }}
+    <div class="mp-article-content mp-body">{{ .Content }}</div>
+  </article>
+</div>
+{{ $older := .PrevInSection }}{{ $newer := .NextInSection }}
+{{ if or $newer $older }}
+  <div class="mp-paper-more">
+    <div class="mp-shell"><nav class="mp-reading mp-paper-nav" aria-label="{{ cond $zh "新闻翻页" "News navigation" }}">
+      {{ with $newer }}<a class="mp-adjacent-paper mp-previous" href="{{ .RelPermalink }}" rel="prev"><span class="mp-adjacent-label"><span aria-hidden="true">←</span> {{ cond $zh "较新" "Newer" }}</span><h2>{{ .Title }}</h2></a>{{ end }}
+      {{ with $older }}<a class="mp-adjacent-paper mp-next" href="{{ .RelPermalink }}" rel="next"><span class="mp-adjacent-label">{{ cond $zh "较早" "Older" }} <span aria-hidden="true">→</span></span><h2>{{ .Title }}</h2></a>{{ end }}
+    </nav></div>
+  </div>
+{{ end }}
+</section>
+{{ end }}

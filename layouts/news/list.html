@@ -1,0 +1,30 @@
+{{/* News index: dated rows (DESIGN.md list style), same look as the homepage News section. */}}
+{{ define "main" }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $paginator := .Paginate .Pages.ByDate.Reverse 20 }}
+<div class="pl-shell">
+  <header class="pl-head">
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}<div class="pl-lead">{{ . }}</div>{{ end }}
+  </header>
+  <div class="nl-list">
+    {{ range $paginator.Pages }}
+    <article class="nl-row">
+      <time datetime="{{ .Date.Format "2006-01-02" }}">{{ if $zh }}{{ .Date.Format "2006年1月2日" }}{{ else }}{{ .Date.Format "Jan 2, 2006" }}{{ end }}</time>
+      <div>
+        <h2><a href="{{ .RelPermalink }}">{{ .Title }}</a></h2>
+        {{ with .Summary | plainify }}<p>{{ . | truncate 200 }}</p>{{ end }}
+      </div>
+    </article>
+    {{ else }}
+    <p class="pl-none">{{ cond $zh "暂无新闻。" "No news yet." }}</p>
+    {{ end }}
+  </div>
+  {{ if gt $paginator.TotalPages 1 }}
+  <nav class="nl-pager" aria-label="{{ cond $zh "分页" "Pagination" }}">
+    {{ with $paginator.Prev }}<a href="{{ .URL }}">← {{ cond $zh "较新" "Newer" }}</a>{{ end }}
+    {{ with $paginator.Next }}<a href="{{ .URL }}">{{ cond $zh "较早" "Older" }} →</a>{{ end }}
+  </nav>
+  {{ end }}
+</div>
+{{ end }}

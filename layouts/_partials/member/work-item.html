@@ -1,0 +1,2 @@
+{{/* Fields of a talk / project Page in the shape the row and card partials (member/talk-row, member/work-card) read. */}}
+{{ return (dict "title" .Title "date" .Date "summary" .Params.summary "event" .Params.event "type" .Params.format "location" .Params.location "tag" .Params.tag "sample" .Params.sample) }}

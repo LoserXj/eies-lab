@@ -1,0 +1,18 @@
+{{ $zh := .zh }}
+<div class="td-social" aria-label="{{ cond $zh "联系方式" "Contact links" }}">
+  {{ with .profile.links }}
+    {{ range . }}
+      {{ $url := .url | default .link | default "" }}
+      {{ $icon := .icon | default "hero/link" }}
+      {{ $label := .label | default (cond (in $icon "google-scholar") "Google Scholar" (cond (in $icon "researchgate") "ResearchGate" (cond (in $icon "github") "GitHub" (cond (hasPrefix $url "mailto:") (cond $zh "电子邮箱" "Email") (cond $zh "个人网站" "Website"))))) }}
+      {{ if $url }}
+        <a href="{{ $url | safeURL }}" aria-label="{{ $label }}" title="{{ $label }}"{{ if hasPrefix $url "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ partial "functions/get_icon" (dict "name" $icon "attributes" "class=\"td-social-icon\" aria-hidden=\"true\"") }}</a>
+      {{ end }}
+    {{ end }}
+  {{ else }}
+    {{/* Unconfigured contacts remain explicit, non-clickable placeholders. */}}
+    {{ range (slice (dict "icon" "at-symbol" "label" (cond $zh "邮箱待补充" "Email to come")) (dict "icon" "academicons/google-scholar" "label" (cond $zh "Google Scholar 待补充" "Google Scholar to come"))) }}
+      <span class="td-social-placeholder" role="img" aria-label="{{ .label }}" title="{{ .label }}">{{ partial "functions/get_icon" (dict "name" .icon "attributes" "class=\"td-social-icon\" aria-hidden=\"true\"") }}</span>
+    {{ end }}
+  {{ end }}
+</div>

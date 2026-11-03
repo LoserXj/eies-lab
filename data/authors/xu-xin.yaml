@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: xu-xin
+weight: 16
+user_groups: [PhD Students]
+name:
+  display: XU Xin
+  given: Xin
+  family: XU
+  alternate: ''  # TODO: Chinese name
+role: PhD Student (Year 3)
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Embodied decision & control
+  - Low-altitude / eVTOL energy
+# TODO: bio, education, links, avatar (assets/media/authors/xu-xin.jpg)

@@ -1,0 +1,31 @@
+{{ $paper := .paper }}
+{{ $member := .member }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $detail := site.GetPage (printf "/team/%s-publication-%s" $member $paper.File.ContentBaseName) }}
+{{ $url := $paper.RelPermalink }}{{ with $detail }}{{ $url = .RelPermalink }}{{ end }}
+{{ if and $detail .fromProfile }}{{ $url = printf "%s?from=profile" $url }}{{ end }}
+{{ $venue := partial "member/venue" $paper }}
+{{ if .archive }}
+  <article class="mp-reference-item">
+    <p class="mp-reference-text">{{ partial "member/authors" (dict "paper" $paper "member" $member) }} ({{ $paper.Date.Format "2006" }}). <a href="{{ $url }}">{{ $paper.Title }}</a>.{{ with $venue }} {{ . | plainify }}.{{ end }}</p>
+    {{ $links := partial "member/resource-links" (dict "page" $paper "context" "list") }}
+    {{ with $links }}<div class="mp-resource-links">
+      {{ range . }}{{ if .url }}<a href="{{ .url | safeURL }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .label | default (i18n .labelKey) | default (upper .type) }}</a>{{ end }}{{ end }}
+    </div>{{ end }}
+  </article>
+{{ else }}
+  {{ $role := partial "member/role-label" (partial "member/author-role" (dict "paper" $paper "member" $member)) }}
+  {{ $short := $venue | plainify | replaceRE `,.*$` "" }}
+  {{ $tags := $paper.Params.tags | default slice }}
+  <article class="mp-pub">
+    <a class="mp-pub-link" href="{{ $url }}" aria-labelledby="mp-paper-{{ $paper.File.UniqueID }}">
+      {{ partial "member/cover" (dict "paper" $paper) }}
+      <div class="mp-pub-copy">
+        <p class="mp-pub-topic">{{ with index $tags 0 }}<span>{{ . }}</span>{{ end }}{{ with $role }}<span class="mp-role-pill">{{ . }}</span>{{ end }}</p>
+        <h3 id="mp-paper-{{ $paper.File.UniqueID }}">{{ $paper.Title }}</h3>
+        {{ with $paper.Params.summary }}<p class="mp-pub-summary">{{ . | plainify }}</p>{{ end }}
+        <p class="mp-pub-date"><time datetime="{{ $paper.Date.Format "2006-01-02" }}">{{ if $zh }}{{ $paper.Date.Format "2006年1月2日" }}{{ else }}{{ $paper.Date.Format "Jan 2, 2006" }}{{ end }}</time>{{ with $short }} · <em>{{ . }}</em>{{ end }}</p>
+      </div>
+    </a>
+  </article>
+{{ end }}

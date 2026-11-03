@@ -1,0 +1,42 @@
+# Lab member profile (English). Chinese overrides: data/zh/authors/zhiling-guo.yaml
+# Avatar: assets/media/authors/zhiling-guo.jpg (square, ~400x400)
+schema: hugoblox/author/v1
+slug: zhiling-guo
+is_owner: true
+weight: 1
+user_groups: [Principal Investigator]
+name:
+  display: Zhiling Guo
+  given: Zhiling
+  family: Guo
+  alternate: ''  # TODO: Chinese name
+status:
+  icon: "⚡"
+role: Assistant Professor
+website: https://example.com/  # TODO: replace with the personal website URL
+bio: |
+  Zhiling Guo is an Assistant Professor in the Department of Building Environment
+  and Energy Engineering (BEEE) at The Hong Kong Polytechnic University.
+  The research develops digital, intelligent, and efficient urban energy systems for sustainable and
+  resilient cities, integrating machine learning, geoscience, IoT, and renewable energy.
+affiliations:
+  - name: Dept. of Building Environment and Energy Engineering, PolyU
+    url: https://www.polyu.edu.hk/beee/
+links:
+  - icon: at-symbol
+    url: mailto:TODO@polyu.edu.hk
+    label: E-mail
+  - icon: academicons/google-scholar
+    url: https://scholar.google.com/  # TODO: profile URL
+  - icon: academicons/researchgate
+    url: https://www.researchgate.net/  # TODO: profile URL
+interests:
+  - Urban energy systems
+  - Solar and wind resource mapping
+  - Spatiotemporal machine learning
+  - Climate-resilient infrastructure
+education:
+  - degree: PhD  # TODO
+    institution: TODO University
+    start: 2015-09-01
+    end: 2019-06-30

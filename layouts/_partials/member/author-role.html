@@ -1,0 +1,12 @@
+{{/* A member's role on a paper: "first", "co-first", "corresponding" or "". Input: dict paper, member (slug). */}}
+{{- $role := "" -}}
+{{- $notes := .paper.Params.author_notes | default slice -}}
+{{- range $i, $a := .paper.Params.authors -}}
+  {{- if eq (urlize $a) $.member -}}
+    {{- $note := lower (printf "%v" (index $notes $i | default "")) -}}
+    {{- if or (in $note "equal") (in $note "共同第一") -}}{{- $role = "co-first" -}}
+    {{- else if eq $i 0 -}}{{- $role = "first" -}}
+    {{- else if or (in $note "corresponding") (in $note "通讯") -}}{{- $role = "corresponding" -}}{{- end -}}
+  {{- end -}}
+{{- end -}}
+{{- return $role -}}

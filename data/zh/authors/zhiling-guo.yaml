@@ -1,0 +1,17 @@
+# Chinese overrides; fields not listed fall back to data/authors/zhiling-guo.yaml
+user_groups: [课题组负责人]
+name:
+  display: Zhiling Guo  # TODO: 填中文名
+role: 助理教授
+bio: |
+  香港理工大学建筑环境及能源工程学系（BEEE）助理教授。
+  研究聚焦数字化、智能化、高效的城市能源系统，
+  融合机器学习、地球科学、物联网与可再生能源技术，服务于可持续、有韧性的城市。
+affiliations:
+  - name: 香港理工大学 建筑环境及能源工程学系
+    url: https://www.polyu.edu.hk/beee/
+interests:
+  - 城市能源系统
+  - 太阳能与风能资源制图
+  - 时空机器学习
+  - 气候韧性基础设施

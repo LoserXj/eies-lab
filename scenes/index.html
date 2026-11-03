@@ -1,0 +1,86 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>EIES-Lab Scenes</title>
+<style>
+	:root { --dim: 0; --cyan: #7fe9ff; --amber: #ffd36b; --ink: #dfe8f3; --mute: rgba(200, 216, 235, 0.55); }
+	html, body { margin: 0; height: 100%; overflow: hidden; background: #070d18; color: var(--ink);
+		font-family: "Inter", "Helvetica Neue", system-ui, sans-serif; }
+	#stage, #stage canvas { position: fixed; inset: 0; width: 100%; height: 100%; display: block; }
+	/* 边缘暗角 + 可调整体压暗，方便上层文字 */
+	#veil { position: fixed; inset: 0; pointer-events: none;
+		background: radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(4, 8, 16, 0.65) 100%),
+			rgba(4, 8, 16, var(--dim)); }
+	#stage canvas { opacity: 0; transition: opacity 1.6s ease; }
+	body.ready #stage canvas { opacity: 1; }
+
+	#hud { position: fixed; inset: 0; pointer-events: none; }
+	/* ?hud=0：只留数据署名；?hud=lite：只留闭环进度与署名，挪到右下，给宿主页面左侧的文字让位 */
+	body.hud-off #hud > :not(.hud-credit) { display: none; }
+	body.hud-lite .hud-labels, body.hud-lite .hud-card { display: none; }
+	body.hud-lite .hud-loop { left: auto; right: clamp(16px, 3vw, 40px); bottom: clamp(28px, 5vh, 52px); flex-direction: row-reverse; gap: 12px; }
+	body.hud-lite .hud-loop::before { left: -140px; right: -60px; }
+	body.hud-lite .hud-ring { width: 64px; height: 64px; }
+	body.hud-lite .hud-title { font-size: 15px; text-align: right; }
+	/* 左下：闭环进度。柔和暗角托底，不加硬边框 */
+	.hud-loop { position: absolute; left: clamp(16px, 3vw, 40px); bottom: clamp(16px, 4vh, 40px); display: flex; align-items: center; gap: 18px; max-width: min(560px, 86vw); }
+	.hud-loop::before { content: ""; position: absolute; z-index: -1; left: -120px; right: -160px; top: -90px; bottom: -80px;
+		background: radial-gradient(ellipse 60% 60% at 30% 60%, rgba(4, 8, 16, 0.72), rgba(4, 8, 16, 0) 72%); }
+	@keyframes rise { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+	.hud-ring { flex: none; width: 96px; height: 96px; overflow: visible; }
+	.hud-ring .track { fill: none; stroke: rgba(127, 233, 255, 0.16); stroke-width: 1.2; }
+	.hud-ring .arc { fill: none; stroke: var(--cyan); stroke-width: 1.6; stroke-linecap: round; filter: drop-shadow(0 0 3px rgba(127, 233, 255, 0.8)); }
+	.hud-ring .node { fill: #0a1424; stroke: rgba(127, 233, 255, 0.45); stroke-width: 1.2; transition: r 0.5s, fill 0.5s; }
+	.hud-ring .node.done { fill: rgba(127, 233, 255, 0.55); stroke: var(--cyan); }
+	.hud-ring .node.on { r: 5; fill: var(--cyan); stroke: #e8fdff; filter: drop-shadow(0 0 5px var(--cyan)); }
+	.hud-ring .idx { font: 600 17px ui-monospace, Menlo, monospace; fill: var(--cyan); letter-spacing: 0.04em; }
+	#hud.system .hud-ring .track { stroke: rgba(255, 211, 107, 0.3); }
+	#hud.system .hud-ring .idx { fill: var(--amber); }
+	.hud-title { font-size: 22px; font-weight: 600; letter-spacing: 0.03em; text-shadow: 0 2px 18px rgba(0, 0, 0, 0.6); }
+	.hud-loop.in .hud-title { animation: rise 0.9s ease both; }
+
+	.hud-labels { position: absolute; inset: 0; }
+	.hud-label { position: absolute; left: 0; top: 0; opacity: 0; transition: opacity 0.4s; white-space: nowrap;
+		margin: -30px 0 0 -2px; padding: 5px 9px 6px; border-left: 2px solid var(--cyan);
+		background: rgba(7, 13, 24, 0.55); backdrop-filter: blur(3px); font-size: 11px; line-height: 1.35; }
+	.hud-label b { display: block; font-size: 13px; font-weight: 600; }
+	.hud-label span { display: block; color: var(--mute); font-size: 10px; }
+	.hud-label em { display: block; font-style: normal; color: var(--amber); }
+	.hud-label.hub { border-left-color: var(--amber); }
+	.hud-label.hub.store { border-left-color: #8affc1; }
+
+	/* 右下卡片：色标 / 曲线，与锚定标签同一套玻璃质感 */
+	.hud-card { position: absolute; right: clamp(16px, 3vw, 40px); bottom: clamp(36px, 5vh, 56px); width: min(300px, 42vw); opacity: 0;
+		padding: 12px 14px 10px; border-radius: 8px; background: rgba(7, 13, 24, 0.5); backdrop-filter: blur(6px);
+		border: 1px solid rgba(127, 233, 255, 0.12); box-shadow: 0 10px 40px rgba(0, 0, 0, 0.35); }
+	.hud-card-head { display: flex; align-items: baseline; justify-content: space-between; gap: 10px; }
+	.hud-card-head b { font-size: 12px; font-weight: 600; letter-spacing: 0.04em; }
+	.hud-card-head span { font: 600 13px ui-monospace, Menlo, monospace; color: var(--amber); }
+	.hud-card-note { display: flex; gap: 12px; margin-top: 6px; font-size: 10px; color: var(--mute); }
+	.hud-card canvas { width: 100%; height: auto; display: block; margin-top: 8px; }
+	.lg-bar { height: 8px; margin-top: 12px; border-radius: 4px;
+		background: linear-gradient(90deg, #1b3b8f, #18b6d9 33%, #ffd166 66%, #ff5a36); box-shadow: 0 0 14px rgba(255, 140, 80, 0.25); }
+	.lg-ticks { display: flex; justify-content: space-between; margin-top: 5px; font: 500 10px ui-monospace, Menlo, monospace; color: var(--mute); }
+	.lg-clock { font-size: 18px !important; color: var(--cyan) !important; }
+	.hud-chart .pred::before, .hud-chart .meas::before { content: ""; display: inline-block; width: 12px; height: 2px; margin-right: 5px; vertical-align: middle; }
+	.hud-chart .pred::before { background: var(--cyan); }
+	.hud-chart .meas::before { background: var(--amber); }
+	.hud-chart .note { margin-left: auto; opacity: 0.7; }
+	.hud-credit { position: absolute; right: clamp(16px, 3vw, 40px); bottom: 12px; font-size: 10px; color: rgba(200, 216, 235, 0.35); }
+
+	@media (max-width: 640px) {
+		.hud-ring { width: 64px; height: 64px; }
+		.hud-title { font-size: 17px; }
+		.hud-card { display: none; }
+	}
+</style>
+</head>
+<body>
+	<div id="stage"></div>
+	<div id="veil"></div>
+	<div id="hud"></div>
+	<script type="module" src="./src/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,70 @@
+{{/* Team directory: PI intro, then one section per user_groups value (order follows member weight). */}}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $authors := partialCached "functions/get_authors_data" .wcPage site.Language.Lang }}
+{{ $lead := dict }}{{ $members := slice }}
+{{ range $slug, $data := $authors }}
+  {{ $profile := partial "functions/get_author_profile" $slug }}
+  {{ if $profile.is_owner }}{{ $lead = $profile }}{{ else }}{{ $members = $members | append $profile }}{{ end }}
+{{ end }}
+{{ $members = sort $members "weight" "asc" }}
+{{ $other := cond $zh "其他成员" "Other Members" }}
+{{ $groups := slice }}
+{{ range $members }}{{ $g := index (.user_groups | default (slice $other)) 0 }}{{ if not (in $groups $g) }}{{ $groups = $groups | append $g }}{{ end }}{{ end }}
+
+<div class="td-shell td-head">
+  <h1>{{ cond $zh "团队" "Team" }}</h1>
+  <nav class="td-jump" aria-label="{{ cond $zh "成员分组" "Member groups" }}">
+    {{ range $i, $g := $groups }}<a href="#team-group-{{ $i }}">{{ $g }} <span>{{ len (where $members "user_groups" "intersect" (slice $g)) }}</span></a>{{ end }}
+  </nav>
+</div>
+
+{{ with $lead }}
+{{ $url := printf "team/%s/" .slug | relLangURL }}
+<section class="td-section td-lead" aria-labelledby="team-lead">
+  <div class="td-shell">
+    <a class="td-lead-avatar" href="{{ $url }}" tabindex="-1" aria-hidden="true">
+      {{ with .avatar }}{{ $img := (.Filter images.AutoOrient).Fill "480x480 Center q85" }}<img src="{{ $img.RelPermalink }}" alt="" width="200" height="200">
+      {{ else }}<span>{{ upper (substr ($lead.name_family | default $lead.title) 0 1) }}</span>{{ end }}
+    </a>
+    <div class="td-lead-copy">
+      <p class="td-eyebrow">{{ index (.user_groups | default (slice (cond $zh "课题组负责人" "Principal Investigator"))) 0 }}</p>
+      <h2 id="team-lead"><a href="{{ $url }}">{{ .title }}</a></h2>
+      {{ with .role }}<p class="td-role">{{ . }}</p>{{ end }}
+      {{ with .bio }}<p class="td-bio">{{ . | plainify | truncate 260 }}</p>{{ end }}
+      {{ with .interests }}<ul class="td-interests">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+      <div class="td-lead-actions">
+        <a class="td-button" href="{{ $url }}">{{ cond $zh "个人主页" "Profile" }} <span aria-hidden="true">→</span></a>
+        {{ partial "member/team-social" (dict "profile" . "zh" $zh) }}
+      </div>
+    </div>
+  </div>
+</section>
+{{ end }}
+
+{{ range $i, $g := $groups }}
+{{ $people := where $members "user_groups" "intersect" (slice $g) }}
+<section class="td-section" id="team-group-{{ $i }}" aria-labelledby="team-group-title-{{ $i }}">
+  <div class="td-shell">
+    <h2 id="team-group-title-{{ $i }}">{{ $g }} <span class="td-count">{{ len $people }}</span></h2>
+    <div class="td-grid">
+      {{ range $people }}
+        {{ $profile := . }}
+        {{ $url := printf "team/%s/" .slug | relLangURL }}
+        <article class="td-person">
+          <a class="td-profile" href="{{ $url }}" aria-labelledby="team-name-{{ .slug }}">
+            <div class="td-avatar">
+              {{ with .avatar }}{{ $oriented := .Filter images.AutoOrient }}{{ $img := $oriented.Fill "400x400 Center q85" }}
+                <img src="{{ $img.RelPermalink }}" alt="" width="140" height="140" loading="lazy">
+              {{ else }}<span aria-hidden="true">{{ upper (substr ($profile.name_family | default $profile.title | default "?") 0 1) }}</span>{{ end }}
+            </div>
+            <h3 id="team-name-{{ .slug }}">{{ .title }}</h3>
+          </a>
+          {{ with .role }}<p class="td-role">{{ . }}</p>{{ end }}
+          {{ with .interests }}<ul class="td-interests">{{ range first 3 . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+          {{ partial "member/team-social" (dict "profile" . "zh" $zh) }}
+        </article>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}

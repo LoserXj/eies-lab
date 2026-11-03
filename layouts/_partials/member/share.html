@@ -1,0 +1,17 @@
+{{/* Share buttons (X, LinkedIn, e-mail, copy link) for paper / talk / project pages. Input: dict url title. */}}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $u := .url }}{{ $t := .title }}
+<div class="mp-share" aria-label="{{ cond $zh "分享" "Share" }}">
+  <a href="https://twitter.com/intent/tweet?url={{ $u | urlquery }}&amp;text={{ $t | urlquery }}" target="_blank" rel="noopener noreferrer" aria-label="X" title="X">{{ partial "functions/get_icon" (dict "name" "brands/x" "attributes" "class=\"mp-share-icon\" aria-hidden=\"true\"") }}</a>
+  <a href="https://www.linkedin.com/sharing/share-offsite/?url={{ $u | urlquery }}" target="_blank" rel="noopener noreferrer" aria-label="LinkedIn" title="LinkedIn">{{ partial "functions/get_icon" (dict "name" "brands/linkedin" "attributes" "class=\"mp-share-icon\" aria-hidden=\"true\"") }}</a>
+  <a href="{{ printf "mailto:?subject=%s&body=%s" (replace ($t | urlquery) "+" "%20") ($u | urlquery) | safeURL }}" aria-label="{{ cond $zh "邮件" "Email" }}" title="{{ cond $zh "邮件" "Email" }}">{{ partial "functions/get_icon" (dict "name" "hero/envelope" "attributes" "class=\"mp-share-icon\" aria-hidden=\"true\"") }}</a>
+  <button type="button" data-copy-link aria-label="{{ cond $zh "复制链接" "Copy link" }}" title="{{ cond $zh "复制链接" "Copy link" }}" data-done="{{ cond $zh "已复制" "Copied" }}">{{ partial "functions/get_icon" (dict "name" "hero/link" "attributes" "class=\"mp-share-icon\" aria-hidden=\"true\"") }}</button>
+</div>
+<script>
+(function () {
+  var b = document.currentScript.previousElementSibling.querySelector('[data-copy-link]');
+  b.addEventListener('click', function () {
+    navigator.clipboard.writeText(location.href.split(/[?#]/)[0]).then(function () { var t = b.innerHTML; b.textContent = b.dataset.done; setTimeout(function () { b.innerHTML = t; }, 1500); });
+  });
+})();
+</script>

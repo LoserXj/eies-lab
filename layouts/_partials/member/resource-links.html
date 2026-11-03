@@ -1,0 +1,11 @@
+{{/* build_links returns both contexts; filtering belongs to the caller. */}}
+{{- $paper := .page -}}
+{{- $context := .context -}}
+{{- $links := slice -}}
+{{- range partial "functions/build_links" (dict "page" $paper "is_list" (cond (eq $context "list") 1 0)) -}}
+  {{- if and .url (in .contexts $context) (not (in (slice "cite" "bibtex") .type)) -}}
+    {{- $url := partial "member/source-url" (dict "page" $paper "url" .url) -}}
+    {{- $links = $links | append (merge . (dict "url" $url)) -}}
+  {{- end -}}
+{{- end -}}
+{{- return $links -}}

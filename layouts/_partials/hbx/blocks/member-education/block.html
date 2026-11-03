@@ -1,0 +1,44 @@
+{{/* Closing CV of a member page: Skills and Awards side by side.
+     Education is shown compactly in the profile block. Empty sections show a short placeholder;
+     entries with sample: true carry a "Sample" label. */}}
+{{ $slug := .wcBlock.content.username }}
+{{ $profile := partial "functions/get_author_profile" $slug }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $sample := cond $zh "示例" "Sample" }}
+<div class="mp-shell">
+  <div class="mp-cv-split">
+    <section id="cv-skills" aria-labelledby="cv-skills-h">
+      <h2 id="cv-skills-h" class="mp-section-title">{{ cond $zh "技能与爱好" "Skills" }}</h2>
+      {{ with $profile.skills }}
+      <div class="mp-skills">
+        {{ range . }}
+          <div>
+            <h3>{{ .name }}{{ if .sample }} <span class="mp-sample">{{ $sample }}</span>{{ end }}</h3>
+            <ul class="mp-interests">{{ range .items }}<li>{{ .name | default . }}</li>{{ end }}</ul>
+          </div>
+        {{ end }}
+      </div>
+      {{ else }}
+      <p class="mp-empty">{{ cond $zh "技能与爱好待补充。" "Skills to come." }}</p>
+      {{ end }}
+    </section>
+    <section id="cv-awards" aria-labelledby="cv-awards-h">
+      <h2 id="cv-awards-h" class="mp-section-title">{{ cond $zh "荣誉奖项" "Awards" }}</h2>
+      {{ with $profile.awards }}
+      <ol class="mp-awards">
+        {{ range sort . "date" "desc" }}
+          <li>
+            <p class="mp-award-year">{{ with .date }}{{ substr (printf "%v" .) 0 4 }}{{ end }}</p>
+            <div>
+              <h3>{{ .title }}{{ if .sample }} <span class="mp-sample">{{ $sample }}</span>{{ end }}</h3>
+              {{ with .awarder }}<p class="mp-institution">{{ . }}</p>{{ end }}
+            </div>
+          </li>
+        {{ end }}
+      </ol>
+      {{ else }}
+      <p class="mp-empty">{{ cond $zh "奖项待补充。" "Awards to come." }}</p>
+      {{ end }}
+    </section>
+  </div>
+</div>

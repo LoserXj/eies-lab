@@ -1,0 +1,19 @@
+slug: xu-jian
+schema: hugoblox/author/v1
+name:
+  display: XU Jian
+  given: Jian
+  family: XU
+user_groups:
+  - MPhil Students
+role: MPhil Student (Year 2)
+weight: 20
+joined: 2026-11-03
+interests:
+  - Energy-system perception
+  - Observability & state estimation
+education:
+  - degree: 本科
+    institution: 南方科技大学
+    start: 2026-11-03
+    end: 2026-11-03

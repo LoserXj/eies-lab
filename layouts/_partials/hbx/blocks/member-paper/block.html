@@ -1,0 +1,25 @@
+{{ $slug := .wcBlock.content.username }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $paper := site.GetPage .wcBlock.content.source }}
+{{ with $paper }}
+<div class="mp-shell mp-detail">
+  {{ partial "member/paper-article" (dict "paper" . "member" $slug "permalink" $.wcPage.Permalink "back" (dict "url" (printf "team/%s/publications/" $slug | relLangURL) "label" (cond $zh "返回论文列表" "Back to Publications") "profileUrl" (printf "team/%s/" $slug | relLangURL) "profileLabel" (cond $zh "返回个人主页" "Back to Profile"))) }}
+</div>
+{{ $papers := partial "member/papers" $slug }}
+{{ $position := -1 }}
+{{ range $i, $item := $papers }}{{ if eq $item.File.ContentBaseName $paper.File.ContentBaseName }}{{ $position = $i }}{{ end }}{{ end }}
+{{ $previous := false }}{{ $next := false }}
+{{ if gt $position 0 }}{{ $previous = index $papers (sub $position 1) }}{{ end }}
+{{ if and (ge $position 0) (lt (add $position 1) (len $papers)) }}{{ $next = index $papers (add $position 1) }}{{ end }}
+{{ if or $previous $next }}
+  <div class="mp-paper-more">
+    <div class="mp-shell"><nav class="mp-reading mp-paper-nav" aria-label="{{ cond $zh "论文翻页" "Publication navigation" }}">
+      {{ with $previous }}{{ partial "member/adjacent-paper" (dict "paper" . "member" $slug "previous" true) }}{{ end }}
+      {{ with $next }}{{ partial "member/adjacent-paper" (dict "paper" . "member" $slug "previous" false) }}{{ end }}
+    </nav></div>
+  </div>
+{{ end }}
+{{ end }}
+{{ with resources.Get "js/member-paper-navigation.js" }}{{ $js := . | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{ end }}

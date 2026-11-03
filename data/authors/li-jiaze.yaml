@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: li-jiaze
+weight: 30
+user_groups: [Affiliated Members]
+name:
+  display: LI Jiaze
+  given: Jiaze
+  family: LI
+  alternate: ''  # TODO: Chinese name
+role: Affiliated Member
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Physics-grounded world models
+  - Building & storage dynamics
+# TODO: bio, education, links, avatar (assets/media/authors/li-jiaze.jpg)

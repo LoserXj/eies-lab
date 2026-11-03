@@ -1,0 +1,3 @@
+# `hugo server` only: load the scene from the Vite dev server (`pnpm scenes:dev`), which also serves /scene-data/.
+scenes:
+  src: http://localhost:5180/

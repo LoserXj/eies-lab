@@ -1,0 +1,4 @@
+{{ $kind := index (.Params.publication_types | default (slice "article-journal")) 0 }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $labels := cond $zh (dict "article-journal" "期刊论文" "paper-conference" "会议论文" "article" "预印本" "book" "专著" "chapter" "书籍章节" "thesis" "学位论文" "manuscript" "预印本" "report" "报告" "patent" "专利") (dict "article-journal" "Journal Article" "paper-conference" "Conference Paper" "article" "Preprint" "book" "Book" "chapter" "Book Chapter" "thesis" "Thesis" "manuscript" "Preprint" "report" "Report" "patent" "Patent") }}
+{{ return (index $labels $kind | default (humanize $kind)) }}

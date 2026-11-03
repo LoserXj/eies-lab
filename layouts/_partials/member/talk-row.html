@@ -1,0 +1,9 @@
+{{/* Body of a talk row. Input: dict item, d (time), url, zh, sample (label). */}}
+          <p class="mp-talk-date"><span>{{ if $.zh }}{{ $.d.Format "1月" }}{{ else }}{{ $.d.Format "Jan" }}{{ end }}</span>{{ $.d.Format "2006" }}</p>
+          <div class="mp-talk-body">
+            <p class="mp-card-tags">{{ with $.item.event }}<span>{{ . }}</span>{{ end }}{{ with $.item.type }}<span class="mp-role-pill">{{ . }}</span>{{ end }}{{ if $.item.sample }}<span class="mp-sample">{{ $.sample }}</span>{{ end }}</p>
+            <h3>{{ $.item.title }}</h3>
+            {{ with $.item.summary }}<p class="mp-talk-summary">{{ . | plainify }}</p>{{ end }}
+            {{ with $.item.location }}<p class="mp-meta">{{ . }}</p>{{ end }}
+          </div>
+          {{ if $.url }}<span class="mp-talk-arrow" aria-hidden="true">→</span>{{ end }}

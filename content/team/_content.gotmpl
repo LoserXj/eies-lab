@@ -1,0 +1,46 @@
+{{/* Member homepages and publication views. Original publication pages remain unchanged. */}}
+{{ .EnableAllLanguages }}
+{{ $lang := .Site.Language.Lang }}
+{{ $zh := eq $lang "zh" }}
+{{ $langAuthors := index (index hugo.Data $lang | default dict) "authors" | default dict }}
+{{ $publications := partial "member/publication-sources" $lang }}
+{{ range $slug, $base := hugo.Data.authors }}
+  {{ $name := (index $langAuthors $slug | default dict).name | default dict }}
+  {{ $title := $name.display | default $base.name.display }}
+  {{ $sections := slice
+    (dict "block" "member-profile" "content" (dict "username" $slug))
+    (dict "block" "member-publications" "id" "member-publications" "content" (dict "username" $slug))
+    (dict "block" "member-works" "id" "member-talks" "content" (dict "username" $slug "kind" "talks"))
+    (dict "block" "member-works" "id" "member-projects" "content" (dict "username" $slug "kind" "projects"))
+    (dict "block" "member-education" "id" "member-education" "content" (dict "username" $slug))
+  }}
+  {{ $.AddPage (dict "kind" "page" "path" $slug "title" $title "params" (dict "sections" $sections)) }}
+  {{ $archive := slice
+    (dict "block" "member-publications" "id" "member-publications" "content" (dict "username" $slug "archive" true))
+    (dict "block" "member-publications" "id" "member-all-publications" "content" (dict "username" $slug "all" true))
+  }}
+  {{/* Flat, unlisted sources with explicit URLs avoid adding sections to the
+       theme's global sidebar, while exposing nested member URLs to visitors. */}}
+  {{ $prefix := cond $zh "/zh" "" }}
+  {{ $.AddPage (dict "kind" "page" "path" (printf "%s-publications" $slug) "url" (printf "%s/team/%s/publications/" $prefix $slug) "title" (printf "%s · %s" (cond $zh "论文" "Publications") $title) "build" (dict "list" "never" "render" "always") "params" (dict "sections" $archive)) }}
+  {{ range $publications }}
+    {{ if in .authors $slug }}
+      {{/* Carry only dates needed for Hugo's visibility checks. Copying past
+           article dates also changes the Team section's date and global sidebar
+           order. The visible date continues to come from the original Page. */}}
+      {{ $dates := dict }}
+      {{ range $key, $value := .meta }}
+        {{ if and $value (in (slice "date" "publishdate" "expirydate") (lower $key)) }}
+          {{ $dates = merge $dates (dict (lower $key) (time.AsTime $value)) }}
+        {{ end }}
+      {{ end }}
+      {{ $visibilityDates := dict }}
+      {{ with (index $dates "publishdate" | default (index $dates "date")) }}
+        {{ if .After now }}{{ $visibilityDates = merge $visibilityDates (dict "publishdate" .) }}{{ end }}
+      {{ end }}
+      {{ with index $dates "expirydate" }}{{ $visibilityDates = merge $visibilityDates (dict "expirydate" .) }}{{ end }}
+      {{ $detail := slice (dict "block" "member-paper" "id" "member-paper" "content" (dict "username" $slug "source" .source)) }}
+      {{ $.AddPage (dict "kind" "page" "path" (printf "%s-publication-%s" $slug .slug) "url" (printf "%s/team/%s/publications/%s/" $prefix $slug .slug) "title" .meta.title "dates" $visibilityDates "draft" (.meta.draft | default false) "build" (dict "list" "never" "render" "always") "params" (dict "sections" $detail)) }}
+    {{ end }}
+  {{ end }}
+{{ end }}

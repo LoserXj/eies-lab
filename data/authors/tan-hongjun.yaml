@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: tan-hongjun
+weight: 13
+user_groups: [PhD Students]
+name:
+  display: TAN Hongjun
+  given: Hongjun
+  family: TAN
+  alternate: ''  # TODO: Chinese name
+role: PhD Student (Year 4)
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Embodied decision & control
+  - Electric mobility & charging
+# TODO: bio, education, links, avatar (assets/media/authors/tan-hongjun.jpg)

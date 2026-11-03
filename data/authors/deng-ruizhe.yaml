@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: deng-ruizhe
+weight: 15
+user_groups: [PhD Students]
+name:
+  display: DENG Ruizhe
+  given: Ruizhe
+  family: DENG
+  alternate: ''  # TODO: Chinese name
+role: PhD Student (Year 3)
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Physics-grounded world models
+  - PV output forecasting
+# TODO: bio, education, links, avatar (assets/media/authors/deng-ruizhe.jpg)

@@ -1,0 +1,19 @@
+{{/* Publication page: same reading layout as member paper pages (#member-paper styles), linked back to the Publications index. */}}
+{{ define "main" }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $paper := . }}
+<section id="member-paper" class="hbb-section">
+<div class="mp-shell mp-detail">
+  {{ partial "member/paper-article" (dict "paper" . "permalink" .Permalink "back" (dict "url" ("publications/" | relLangURL) "label" (cond $zh "全部论文" "All Publications"))) }}
+</div>
+{{ $older := .PrevInSection }}{{ $newer := .NextInSection }}
+{{ if or $newer $older }}
+  <div class="mp-paper-more">
+    <div class="mp-shell"><nav class="mp-reading mp-paper-nav" aria-label="{{ cond $zh "论文翻页" "Publication navigation" }}">
+      {{ with $newer }}{{ partial "member/adjacent-paper" (dict "paper" . "member" "" "previous" true) }}{{ end }}
+      {{ with $older }}{{ partial "member/adjacent-paper" (dict "paper" . "member" "" "previous" false) }}{{ end }}
+    </nav></div>
+  </div>
+{{ end }}
+</section>
+{{ end }}

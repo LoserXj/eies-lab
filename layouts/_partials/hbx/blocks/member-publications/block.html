@@ -1,0 +1,24 @@
+{{ $slug := .wcBlock.content.username }}
+{{ $archive := .wcBlock.content.archive | default false }}
+{{ $all := .wcBlock.content.all | default false }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $papers := partial "member/papers" $slug }}
+{{/* Featured papers first, then the most recent others, up to six cards. */}}
+{{ $shown := first 6 (union (where $papers "Params.featured" true) $papers) }}
+{{ if $all }}{{ $shown = $papers }}{{ end }}
+<div class="mp-shell">
+  {{ if $archive }}<a class="hs-link mp-back-link" href="{{ printf "team/%s/" $slug | relLangURL }}"><span aria-hidden="true">←</span> {{ cond $zh "返回个人主页" "Back to Profile" }}</a>{{ end }}
+  {{ $title := cond $all (cond $zh "全部论文" "All Publications") (cond $zh "代表论文" "Featured Publications") }}
+  {{ if $archive }}{{ $title = cond $zh "精选论文" "Featured Publication" }}{{ end }}
+  {{ if $archive }}<h1 class="mp-section-title">{{ $title }}</h1>{{ else }}<h2 class="mp-section-title">{{ $title }}</h2>{{ end }}
+  {{ if $papers }}
+    <div class="{{ if $all }}mp-reference-list{{ else }}mp-pub-grid{{ end }}">
+      {{ range $p := $shown }}{{ partial "member/paper-row" (dict "paper" $p "member" $slug "archive" $all "fromProfile" (not (or $archive $all))) }}{{ end }}
+    </div>
+    {{ if not (or $archive $all) }}
+      <a class="hs-link mp-button mp-archive-link" href="{{ printf "team/%s/publications/" $slug | relLangURL }}">{{ cond $zh "查看全部论文" "See all publications" }} <span aria-hidden="true">→</span></a>
+    {{ end }}
+  {{ else }}
+    <p class="mp-empty">{{ cond $zh "论文信息待补充。" "Publications to come." }}</p>
+  {{ end }}
+</div>

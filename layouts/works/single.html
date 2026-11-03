@@ -1,0 +1,25 @@
+{{/* Talk / project page (content/talks/*, content/projects/*; `type: works` is set by the section's _index cascade).
+     Same reading layout as the paper pages; the fixed body is layouts/_partials/member/work-article.html. */}}
+{{ define "main" }}
+{{ $zh := eq site.Language.Lang "zh" }}
+<section id="member-work" class="hbb-section">
+<div class="mp-shell mp-detail">
+  {{ partial "member/work-article" . }}
+</div>
+{{ $newer := .NextInSection }}{{ $older := .PrevInSection }}
+{{ if or $newer $older }}
+<div class="mp-paper-more">
+  <div class="mp-shell"><nav class="mp-reading mp-paper-nav" aria-label="{{ .Parent.Title }}">
+    {{ with $newer }}<a class="mp-adjacent-paper mp-previous" href="{{ .RelPermalink }}" rel="prev">
+      <span class="mp-adjacent-label"><span aria-hidden="true">←</span> {{ cond $zh "较新" "Newer" }}</span>
+      <h2>{{ .Title }}</h2><time class="mp-meta" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006" }}</time>
+    </a>{{ end }}
+    {{ with $older }}<a class="mp-adjacent-paper mp-next" href="{{ .RelPermalink }}" rel="next">
+      <span class="mp-adjacent-label">{{ cond $zh "较早" "Older" }} <span aria-hidden="true">→</span></span>
+      <h2>{{ .Title }}</h2><time class="mp-meta" datetime="{{ .Date.Format "2006-01-02" }}">{{ .Date.Format "2006" }}</time>
+    </a>{{ end }}
+  </nav></div>
+</div>
+{{ end }}
+</section>
+{{ end }}

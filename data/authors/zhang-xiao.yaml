@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: zhang-xiao
+weight: 22
+user_groups: [Research Assistants]
+name:
+  display: ZHANG Xiao
+  given: Xiao
+  family: ZHANG
+  alternate: ''  # TODO: Chinese name
+role: Research Assistant
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Embodied decision & control
+  - Low-altitude / eVTOL energy
+# TODO: bio, education, links, avatar (assets/media/authors/zhang-xiao.jpg)

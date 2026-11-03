@@ -1,0 +1,11 @@
+{{ $paper := .paper }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $figure := $paper.Resources.GetMatch "featured*" }}
+{{ if $figure }}
+  <img src="{{ $figure.RelPermalink }}" alt="{{ $paper.Params.image.alt | default $paper.Title }}" loading="lazy"{{ if and (eq $figure.MediaType.MainType "image") (ne $figure.MediaType.SubType "svg+xml") }} width="{{ $figure.Width }}" height="{{ $figure.Height }}"{{ end }}>
+{{ else }}
+  <div class="mp-figure-placeholder" role="img" aria-label="{{ cond $zh "研究配图占位" "Research figure placeholder" }}">
+    {{ partial "functions/get_icon" (dict "name" "hero/photo" "attributes" "class=\"mp-figure-icon\" aria-hidden=\"true\"") }}
+    <span>{{ cond $zh "研究配图待补充" "Research figure to come" }}</span>
+  </div>
+{{ end }}

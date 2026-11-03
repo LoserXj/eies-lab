@@ -1,0 +1,66 @@
+# Lab member profile (English). Chinese overrides: data/zh/authors/dong-kechuan.yaml
+# Source: https://kechuan-ln.github.io/ (personal homepage); paper metadata from Crossref.
+schema: hugoblox/author/v1
+slug: dong-kechuan
+weight: 18
+user_groups: [PhD Students]
+name:
+  display: DONG Kechuan
+  given: Kechuan
+  family: DONG
+  alternate: 董克川
+role: PhD Student (Year 1)
+bio: |
+  Kechuan Dong joined EIES-Lab as a PhD student in September 2026. His research sits at the
+  intersection of artificial intelligence, geospatial analysis and urban energy systems, with a
+  focus on spatiotemporal deep learning for large-scale rooftop and facade solar potential
+  estimation. He has also worked on 3D human pose estimation for prosthesis users through
+  multi-source data fusion, and is interested in interpretable, physics-informed AI for
+  real-world sustainability problems.
+interests:
+  - Spatiotemporal deep learning
+  - Urban solar potential (rooftop & facade PV)
+  - Geospatial AI & 3D city models
+  - Physics-informed AI
+links:
+  - icon: at-symbol
+    url: mailto:kechuan.dong@outlook.com
+    label: E-mail
+  - icon: academicons/google-scholar
+    url: https://scholar.google.com/citations?user=dm8zvHcAAAAJ
+  - icon: brands/github
+    url: https://github.com/Kechuan-ln
+  - icon: academicons/researchgate
+    url: https://www.researchgate.net/profile/Kechuan-Dong
+  - icon: globe-alt
+    url: https://kechuan-ln.github.io/
+    label: Homepage
+education:
+  - degree: PhD in Building Environment and Energy Engineering
+    institution: The Hong Kong Polytechnic University
+    start: 2026-09-01
+  - degree: MS in Information and Communication Engineering
+    institution: The University of Tokyo
+    start: 2023-04-01
+    end: 2026-03-31
+    summary: Interactive Visual Intelligence Lab
+  - degree: BS in Electronic Information Science and Technology
+    institution: Lanzhou University
+    start: 2018-09-01
+    end: 2022-06-30
+
+joined: 2026-09-01
+# Talks and projects live in content/talks/ and content/projects/ (authors: [dong-kechuan]).
+# ── SAMPLE CONTENT (sample: true) ── placeholders to preview the page layout; replace with real entries.
+skills:
+  - name: Technical Skills
+    sample: true
+    items: [{ name: Python }, { name: PyTorch }, { name: GIS }, { name: 3D city models }, { name: Remote sensing }]
+  - name: Hobbies
+    sample: true
+    items: [{ name: Hiking }, { name: Photography }]
+awards:
+  - title: Research Postgraduate Scholarship
+    awarder: The Hong Kong Polytechnic University
+    date: 2026-09-01
+    sample: true

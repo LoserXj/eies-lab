@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: pan-yuyang
+weight: 21
+user_groups: [MPhil Students]
+name:
+  display: PAN Yuyang
+  given: Yuyang
+  family: PAN
+  alternate: ''  # TODO: Chinese name
+role: MPhil Student (Year 1)
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Physics-grounded world models
+  - PV output forecasting
+# TODO: bio, education, links, avatar (assets/media/authors/pan-yuyang.jpg)

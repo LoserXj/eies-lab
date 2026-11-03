@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: xu-xuanyu
+weight: 29
+user_groups: [Affiliated Members]
+name:
+  display: XU Xuanyu
+  given: Xuanyu
+  family: XU
+  alternate: ''  # TODO: Chinese name
+role: Affiliated Member
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Energy-system perception
+  - Solar & urban remote sensing
+# TODO: bio, education, links, avatar (assets/media/authors/xu-xuanyu.jpg)

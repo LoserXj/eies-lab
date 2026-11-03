@@ -1,0 +1,11 @@
+{{/* Body of a Talks / Projects card. Input: dict item, img (resource or false), kind, zh. */}}
+          <div class="mp-card-image">
+            {{ with $.img }}{{ $r := .Fill "800x450 Center webp q82" }}<img src="{{ $r.RelPermalink }}" alt="" width="{{ $r.Width }}" height="{{ $r.Height }}" loading="lazy">
+            {{ else }}<div class="mp-figure-placeholder" aria-hidden="true">{{ partial "functions/get_icon" (dict "name" (cond (eq $.kind "talks") "hero/presentation-chart-bar" "hero/cube-transparent") "attributes" "class=\"mp-figure-icon\"") }}</div>{{ end }}
+          </div>
+          <div class="mp-card-copy">
+            <p class="mp-card-tags">{{ with $.item.tag | default $.item.event }}<span>{{ . }}</span>{{ end }}{{ if $.item.sample }}<span class="mp-sample">{{ cond $.zh "示例" "Sample" }}</span>{{ end }}</p>
+            <h3>{{ $.item.title }}</h3>
+            {{ with $.item.summary }}<p class="mp-card-summary">{{ . | plainify }}</p>{{ end }}
+            {{ with $.item.date }}{{ $d := time.AsTime . }}<p class="mp-card-meta"><time datetime="{{ $d.Format "2006-01-02" }}">{{ if $.zh }}{{ $d.Format "2006年1月" }}{{ else }}{{ $d.Format "Jan 2006" }}{{ end }}</time></p>{{ end }}
+          </div>

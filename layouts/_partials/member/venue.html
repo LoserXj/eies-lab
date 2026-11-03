@@ -1,0 +1,3 @@
+{{ $venue := .Params.publication }}
+{{ if reflect.IsMap $venue }}{{ $venue = $venue.name }}{{ end }}
+{{ return ($venue | default "") }}

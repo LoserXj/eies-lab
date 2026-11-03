@@ -1,0 +1,36 @@
+{{/* Member Talks (dated rows) or Projects (cards): the entries in content/talks/ or content/projects/ whose `authors`
+     include this member, newest first; each opens its own page (layouts/works/single.html). content.kind: talks | projects.
+     Entries are added in Pages CMS ("Talks / 学术报告", "Projects / 项目与成果"); fields: archetypes/talks.md, archetypes/projects.md.
+     sample: true marks placeholder entries with a small "Sample" label until real content replaces them. */}}
+{{ $slug := .wcBlock.content.username }}
+{{ $kind := .wcBlock.content.kind }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $items := slice }}
+{{ range (where site.RegularPages "Section" $kind).ByDate.Reverse }}{{ if in (apply (.Params.authors | default slice) "urlize" ".") $slug }}{{ $items = $items | append . }}{{ end }}{{ end }}
+{{ $title := cond (eq $kind "talks") (cond $zh "学术报告" "Talks") (cond $zh "项目与成果" "Projects") }}
+{{ $empty := cond (eq $kind "talks") (cond $zh "学术报告待补充。" "Talks to come.") (cond $zh "项目信息待补充。" "Projects to come.") }}
+{{ $sample := cond $zh "示例" "Sample" }}
+<div class="mp-shell">
+  <div class="mp-section-head">
+    <h2 class="mp-section-title">{{ $title }}</h2>
+    {{ with $items }}<p class="mp-count">{{ len . }}</p>{{ end }}
+  </div>
+  {{ if not $items }}
+  <p class="mp-empty">{{ $empty }}</p>
+  {{ else if eq $kind "talks" }}
+  <ol class="mp-talks">
+    {{ range $items }}
+      <li><a class="mp-talk" href="{{ .RelPermalink }}">{{ partial "member/talk-row" (dict "item" (partial "member/work-item" .) "d" .Date "url" .RelPermalink "zh" $zh "sample" $sample) }}</a></li>
+    {{ end }}
+  </ol>
+  {{ else }}
+  <div class="mp-card-grid">
+    {{ range $items }}
+      {{ $img := false }}{{ with .Params.cover }}{{ $img = resources.Get (strings.TrimPrefix "/" .) }}{{ end }}
+      <article class="mp-card">
+        <a class="mp-card-link" href="{{ .RelPermalink }}">{{ partial "member/work-card" (dict "item" (partial "member/work-item" .) "img" $img "kind" $kind "zh" $zh) }}</a>
+      </article>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>

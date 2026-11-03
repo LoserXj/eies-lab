@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: liang-jinwei
+weight: 23
+user_groups: [Research Assistants]
+name:
+  display: LIANG Jinwei
+  given: Jinwei
+  family: LIANG
+  alternate: ''  # TODO: Chinese name
+role: Research Assistant
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Energy-system perception
+  - Solar & urban remote sensing
+# TODO: bio, education, links, avatar (assets/media/authors/liang-jinwei.jpg)

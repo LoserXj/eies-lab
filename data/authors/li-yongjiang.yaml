@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: li-yongjiang
+weight: 28
+user_groups: [Affiliated Members]
+name:
+  display: LI Yongjiang
+  given: Yongjiang
+  family: LI
+  alternate: ''  # TODO: Chinese name
+role: Affiliated Member
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Embodied decision & control
+  - Low-altitude / eVTOL energy
+# TODO: bio, education, links, avatar (assets/media/authors/li-yongjiang.jpg)

@@ -1,0 +1,22 @@
+{
+  "name": "eies-lab-site",
+  "version": "1.0.0",
+  "private": true,
+  "packageManager": "pnpm@10.14.0",
+  "description": "EIES-Lab (PolyU) website: Hugo + HugoBlox, with a three.js homepage scene",
+  "scripts": {
+    "dev": "hugo server --disableFastRender",
+    "scenes:dev": "pnpm --filter scenes dev",
+    "scenes:build": "pnpm --filter scenes build",
+    "build": "pnpm scenes:build && hugo --minify && pnpm run pagefind",
+    "pagefind": "pagefind --site public"
+  },
+  "dependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.10",
+    "pagefind": "^1.4.0",
+    "preact": "^10.27.2",
+    "tailwindcss": "^4.1.12",
+    "three": "^0.180.0"
+  }
+}

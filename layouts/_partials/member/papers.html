@@ -1,0 +1,13 @@
+{{/* Preserve the existing author taxonomy and publication source of truth. */}}
+{{ $slug := . }}
+{{ $papers := slice }}
+{{ with site.GetPage (printf "/authors/%s" .) }}
+  {{ $papers = where .RegularPages "Section" "publications" }}
+{{ end }}
+{{/* Unlisted preview bundles are only included on their designated member page. */}}
+{{ range partialCached "member/publication-sources" site.Language.Lang site.Language.Lang }}
+  {{ if eq (.meta.member_preview | default "") $slug }}
+    {{ with site.GetPage .source }}{{ $papers = $papers | append . }}{{ end }}
+  {{ end }}
+{{ end }}
+{{ return (sort (uniq $papers) "Date" "desc") }}

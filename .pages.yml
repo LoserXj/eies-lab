@@ -1,0 +1,319 @@
+# Pages CMS (https://pagescms.org): browser editor for publications, talks, projects and team members.
+# Editors sign in at https://app.pagescms.org; every save is a commit to this repo,
+# and the deploy workflow rebuilds the static site. See docs/editing.md.
+
+media:
+  - name: avatars
+    label: Member photos
+    input: assets/media/authors
+    output: media/authors
+    categories: [image]
+  - name: member-media
+    label: Talk and project images
+    input: assets/media/members
+    output: media/members
+    categories: [image]
+  - name: work-files
+    label: Talk and project files (slides, PDFs, images in text)
+    input: static/uploads/works
+    output: /uploads/works
+  - name: papers
+    label: Paper files
+    input: static/uploads/publications
+    output: /uploads/publications
+
+settings:
+  commit:
+    identity: user
+
+content:
+  # ─── Publications: one folder per paper, content/publications/<folder>/index.md ───
+  - name: publications
+    label: Publications / 论文
+    type: collection
+    path: content/publications
+    format: yaml-frontmatter
+    filename: "{year}-{primary}/index.md"
+    exclude: [_index.md, _index.zh.md]
+    view:
+      node: { filename: index.md, hideDirs: nodes }
+      primary: title
+      fields: [title, date, publication]
+      sort: [date, title]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - name: authors
+        label: Lab authors
+        description: Lab members in author order. External co-authors can be typed in the source file.
+        type: reference
+        options:
+          collection: members
+          multiple: true
+          value: "{slug}"
+          label: "{name.display}"
+          search: "name.display"
+      - { name: date, label: Publication date, type: date, required: true }
+      - name: publication_types
+        label: Type
+        type: select
+        options:
+          multiple: true
+          values:
+            - { value: article-journal, label: Journal article }
+            - { value: paper-conference, label: Conference paper }
+            - { value: chapter, label: Book chapter }
+            - { value: book, label: Book }
+            - { value: thesis, label: Thesis }
+            - { value: report, label: Report }
+            - { value: manuscript, label: Preprint / manuscript }
+            - { value: patent, label: Patent }
+      - name: publication
+        label: Venue
+        type: object
+        fields:
+          - { name: name, label: Journal / conference, type: string }
+      - name: hugoblox
+        label: Identifiers
+        type: object
+        fields:
+          - name: ids
+            label: IDs
+            type: object
+            fields:
+              - { name: doi, label: DOI (e.g. 10.1016/j.apenergy.2025.123456), type: string }
+      - name: links
+        label: Links
+        type: object
+        list: true
+        fields:
+          - name: type
+            label: Type
+            type: select
+            options:
+              values: [pdf, code, dataset, slides, video, poster, site]
+          - { name: url, label: URL, type: string }
+      - { name: summary, label: One-line summary, type: text }
+      - { name: abstract, label: Abstract, type: text }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: featured, label: Featured on homepage, type: boolean, default: false }
+      - { name: draft, label: Hide (draft), type: boolean, default: false }
+      - { name: body, label: Notes (optional), type: rich-text }
+
+  # ─── Talks: one folder per talk, content/talks/<folder>/index.md (fixed page: layouts/works/) ───
+  - name: talks
+    label: Talks / 学术报告
+    type: collection
+    path: content/talks
+    format: yaml-frontmatter
+    filename: "{year}-{primary}/index.md"
+    exclude: [_index.md, _index.zh.md]
+    view:
+      node: { filename: index.md, hideDirs: nodes }
+      primary: title
+      fields: [title, date, event]
+      sort: [date, title]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - name: authors
+        label: Speakers (lab members)
+        description: Shown on each selected member's page, in this order.
+        type: reference
+        options: { collection: members, multiple: true, value: "{slug}", label: "{name.display}", search: "name.display" }
+      - { name: date, label: Start, type: date, required: true, options: { time: true } }
+      - { name: date_end, label: End (optional), type: date, options: { time: true } }
+      - { name: event, label: Event (short name, e.g. ICAE 2026), type: string }
+      - { name: event_url, label: Event website, type: string }
+      - { name: format, label: "Format (Oral / Poster / Invited / Keynote / Seminar)", type: string }
+      - { name: location, label: Location, type: string }
+      - { name: address, label: Address (optional second line), type: string }
+      - { name: summary, label: One-line summary (list row), type: text, required: true }
+      - { name: abstract, label: Abstract, type: text }
+      - name: links
+        label: Links
+        description: Slides adds a "View the slides" note. Upload files under Media → Talk and project files, then paste the /uploads/works/... path.
+        type: object
+        list: true
+        fields:
+          - { name: type, label: Type, type: select, options: { values: [slides, video, pdf, poster, event] } }
+          - { name: url, label: URL or /uploads/works/... path, type: string }
+          - { name: label, label: Button text (optional), type: string }
+      - { name: cover, label: Cover image (16:9 photo; optional), type: image, options: { media: member-media } }
+      - { name: figure, label: Figure (e.g. first slide), type: image, options: { media: member-media } }
+      - { name: figure_caption, label: Figure caption, type: string }
+      - { name: tags, label: Topics, type: string, list: true }
+      - { name: sample, label: Sample (placeholder; shows a "Sample" label), type: boolean, default: false }
+      - { name: draft, label: Hide (draft), type: boolean, default: false }
+      - { name: body, label: More text (optional), type: rich-text, options: { media: work-files } }
+
+  # ─── Projects: one folder per project, content/projects/<folder>/index.md (fixed page: layouts/works/) ───
+  - name: projects
+    label: Projects / 项目与成果
+    type: collection
+    path: content/projects
+    format: yaml-frontmatter
+    filename: "{year}-{primary}/index.md"
+    exclude: [_index.md, _index.zh.md]
+    view:
+      node: { filename: index.md, hideDirs: nodes }
+      primary: title
+      fields: [title, date, tag]
+      sort: [date, title]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - name: authors
+        label: Lab members
+        description: Shown on each selected member's page, in this order.
+        type: reference
+        options: { collection: members, multiple: true, value: "{slug}", label: "{name.display}", search: "name.display" }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: tag, label: "Kind (Model / Dataset / Code / Platform ...)", type: string }
+      - { name: summary, label: One-line summary (card and first paragraph), type: text, required: true }
+      - { name: cover, label: Cover image (16:9), type: image, options: { media: member-media } }
+      - name: links
+        label: Links
+        type: object
+        list: true
+        fields:
+          - { name: type, label: Type, type: select, options: { values: [site, paper, code, dataset, slides, video, pdf] } }
+          - { name: url, label: URL or /uploads/works/... path, type: string }
+          - { name: label, label: Button text (optional), type: string }
+      - { name: tags, label: Topics, type: string, list: true }
+      - { name: sample, label: Sample (placeholder; shows a "Sample" label), type: boolean, default: false }
+      - { name: draft, label: Hide (draft), type: boolean, default: false }
+      - name: body
+        label: Page text
+        description: 'Each "Heading 2" becomes an entry in the "On this page" list. Start from the suggested sections and delete what you do not need.'
+        type: rich-text
+        options: { media: work-files }
+        default: "## Overview\n\n## Method\n\n## Data and code\n\n## Research uses\n"
+
+  # ─── Team: one YAML file per person, data/authors/<slug>.yaml (English) ───
+  - name: members
+    label: Team members / 团队
+    type: collection
+    path: data/authors
+    format: yaml
+    filename: "{slug}.yaml"
+    view:
+      primary: name.display
+      fields: [name.display, role, user_groups]
+      sort: [weight]
+      default: { sort: weight, order: asc }
+    fields:
+      - name: slug
+        label: Slug (URL id, e.g. chen-xiaoming)
+        description: Lowercase family-given name. Do not change after creation; papers link to it.
+        type: string
+        required: true
+        pattern: { regex: "^[a-z0-9-]+$", message: "Lowercase letters, digits and dashes only" }
+      - { name: schema, type: string, hidden: true, default: hugoblox/author/v1 }
+      - name: name
+        label: Name
+        type: object
+        fields:
+          - { name: display, label: Display name (e.g. CHEN Xiaoming), type: string, required: true }
+          - { name: given, label: Given name, type: string }
+          - { name: family, label: Family name, type: string }
+          - { name: alternate, label: Chinese name, type: string }
+      - name: avatar
+        label: Photo (square)
+        type: image
+        options: { media: avatars }
+      - name: user_groups
+        label: Group
+        type: select
+        options:
+          multiple: true
+          values: [Principal Investigator, Postdoctoral Fellows, PhD Students, MPhil Students, Research Assistants, Affiliated Members, Alumni]
+      - { name: role, label: Role (e.g. PhD Student (Year 2)), type: string }
+      - { name: weight, label: Order on team page (smaller first), type: number }
+      - { name: joined, label: Joined the lab, type: date }
+      - { name: interests, label: Research interests, type: string, list: true }
+      - { name: bio, label: Bio, type: text }
+      - name: links
+        label: Links
+        type: object
+        list: true
+        fields:
+          - name: icon
+            label: Icon
+            type: select
+            options:
+              values:
+                - { value: at-symbol, label: E-mail }
+                - { value: academicons/google-scholar, label: Google Scholar }
+                - { value: academicons/orcid, label: ORCID }
+                - { value: academicons/researchgate, label: ResearchGate }
+                - { value: brands/github, label: GitHub }
+                - { value: brands/linkedin, label: LinkedIn }
+                - { value: globe-alt, label: Website }
+          - { name: url, label: URL (mailto:… for e-mail), type: string }
+          - { name: label, label: Label, type: string }
+      - name: education
+        label: Education
+        type: object
+        list: true
+        fields:
+          - { name: degree, label: Degree, type: string }
+          - { name: institution, label: Institution, type: string }
+          - { name: start, label: Start, type: date }
+          - { name: end, label: End (leave empty if ongoing), type: date }
+          - { name: summary, label: Notes (lab / advisor / major courses), type: text }
+      - name: affiliations
+        label: Affiliation (shown under the role; defaults to EIES-Lab · PolyU)
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Name, type: string }
+          - { name: url, label: URL, type: string }
+      - name: awards
+        label: Awards
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Award, type: string }
+          - { name: awarder, label: Awarded by, type: string }
+          - { name: date, label: Date, type: date }
+          - { name: summary, label: Note, type: text }
+      - name: skills
+        label: Skills & hobbies (groups, e.g. Technical Skills / Hobbies)
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Group name, type: string }
+          - name: items
+            label: Items
+            type: object
+            list: true
+            fields:
+              - { name: name, label: Item, type: string }
+  # ─── Team, Chinese overrides: data/zh/authors/<slug>.yaml (same file name as English) ───
+  - name: members-zh
+    label: 团队（中文信息）
+    description: 只填需要中文显示的字段，留空的会沿用英文。文件名必须与英文成员的 slug 相同。
+    type: collection
+    path: data/zh/authors
+    format: yaml
+    filename: "{slug}.yaml"
+    view:
+      primary: name.display
+      fields: [name.display, role]
+    fields:
+      - { name: slug, label: Slug（与英文相同）, type: string, required: true }
+      - name: name
+        label: 姓名
+        type: object
+        fields:
+          - { name: display, label: 显示名称, type: string }
+      - name: user_groups
+        label: 分组
+        type: select
+        options:
+          multiple: true
+          values: [课题组负责人, 博士后, 博士生, 硕士研究生（MPhil）, 研究助理, 编外成员, 已毕业]
+      - { name: role, label: 职位, type: string }
+      - { name: interests, label: 研究兴趣, type: string, list: true }
+      - { name: bio, label: 简介, type: text }

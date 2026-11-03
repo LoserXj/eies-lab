@@ -1,0 +1,12 @@
+{{/* Generated paper cover: venue badge, title and keywords on a panel, with the paper's figure as a sheet behind it.
+     Sizes are in container units, so the same markup works as a card thumbnail and as a page hero. Input: dict paper. */}}
+{{ $paper := .paper }}
+{{ $short := partial "member/venue" $paper | plainify | replaceRE `,.*$` "" }}
+<div class="mp-cover" aria-hidden="true">
+  <div class="mp-cover-sheet">{{ partial "member/figure" (dict "paper" $paper) }}</div>
+  <div class="mp-cover-panel">
+    <p class="mp-cover-badge">{{ with $short }}{{ . }} | {{ end }}{{ $paper.Date.Format "2006" }}</p>
+    <p class="mp-cover-title">{{ $paper.Title }}</p>
+    {{ with $paper.Params.tags }}<p class="mp-cover-keys">{{ range first 3 . }}<span>{{ . }}</span>{{ end }}</p>{{ end }}
+  </div>
+</div>

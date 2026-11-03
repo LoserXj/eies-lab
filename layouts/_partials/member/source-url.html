@@ -1,0 +1,17 @@
+{{/* Resolve copied publication links against their original Page and resources.
+     Anchors and query-only links still refer to the displayed member article. */}}
+{{- $paper := .page -}}
+{{- $url := .url -}}
+{{- $parsed := urls.Parse $url -}}
+{{- if and (not $parsed.IsAbs) (not $parsed.Host) (not (hasPrefix $url "/")) $parsed.Path -}}
+  {{- $resourcePath := path.Clean (urls.PathUnescape $parsed.Path) -}}
+  {{- with $paper.Resources.Get $resourcePath -}}
+    {{- $url = .RelPermalink -}}
+    {{- if $parsed.RawQuery }}{{ $url = printf "%s?%s" $url $parsed.RawQuery }}{{ end -}}
+    {{- if $parsed.Fragment }}{{ $url = printf "%s#%s" $url $parsed.EscapedFragment }}{{ end -}}
+  {{- else -}}
+    {{- $base := urls.Parse $paper.RelPermalink -}}
+    {{- $url = ($base.ResolveReference $parsed).String -}}
+  {{- end -}}
+{{- end -}}
+{{- return $url -}}

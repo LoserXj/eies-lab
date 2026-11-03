@@ -1,0 +1,26 @@
+{{/* All talks (dated rows) or all projects (cards), newest first. Same rows and cards as the member pages. */}}
+{{ define "main" }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $talk := eq .Section "talks" }}
+<section id="member-{{ .Section }}" class="hbb-section">
+<div class="mp-shell">
+  <header class="pl-head">
+    <h1>{{ .Title }}</h1>
+    {{ with .Content }}<div class="pl-lead">{{ . }}</div>{{ end }}
+  </header>
+  {{ $pages := .Pages.ByDate.Reverse }}
+  {{ if not $pages }}<p class="mp-empty">{{ cond $zh "暂无内容。" "Nothing here yet." }}</p>
+  {{ else if $talk }}
+  <ol class="mp-talks mp-works-list">
+    {{ range $pages }}<li><a class="mp-talk" href="{{ .RelPermalink }}">{{ partial "member/talk-row" (dict "item" (partial "member/work-item" .) "d" .Date "url" .RelPermalink "zh" $zh "sample" (cond $zh "示例" "Sample")) }}</a></li>{{ end }}
+  </ol>
+  {{ else }}
+  <div class="mp-card-grid mp-works-list">
+    {{ range $pages }}{{ $img := false }}{{ with .Params.cover }}{{ $img = resources.Get (strings.TrimPrefix "/" .) }}{{ end }}
+    <article class="mp-card"><a class="mp-card-link" href="{{ .RelPermalink }}">{{ partial "member/work-card" (dict "item" (partial "member/work-item" .) "img" $img "kind" "projects" "zh" $zh) }}</a></article>
+    {{ end }}
+  </div>
+  {{ end }}
+</div>
+</section>
+{{ end }}

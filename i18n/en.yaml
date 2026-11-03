@@ -1,0 +1,7 @@
+# Status badges on research / Spaces cards (layouts/_partials/hbx/blocks/focus-areas/block.html)
+- id: status_active
+  translation: Active
+- id: status_emerging
+  translation: Emerging
+- id: status_planning
+  translation: Planning

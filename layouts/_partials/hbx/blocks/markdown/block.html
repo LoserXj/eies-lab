@@ -1,0 +1,32 @@
+{{/* LOCAL OVERRIDE of Hugo Blox markdown block: wide, left-aligned editorial layout instead of a centred prose column.
+     content: eyebrow, title, subtitle, text, image (path under assets/media/, shown below the text)
+     design.layout: "split" (heading left, text right) | "wide" (default, heading above text) */}}
+{{ $page := .wcPage }}
+{{ $block := .wcBlock }}
+{{ $content := $block.content }}
+{{ if not (reflect.IsMap $content) }}{{ $content = dict }}{{ end }}
+{{ $design := $block.design }}
+{{ if not (reflect.IsMap $design) }}{{ $design = dict }}{{ end }}
+{{ $title := "" }}
+{{ with index $content "title" }}{{ $title = printf "%v" . | emojify | $page.RenderString }}{{ end }}
+{{ $subtitle := "" }}
+{{ with index $content "subtitle" }}{{ $subtitle = printf "%v" . | emojify | $page.RenderString }}{{ end }}
+{{ $eyebrow := index $content "eyebrow" | default "" }}
+{{ $text := "" }}
+{{ with index $content "text" }}{{ $text = printf "%v" . | emojify | $page.RenderString | safeHTML }}{{ end }}
+{{ $split := eq (index $design "layout") "split" }}
+
+<div class="md-block max-w-6xl mx-auto px-6 {{ if $split }}md-split{{ end }}">
+  {{ if or $title $eyebrow $subtitle }}
+  <header class="md-head">
+    {{ with $eyebrow }}<p class="md-eyebrow">{{ . }}</p>{{ end }}
+    {{ with $title }}<h2 class="md-title">{{ . }}</h2>{{ end }}
+    {{ with $subtitle }}<p class="md-subtitle">{{ . }}</p>{{ end }}
+  </header>
+  {{ end }}
+  {{ $img := "" }}{{ with index $content "image" }}{{ $img = resources.Get (printf "media/%s" .) }}{{ end }}
+  {{ if or $text $img }}<div class="md-main">
+    {{ with $text }}<div class="md-body prose prose-slate lg:prose-lg dark:prose-invert">{{ . }}</div>{{ end }}
+    {{ with $img }}{{ $r := .Resize "1600x webp q82" }}<figure class="md-figure"><img src="{{ $r.RelPermalink }}" alt="{{ index $content "image_alt" | default "" }}" width="{{ $r.Width }}" height="{{ $r.Height }}" loading="lazy"></figure>{{ end }}
+  </div>{{ end }}
+</div>

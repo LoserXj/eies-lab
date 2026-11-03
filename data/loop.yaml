@@ -1,0 +1,75 @@
+# The lab's closed loop, in order. Single source for the loop diagram (layouts/_partials/hbx/blocks/loop-diagram)
+# and project loop tags. Content follows the framework figure "Energy Embodied Intelligence as a Model-Based RL
+# Framework" (static/media/eies-framework.jpg), without its RL mapping table and reward labels.
+# Feedback flows from the energy system back to the agent.
+system: { en: Energy system, zh: 物理能源环境 }
+# Elements of the physical energy environment, drawn as icons in the diagram (icon = shape key in the template).
+system_items:
+  - { icon: sun, en: Solar radiation, zh: 太阳辐射 }
+  - { icon: city, en: 3D city, zh: 三维城市 }
+  - { icon: pv, en: PV, zh: 光伏 }
+  - { icon: storage, en: Storage, zh: 储能 }
+  - { icon: load, en: Building loads, zh: 建筑负荷 }
+  - { icon: grid, en: Grid, zh: 电网 }
+agent: { en: Embodied agent, zh: 具身智能体 }
+# Homepage scene (loop-diagram block): the worked example and the note under the figure.
+example: { en: 'A teaching building · clouds tomorrow afternoon', zh: 一栋教学楼 · 明天下午有云 }
+example_label: { en: e.g., zh: 例 }
+note: { en: Illustrative values, zh: 数值为示意 }
+observe: { en: observations, zh: 观测 / 实时数据 }
+rollout: { en: rollout, zh: 想象推演 }
+steps:
+  - key: perceive
+    plain: { en: See, zh: 看见 }
+    en: Perception
+    zh: 感知
+    sub: { en: State estimation, zh: 状态估计 }
+    desc:
+      en: Estimate the state of the energy system from incomplete, noisy observations.
+      zh: 从不完整、有噪声的观测中估计能源系统的状态。
+    items:
+      en: [Multi-source observations, Partial observability, State estimation & uncertainty]
+      zh: [多源观测处理, 部分可观测环境, 状态估计与不确定性]
+  - key: model
+    plain: { en: Predict, zh: 预判 }
+    en: World model
+    zh: 世界模型
+    sub: { en: Internal model, zh: 环境的内部模型 }
+    desc:
+      en: Not just a predictor — the agent's internal model of how the environment evolves and what its actions will cause.
+      zh: 不是单纯的预测器，而是智能体对环境演化规律与行动后果的内部模型。
+    items:
+      en: [State representation, Dynamics & transition, Observation model, Physics & safety constraints, Action-consequence prediction]
+      zh: [状态表征, 状态转移与系统动力学, 观测模型, 物理规律与安全约束, 行动后果预测]
+  - key: decide
+    plain: { en: Decide, zh: 决定 }
+    en: Decision
+    zh: 决策
+    sub: { en: Policy & planning, zh: 策略与规划 }
+    desc:
+      en: Plan and decide by imagining outcomes in the world model before acting.
+      zh: 在世界模型中想象推演行动后果，再进行规划与决策。
+    items:
+      en: [Planning & control, Safe decisions, 'Objectives: revenue, cost, resilience']
+      zh: [规划与控制, 安全决策, 目标优化（收益 / 成本 / 韧性）]
+  - key: act
+    plain: { en: Act, zh: 动手 }
+    chips: { en: [Charge, Pre-cool, Inspect], zh: [充电, 预冷, 巡检] }
+    en: Physical action
+    zh: 物理行动
+    desc:
+      en: Act on the physical energy system.
+      zh: 在物理能源系统中执行行动。
+    items:
+      en: [Active observation, Device control, Energy dispatch, Robot operation]
+      zh: [主动观测, 设备控制, 能量调度, 机器人操作]
+  - key: feedback
+    plain: { en: Check, zh: 检验 }
+    en: Feedback
+    zh: 反馈
+    desc:
+      en: The physical response is observed again and continually updates the world model and the policy.
+      zh: 执行后的物理响应反馈到感知系统，并持续更新世界模型与决策策略。
+    items:
+      en: [Physical response, World-model update, Policy update]
+      zh: [物理响应, 世界模型更新, 策略更新]

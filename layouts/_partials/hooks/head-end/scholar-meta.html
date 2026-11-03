@@ -1,0 +1,10 @@
+{{/* Google Scholar (Highwire Press) tags on publication pages, so papers can be indexed by Google Scholar. */}}
+{{ if and (eq .Section "publications") .IsPage }}
+<meta name="citation_title" content="{{ .Title }}">
+{{ range .Params.authors }}{{ $p := partial "functions/get_author_profile" . }}<meta name="citation_author" content="{{ $p.title }}">
+{{ end }}<meta name="citation_publication_date" content="{{ .Date.Format "2006/01/02" }}">
+{{ $type := index (.Params.publication_types | default (slice "article-journal")) 0 }}
+{{ with partial "member/venue" . }}{{ if eq $type "paper-conference" }}<meta name="citation_conference_title" content="{{ . | plainify }}">{{ else }}<meta name="citation_journal_title" content="{{ . | plainify }}">{{ end }}{{ end }}
+{{ with .Params.hugoblox }}{{ with .ids }}{{ with .doi }}<meta name="citation_doi" content="{{ . }}">{{ end }}{{ end }}{{ end }}
+{{ range .Params.links }}{{ if and (eq .type "pdf") .url }}<meta name="citation_pdf_url" content="{{ .url | absURL }}">{{ end }}{{ end }}
+{{ end }}

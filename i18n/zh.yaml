@@ -1,0 +1,7 @@
+# Status badges on research / Spaces cards (layouts/_partials/hbx/blocks/focus-areas/block.html)
+- id: status_active
+  translation: 进行中
+- id: status_emerging
+  translation: 起步中
+- id: status_planning
+  translation: 规划中

@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: zhou-dawei
+weight: 24
+user_groups: [Research Assistants]
+name:
+  display: ZHOU Dawei
+  given: Dawei
+  family: ZHOU
+  alternate: ''  # TODO: Chinese name
+role: Research Assistant
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Physics-grounded world models
+  - Building & storage dynamics
+# TODO: bio, education, links, avatar (assets/media/authors/zhou-dawei.jpg)

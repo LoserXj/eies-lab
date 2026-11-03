@@ -1,0 +1,19 @@
+{
+  "name": "scenes",
+  "version": "1.0.0",
+  "private": true,
+  "description": "EIES-Lab 3D scenes (homepage background): one core, multiple places and research themes",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview"
+  },
+  "dependencies": {
+    "3d-tiles-renderer": "^0.5.3",
+    "three": "^0.180.0"
+  },
+  "devDependencies": {
+    "vite": "^6.3.5"
+  }
+}

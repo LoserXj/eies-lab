@@ -1,0 +1,2 @@
+{{- $zh := eq site.Language.Lang "zh" -}}
+{{- return (index (cond $zh (dict "first" "第一作者" "co-first" "共同第一作者" "corresponding" "通讯作者") (dict "first" "First author" "co-first" "Co-first author" "corresponding" "Corresponding author")) . | default "") -}}

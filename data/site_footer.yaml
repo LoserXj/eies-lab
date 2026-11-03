@@ -1,0 +1,34 @@
+# Footer content per language (layouts/_partials/site_footer.html). Address matches content/contact/_index*.md.
+en:
+  name: EIES-Lab
+  tagline: Embodied intelligence for renewable and interconnected urban energy systems.
+  address_title: Visit
+  address:
+    - Room ZS831, Block Z
+    - Department of Building Environment and Energy Engineering
+    - The Hong Kong Polytechnic University
+    - Hung Hom, Kowloon, Hong Kong
+  links_title: Explore
+  links:
+    - { text: Research, url: /research/ }
+    - { text: Publications, url: /publications/ }
+    - { text: Team, url: /team/ }
+    - { text: News, url: /news/ }
+    - { text: Contact, url: /contact/ }
+  org: PolyU · Department of Building Environment and Energy Engineering (BEEE)
+zh:
+  name: EIES-Lab
+  tagline: 面向可再生与互联城市能源系统的具身智能研究。
+  address_title: 地址
+  address:
+    - Z 座 ZS831 室
+    - 香港理工大学 建筑环境及能源工程学系
+    - 香港九龙红磡
+  links_title: 导航
+  links:
+    - { text: 研究方向, url: /zh/research/ }
+    - { text: 论文, url: /zh/publications/ }
+    - { text: 团队, url: /zh/team/ }
+    - { text: 新闻, url: /zh/news/ }
+    - { text: 联系我们, url: /zh/contact/ }
+  org: 香港理工大学 · 建筑环境及能源工程学系（BEEE）

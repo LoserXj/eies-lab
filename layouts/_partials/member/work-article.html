@@ -1,0 +1,124 @@
+{{/* Fixed reading layout for one talk or project (content/talks/<folder>/index.md, content/projects/<folder>/index.md),
+     after the paper page. Input: the Page.
+     Talk:    Abstract / Date / Event / Location / Format beside their labels, a note pointing at the slides, the body,
+              a figure (e.g. the slide cover).
+     Project: the summary as a lead paragraph and the body, whose "## Heading" sections feed an "On this page" list.
+     Both:    breadcrumb, byline, link buttons, cover image (or a generated cover), topics + share, author cards.
+     Front matter: see archetypes/talks.md and archetypes/projects.md (the same fields as the Pages CMS forms). */}}
+{{ $p := . }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $talk := eq $p.Section "talks" }}
+{{ $fmt := cond $zh "2006年1月2日" "Jan 2, 2006" }}
+{{ $d := $p.Date }}
+{{ $when := $d.Format $fmt }}{{ if or $d.Hour $d.Minute }}{{ $when = printf "%s %s" $when ($d.Format "15:04") }}{{ end }}
+{{ with $p.Params.date_end }}{{ $e := time.AsTime . }}{{ $end := $e.Format "15:04" }}{{ if ne ($e.Format "2006-01-02") ($d.Format "2006-01-02") }}{{ $end = $e.Format $fmt }}{{ if or $e.Hour $e.Minute }}{{ $end = printf "%s %s" $end ($e.Format "15:04") }}{{ end }}{{ end }}{{ $when = printf "%s — %s" $when $end }}{{ end }}
+{{ $people := slice }}{{ range $p.Params.authors }}{{ $people = $people | append (partial "functions/get_author_profile" .) }}{{ end }}
+{{ $lead := index $people 0 }}
+{{ $kindLabel := cond $talk (cond $zh "学术报告" "Talks") (cond $zh "项目与成果" "Projects") }}
+{{/* link buttons, in this order; a path without http(s) is a file under assets/ or static/ */}}
+{{ $kinds := dict
+  "slides" (slice "演示文稿" "Slides" "hero/presentation-chart-bar") "video" (slice "视频" "Video" "hero/play-circle")
+  "pdf" (slice "PDF" "PDF" "hero/document-text") "poster" (slice "海报" "Poster" "hero/photo")
+  "event" (slice "活动页面" "Event page" "hero/arrow-top-right-on-square") "site" (slice "项目主页" "Website" "hero/globe-alt")
+  "paper" (slice "论文" "Paper" "hero/document-text") "code" (slice "代码" "Code" "hero/code-bracket")
+  "dataset" (slice "数据" "Data" "hero/circle-stack") }}
+{{ $links := slice }}
+{{ range $l := $p.Params.links }}{{ $k := index $kinds ($l.type | default "") | default (slice "链接" "Link" "hero/link") }}
+  {{ $u := $l.url | default "" }}{{ if and $u (not (or (hasPrefix $u "http") (hasPrefix $u "/") (hasPrefix $u "#") (hasPrefix $u "mailto:"))) }}{{ with resources.Get $u }}{{ $u = .RelPermalink }}{{ end }}{{ end }}
+  {{ if $u }}{{ $links = $links | append (dict "url" $u "label" ($l.label | default (cond $zh (index $k 0) (index $k 1))) "icon" (index $k 2)) }}{{ end }}
+{{ end }}
+{{ $hasSlides := false }}{{ range $p.Params.links }}{{ if and (eq .type "slides") .url }}{{ $hasSlides = true }}{{ end }}{{ end }}
+{{ $cover := false }}{{ with $p.Params.cover }}{{ $cover = resources.Get (strings.TrimPrefix "/" .) }}{{ end }}
+{{ $figure := false }}{{ with $p.Params.figure }}{{ $figure = resources.Get (strings.TrimPrefix "/" .) }}{{ end }}
+{{ $toc := slice }}{{ if not $talk }}{{ range findRESubmatch `<h2 id="([^"]+)"[^>]*>([\s\S]*?)</h2>` $p.Content }}{{ $toc = $toc | append (dict "id" (index . 1) "text" (index . 2 | plainify)) }}{{ end }}{{ end }}
+
+<div class="mp-work-layout{{ if $toc }} has-toc{{ end }}">
+<article class="mp-reading">
+  <nav class="mp-crumbs" aria-label="{{ cond $zh "位置" "Breadcrumb" }}">
+    {{ if and $lead $lead.role }}<a href="{{ printf "team/%s/" $lead.slug | relLangURL }}">{{ $lead.title }}</a><span aria-hidden="true">›</span>{{ end }}
+    <a href="{{ $p.Parent.RelPermalink }}">{{ $kindLabel }}</a>
+  </nav>
+  <h1>{{ $p.Title }}</h1>
+  <p class="mp-paper-byline">
+    <time datetime="{{ $d.Format "2006-01-02" }}">{{ $d.Format $fmt }}</time>
+    {{ with $people }}<span aria-hidden="true">·</span><span class="pd-authors">{{ range $i, $a := . }}{{ if $i }}, {{ end }}{{ if $a.role }}<a href="{{ printf "team/%s/" $a.slug | relLangURL }}">{{ $a.title }}</a>{{ else }}{{ $a.title }}{{ end }}{{ end }}</span>{{ end }}
+    {{ if not $talk }}{{ $min := math.Max 1 (math.Ceil (div (float (countwords (plainify (printf "%s %s" ($p.Params.summary | default "") $p.Content)))) 220)) }}<span aria-hidden="true">·</span><span>{{ if $zh }}阅读约 {{ $min }} 分钟{{ else }}{{ $min }} min read{{ end }}</span>{{ end }}
+    {{ if $p.Params.sample }}<span class="mp-sample">{{ cond $zh "示例" "Sample" }}</span>{{ end }}
+  </p>
+  {{ with $links }}
+  <div class="mp-paper-actions">
+    {{ range . }}<a class="mp-action" href="{{ .url | safeURL }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ partial "functions/get_icon" (dict "name" .icon "attributes" "class=\"mp-action-icon\" aria-hidden=\"true\"") }}{{ .label }}</a>{{ end }}
+  </div>
+  {{ end }}
+
+  {{ with $cover }}{{ $r := .Fit "1600x1600 webp q82" }}
+  <figure class="mp-work-hero"><img src="{{ $r.RelPermalink }}" alt="{{ $p.Params.cover_alt | default $p.Title }}" width="{{ $r.Width }}" height="{{ $r.Height }}"></figure>
+  {{ else }}
+  <figure class="mp-detail-cover">
+    <div class="mp-cover" aria-hidden="true">
+      <div class="mp-cover-sheet">{{ with $figure }}{{ $r := .Fit "1200x1200 webp q80" }}<img src="{{ $r.RelPermalink }}" alt="" width="{{ $r.Width }}" height="{{ $r.Height }}">{{ else }}<div class="mp-figure-placeholder">{{ partial "functions/get_icon" (dict "name" (cond $talk "hero/presentation-chart-bar" "hero/cube-transparent") "attributes" "class=\"mp-figure-icon\"") }}</div>{{ end }}</div>
+      <div class="mp-cover-panel">
+        <p class="mp-cover-badge">{{ with $p.Params.event | default $p.Params.tag }}{{ . }} | {{ end }}{{ $d.Format "2006" }}</p>
+        <p class="mp-cover-title">{{ $p.Title }}</p>
+        {{ with $p.Params.tags }}<p class="mp-cover-keys">{{ range first 3 . }}<span>{{ . }}</span>{{ end }}</p>{{ end }}
+      </div>
+    </div>
+  </figure>
+  {{ end }}
+
+  {{ if $talk }}
+  <dl class="mp-paper-facts">
+    <div class="mp-fact-abstract">
+      <dt>{{ if $p.Params.abstract }}{{ cond $zh "摘要" "Abstract" }}{{ else }}{{ cond $zh "概要" "Summary" }}{{ end }}</dt>
+      <dd class="mp-body">{{ $p.RenderString (dict "display" "block") ($p.Params.abstract | default $p.Params.summary | default (cond $zh "摘要待补充。" "Abstract to come.")) }}</dd>
+    </div>
+    <div><dt>{{ cond $zh "日期" "Date" }}</dt><dd>{{ $when }}</dd></div>
+    {{ with $p.Params.event }}<div><dt>{{ cond $zh "活动" "Event" }}</dt><dd>{{ with $p.Params.event_url }}<a href="{{ . | safeURL }}" target="_blank" rel="noopener noreferrer">{{ $p.Params.event }}</a>{{ else }}{{ . }}{{ end }}</dd></div>{{ end }}
+    {{ with $p.Params.location }}<div><dt>{{ cond $zh "地点" "Location" }}</dt><dd>{{ . }}{{ with $p.Params.address }}<br>{{ . }}{{ end }}</dd></div>{{ end }}
+    {{ with $p.Params.format }}<div><dt>{{ cond $zh "形式" "Format" }}</dt><dd>{{ . }}</dd></div>{{ end }}
+  </dl>
+  {{ if $hasSlides }}<p class="mp-tip">{{ partial "functions/get_icon" (dict "name" "hero/information-circle" "attributes" "class=\"mp-tip-icon\" aria-hidden=\"true\"") }}<span>{{ if $zh }}点击上方 <b>演示文稿</b> 按钮查看报告内容。{{ else }}Use the <b>Slides</b> button above to view the talk.{{ end }}</span></p>{{ end }}
+  {{ else }}
+  {{ with $p.Params.summary }}<p class="mp-lead">{{ . }}</p>{{ end }}
+  {{ end }}
+
+  {{ with $p.Content }}<div class="mp-article-content mp-body">{{ . }}</div>{{ end }}
+
+  {{ with and $cover $figure }}{{ $r := .Fit "1600x1600 webp q82" }}
+  <figure class="mp-detail-figure">
+    <img src="{{ $r.RelPermalink }}" alt="{{ $p.Params.figure_caption | default $p.Title | plainify }}" width="{{ $r.Width }}" height="{{ $r.Height }}" loading="lazy">
+    <figcaption>{{ with $p.Params.figure_caption }}{{ . | markdownify }}{{ else }}{{ cond $talk (cond $zh "报告封面。" "Slide cover.") $p.Title }}{{ end }}</figcaption>
+  </figure>
+  {{ end }}
+
+  <footer class="mp-paper-foot">
+    {{ with $p.Params.tags }}<ul class="mp-topics" aria-label="{{ cond $zh "研究主题" "Topics" }}">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+    {{ partial "member/share" (dict "url" $p.Permalink "title" $p.Title) }}
+  </footer>
+
+  {{ range $people }}{{ if .role }}{{ $u := printf "team/%s/" .slug | relLangURL }}
+  <section class="mp-author-card" aria-label="{{ cond $zh "作者" "Author" }}">
+    <a class="mp-author-avatar" href="{{ $u }}" tabindex="-1" aria-hidden="true">{{ with .avatar }}{{ $a := (.Filter images.AutoOrient).Fill "192x192 Center q85" }}<img src="{{ $a.RelPermalink }}" alt="" width="96" height="96" loading="lazy">{{ else }}<span>{{ upper (substr .title 0 1) }}</span>{{ end }}</a>
+    <div>
+      <p class="mp-author-kicker">{{ cond $zh "作者" "Author" }}</p>
+      <a class="mp-author-name" href="{{ $u }}">{{ .title }}</a>
+      {{ with .role }}<p class="mp-author-role">{{ . }}</p>{{ end }}
+    </div>
+  </section>
+  {{ end }}{{ end }}
+</article>
+
+{{ with $toc }}
+<aside class="mp-toc" aria-label="{{ cond $zh "本页目录" "On this page" }}">
+  <p>{{ cond $zh "本页目录" "On this page" }}</p>
+  <ol>{{ range . }}<li><a href="#{{ .id }}">{{ .text }}</a></li>{{ end }}</ol>
+</aside>
+<script>
+(function () {
+  var links = [].slice.call(document.querySelectorAll('.mp-toc a')), heads = links.map(function (a) { return document.getElementById(a.hash.slice(1)); });
+  function mark() { var cur = 0; heads.forEach(function (h, i) { if (h && h.getBoundingClientRect().top < 140) cur = i; }); links.forEach(function (a, i) { a.classList.toggle('is-active', i === cur); }); }
+  addEventListener('scroll', mark, { passive: true }); mark();
+})();
+</script>
+{{ end }}
+</div>

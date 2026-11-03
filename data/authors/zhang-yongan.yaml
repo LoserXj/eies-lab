@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: zhang-yongan
+weight: 14
+user_groups: [PhD Students]
+name:
+  display: ZHANG Yongan
+  given: Yongan
+  family: ZHANG
+  alternate: ''  # TODO: Chinese name
+role: PhD Student (Year 3)
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Energy-system perception
+  - Observability & state estimation
+# TODO: bio, education, links, avatar (assets/media/authors/zhang-yongan.jpg)

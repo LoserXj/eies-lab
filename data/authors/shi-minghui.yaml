@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: shi-minghui
+weight: 25
+user_groups: [Research Assistants]
+name:
+  display: SHI Minghui
+  given: Minghui
+  family: SHI
+  alternate: ''  # TODO: Chinese name
+role: Research Assistant
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Embodied decision & control
+  - Electric mobility & charging
+# TODO: bio, education, links, avatar (assets/media/authors/shi-minghui.jpg)

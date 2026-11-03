@@ -1,0 +1,2 @@
+{{ $member := .member }}
+{{ range $i, $author := .paper.Params.authors }}{{ if $i }}, {{ end }}{{ $person := partial "functions/get_author_profile" $author }}{{ if eq (urlize $author) $member }}<strong>{{ $person.title }}</strong>{{ else }}{{ $person.title }}{{ end }}{{ end }}

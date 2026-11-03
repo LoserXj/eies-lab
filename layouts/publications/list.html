@@ -1,0 +1,72 @@
+{{/* Publications index: year-grouped rows with type filter and search (DESIGN.md list style). */}}
+{{ define "main" }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $papers := .Pages.ByDate.Reverse }}
+{{ $types := slice }}
+{{ range $papers }}{{ $t := index (.Params.publication_types | default (slice "article-journal")) 0 }}{{ if not (in $types $t) }}{{ $types = $types | append $t }}{{ end }}{{ end }}
+<div class="pl-shell">
+  <header class="pl-head">
+    <h1>{{ .Title }}</h1>
+    <p class="pl-lead">{{ if $zh }}课题组成员发表的论文，共 {{ len $papers }} 篇。成员姓名加粗。{{ else }}{{ len $papers }} papers by lab members. Lab members are shown in bold.{{ end }}</p>
+    {{ with .Content }}<div class="pl-intro">{{ . }}</div>{{ end }}
+  </header>
+
+  {{ if $papers }}
+  <div class="pl-tools" data-pl-tools hidden>
+    <div class="pl-filters" role="group" aria-label="{{ cond $zh "按类型筛选" "Filter by type" }}">
+      <button type="button" class="pl-chip" aria-pressed="true" data-type="">{{ cond $zh "全部" "All" }}</button>
+      {{ range $types }}{{ $label := partial "member/type" (dict "Params" (dict "publication_types" (slice .))) }}<button type="button" class="pl-chip" aria-pressed="false" data-type="{{ . }}">{{ $label }}</button>{{ end }}
+    </div>
+    <input class="pl-search" type="search" placeholder="{{ cond $zh "搜索标题、作者、期刊" "Search title, author, venue" }}" aria-label="{{ cond $zh "搜索论文" "Search publications" }}">
+  </div>
+
+  {{ range $papers.GroupByDate "2006" }}
+  <section class="pl-year" data-pl-year>
+    <h2>{{ .Key }}</h2>
+    <div class="pl-rows">
+      {{ range .Pages }}
+        {{ $type := index (.Params.publication_types | default (slice "article-journal")) 0 }}
+        {{ $venue := partial "member/venue" . }}
+        <article class="pl-row" data-type="{{ $type }}">
+          <h3><a href="{{ .RelPermalink }}">{{ .Title }}</a></h3>
+          <p class="pl-authors">
+            {{- range $i, $a := .Params.authors }}{{ if $i }}, {{ end }}{{ $p := partial "functions/get_author_profile" $a }}{{ if $p.role }}<a href="{{ printf "team/%s/" $p.slug | relLangURL }}">{{ $p.title }}</a>{{ else }}{{ $p.title }}{{ end }}{{ end -}}
+          </p>
+          <p class="pl-meta">{{ with $venue }}<em>{{ . | plainify }}</em> · {{ end }}{{ partial "member/type" . }}</p>
+          {{ $links := partial "member/resource-links" (dict "page" . "context" "list") }}
+          {{ with $links }}<p class="pl-links">{{ range . }}<a href="{{ .url | safeURL }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ .label | default (i18n .labelKey) | default (upper .type) }}</a>{{ end }}</p>{{ end }}
+        </article>
+      {{ end }}
+    </div>
+  </section>
+  {{ end }}
+  <p class="pl-none" data-pl-none hidden>{{ cond $zh "没有符合条件的论文。" "No matching publications." }}</p>
+  {{ else }}
+  <p class="pl-none">{{ cond $zh "论文信息待补充。" "Publications to come." }}</p>
+  {{ end }}
+</div>
+<script>
+(function () {
+  var tools = document.querySelector('[data-pl-tools]'); if (!tools) return;
+  tools.hidden = false;
+  var type = '', q = '', chips = tools.querySelectorAll('.pl-chip'), input = tools.querySelector('.pl-search');
+  function apply() {
+    var any = false;
+    document.querySelectorAll('[data-pl-year]').forEach(function (year) {
+      var shown = 0;
+      year.querySelectorAll('.pl-row').forEach(function (row) {
+        var ok = (!type || row.dataset.type === type) && (!q || row.textContent.toLowerCase().indexOf(q) > -1);
+        row.hidden = !ok; if (ok) shown++;
+      });
+      year.hidden = !shown; if (shown) any = true;
+    });
+    document.querySelector('[data-pl-none]').hidden = any;
+  }
+  chips.forEach(function (c) { c.addEventListener('click', function () {
+    chips.forEach(function (x) { x.setAttribute('aria-pressed', x === c ? 'true' : 'false'); });
+    type = c.dataset.type; apply();
+  }); });
+  input.addEventListener('input', function () { q = input.value.trim().toLowerCase(); apply(); });
+})();
+</script>
+{{ end }}

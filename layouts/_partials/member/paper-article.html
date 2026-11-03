@@ -1,0 +1,86 @@
+{{/* Paper reading page shared by /publications/<paper>/ and /team/<member>/publications/<paper>/.
+     Input: dict paper, member (slug or ""), permalink (page URL for sharing), back (dict url label [profileUrl profileLabel]). */}}
+{{ $paper := .paper }}
+{{ $member := .member | default "" }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $venue := partial "member/venue" $paper }}
+{{ $short := $venue | plainify | replaceRE `,.*$` "" }}
+{{ $type := index ($paper.Params.publication_types | default (slice "article-journal")) 0 }}
+{{ $doi := "" }}{{ with $paper.Params.hugoblox }}{{ with .ids }}{{ $doi = .doi | default "" }}{{ end }}{{ end }}
+{{ $links := where (partial "member/resource-links" (dict "page" $paper "context" "page")) "type" "not in" (slice "cite" "bibtex") }}
+{{ $icons := dict "pdf" "hero/document-text" "code" "hero/code-bracket" "doi" "hero/link" "dataset" "hero/circle-stack" "slides" "hero/presentation-chart-bar" "video" "hero/play-circle" "project" "hero/folder" "poster" "hero/photo" }}
+
+{{/* BibTeX built from front matter */}}
+{{ $names := slice }}{{ $key := "" }}
+{{ range $i, $a := $paper.Params.authors }}{{ $p := partial "functions/get_author_profile" $a }}
+  {{/* "DONG Kechuan" (family name in capitals first) becomes "Dong, Kechuan" so BibTeX splits it correctly */}}
+  {{ $parts := split $p.title " " }}{{ $n := $p.title }}
+  {{ if and (gt (len $parts) 1) (findRE `^[A-Z]{2,}$` (index $parts 0)) }}{{ $n = printf "%s, %s" (title (lower (index $parts 0))) (delimit (after 1 $parts) " ") }}{{ end }}
+  {{ $names = $names | append $n }}
+  {{ if eq $i 0 }}{{ if $p.role }}{{ $key = index (split $p.slug "-") 0 }}{{ else }}{{ $key = index (last 1 (split $p.title " ")) 0 }}{{ end }}{{ end }}{{ end }}
+{{ $key = printf "%s%s%s" (lower ($key | default "paper")) ($paper.Date.Format "2006") (lower (index (split (replaceRE `[^A-Za-z0-9 ]` "" $paper.Title) " ") 0)) }}
+{{ $entry := cond (eq $type "paper-conference") "inproceedings" (cond (eq $type "article-journal") "article" "misc") }}
+{{ $field := cond (eq $entry "inproceedings") "booktitle" "journal" }}
+{{ $bib := printf "@%s{%s,\n  title   = {%s},\n  author  = {%s},\n  %-7s = {%s},\n  year    = {%s}" $entry $key $paper.Title (delimit $names " and ") $field $short ($paper.Date.Format "2006") }}
+{{ with $doi }}{{ $bib = printf "%s,\n  doi     = {%s}" $bib . }}{{ end }}
+{{ $bib = printf "%s\n}" $bib }}
+
+<article class="mp-reading">
+  {{ with .back }}<a class="hs-link mp-back-link" href="{{ .url }}"{{ with .profileUrl }} data-profile-url="{{ . }}"{{ end }}{{ with .profileLabel }} data-profile-label="{{ . }}"{{ end }}><span aria-hidden="true">←</span> <span class="mp-back-label">{{ .label }}</span></a>{{ end }}
+  <h1>{{ $paper.Title }}</h1>
+  <p class="mp-paper-byline">
+    <time datetime="{{ $paper.Date.Format "2006-01-02" }}">{{ if $zh }}{{ $paper.Date.Format "2006年1月2日" }}{{ else }}{{ $paper.Date.Format "Jan 2, 2006" }}{{ end }}</time>
+    <span aria-hidden="true">·</span>
+    <span class="pd-authors">{{- range $i, $a := $paper.Params.authors }}{{ if $i }}, {{ end }}{{ $p := partial "functions/get_author_profile" $a }}{{ if $p.role }}<a href="{{ printf "team/%s/" $p.slug | relLangURL }}"{{ if eq $p.slug $member }} class="is-self"{{ end }}>{{ $p.title }}</a>{{ else }}{{ $p.title }}{{ end }}{{ end -}}</span>
+  </p>
+
+  <div class="mp-paper-actions">
+    {{ range $links }}{{ if .url }}<a class="mp-action" href="{{ .url | safeURL }}"{{ if hasPrefix .url "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ partial "functions/get_icon" (dict "name" (index $icons .type | default "hero/arrow-top-right-on-square") "attributes" "class=\"mp-action-icon\" aria-hidden=\"true\"") }}{{ .label | default (i18n .labelKey) | default (upper .type) }}</a>{{ end }}{{ end }}
+    <button type="button" class="mp-action" data-cite-open>{{ partial "functions/get_icon" (dict "name" "hero/clipboard-document" "attributes" "class=\"mp-action-icon\" aria-hidden=\"true\"") }}{{ cond $zh "引用" "Cite" }}</button>
+  </div>
+
+  <figure class="mp-detail-cover">{{ partial "member/cover" (dict "paper" $paper) }}</figure>
+
+  <dl class="mp-paper-facts">
+    <div class="mp-fact-abstract">
+      <dt>{{ if $paper.Params.abstract }}{{ cond $zh "摘要" "Abstract" }}{{ else }}{{ cond $zh "概要" "Summary" }}{{ end }}</dt>
+      <dd class="mp-body">{{ partial "member/rebase-content" (dict "page" $paper "html" (($paper.Params.abstract | default $paper.Params.summary | default (cond $zh "摘要待补充。" "Abstract to come.")) | $paper.RenderString)) }}</dd>
+    </div>
+    <div><dt>{{ cond $zh "类型" "Type" }}</dt><dd>{{ partial "member/type" $paper }}</dd></div>
+    {{ with $venue }}<div><dt>{{ cond $zh "发表于" "Publication" }}</dt><dd>{{ partial "member/rebase-content" (dict "page" $paper "html" (. | markdownify)) }}</dd></div>{{ end }}
+    {{ with $doi }}<div><dt>DOI</dt><dd><a href="https://doi.org/{{ . }}" target="_blank" rel="noopener noreferrer">{{ . }}</a></dd></div>{{ end }}
+  </dl>
+
+  {{ with $paper.Content }}<div class="mp-article-content mp-body">{{ partial "member/rebase-content" (dict "page" $paper "html" .) }}</div>{{ end }}
+
+  {{ with $paper.Resources.GetMatch "featured*" }}
+  <figure class="mp-detail-figure">
+    {{ partial "member/figure" (dict "paper" $paper) }}
+    <figcaption>{{ cond $zh "图 1：" "Figure 1: " }}{{ with $paper.Params.image.caption }}{{ partial "member/rebase-content" (dict "page" $paper "html" (. | markdownify)) }}{{ else }}{{ $paper.Title }}{{ end }}</figcaption>
+  </figure>
+  {{ end }}
+
+  <footer class="mp-paper-foot">
+    {{ with $paper.Params.tags }}<ul class="mp-topics" aria-label="{{ cond $zh "研究主题" "Topics" }}">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+    {{ partial "member/share" (dict "url" (.permalink | default $paper.Permalink) "title" $paper.Title) }}
+  </footer>
+</article>
+
+<dialog class="mp-cite" aria-labelledby="mp-cite-h">
+  <div class="mp-cite-head"><h2 id="mp-cite-h">{{ cond $zh "引用本文" "Cite this paper" }}</h2><button type="button" class="mp-cite-close" data-cite-close aria-label="{{ cond $zh "关闭" "Close" }}">×</button></div>
+  <pre><code>{{ $bib }}</code></pre>
+  <div class="mp-cite-actions">
+    <button type="button" class="mp-action mp-action-primary" data-cite-copy data-done="{{ cond $zh "已复制" "Copied" }}">{{ cond $zh "复制 BibTeX" "Copy BibTeX" }}</button>
+    <a class="mp-action" href="data:text/plain;charset=utf-8,{{ $bib | urlquery }}" download="{{ $key }}.bib">{{ cond $zh "下载 .bib" "Download .bib" }}</a>
+  </div>
+</dialog>
+<script>
+(function () {
+  var dlg = document.querySelector('.mp-cite'); if (!dlg) return;
+  function flash(btn) { var t = btn.innerHTML; btn.textContent = btn.dataset.done; setTimeout(function () { btn.innerHTML = t; }, 1500); }
+  document.querySelector('[data-cite-open]').addEventListener('click', function () { dlg.showModal(); });
+  dlg.querySelector('[data-cite-close]').addEventListener('click', function () { dlg.close(); });
+  dlg.addEventListener('click', function (e) { if (e.target === dlg) dlg.close(); });
+  dlg.querySelector('[data-cite-copy]').addEventListener('click', function () { navigator.clipboard.writeText(dlg.querySelector('code').textContent).then(flash.bind(null, this)); });
+})();
+</script>

@@ -1,0 +1,63 @@
+{{/* Spaces page (content/spaces/_index*.md): intro with the lab's sensing and actuation interfaces, the validation
+     pathway as four stages on a progress rail, and where the lab is.
+     content: eyebrow, title, lead, interfaces [{name, icon}],
+              pathway {eyebrow, title, items [{name, description, image (under assets/media/), status: active | emerging | planning}]},
+              visit {eyebrow, title, facts [{label, value}], note, map_url, contact_url} */}}
+{{ $c := .wcBlock.content }}
+{{ $page := .wcPage }}
+{{ $zh := eq site.Language.Lang "zh" }}
+{{ $status := dict "active" (cond $zh "进行中" "Active") "emerging" (cond $zh "起步中" "Emerging") "planning" (cond $zh "规划中" "Planning") }}
+<div class="sp">
+  <header class="sp-hero">
+    {{ with $c.eyebrow }}<p class="sp-eyebrow">{{ . }}</p>{{ end }}
+    <h1>{{ $c.title }}</h1>
+    {{ with $c.lead }}<p class="sp-lead">{{ . | markdownify }}</p>{{ end }}
+    {{ with $c.interfaces }}
+    <ul class="sp-ifaces">
+      {{ range . }}<li><span class="sp-iface-icon">{{ partial "functions/get_icon" (dict "name" (.icon | default "hero/cpu-chip") "attributes" "aria-hidden=\"true\"") }}</span>{{ .name }}</li>{{ end }}
+    </ul>
+    {{ end }}
+  </header>
+
+  {{ with $c.pathway }}
+  <section class="sp-path" aria-labelledby="sp-path-h">
+    <div class="sp-head">
+      <div>
+        {{ with .eyebrow }}<p class="sp-eyebrow">{{ . }}</p>{{ end }}
+        <h2 id="sp-path-h">{{ .title }}</h2>
+      </div>
+      <ul class="sp-legend" aria-label="{{ cond $zh "状态说明" "Status" }}">
+        {{ range slice "active" "emerging" "planning" }}<li><span class="sp-node is-{{ . }}" aria-hidden="true"></span>{{ index $status . }}</li>{{ end }}
+      </ul>
+    </div>
+    <ol class="sp-steps">
+      {{ range $i, $s := .items }}
+      <li class="sp-step is-{{ $s.status | default "planning" }}">
+        <div class="sp-rail" aria-hidden="true"><span class="sp-node is-{{ $s.status | default "planning" }}"></span></div>
+        <p class="sp-step-meta"><span class="sp-num">{{ printf "%02d" (add $i 1) }}</span><span class="sp-status">{{ index $status ($s.status | default "planning") }}</span></p>
+        <h3>{{ $s.name }}</h3>
+        <p class="sp-step-desc">{{ $s.description }}</p>
+        {{ with $s.image }}{{ with resources.Get (printf "media/%s" .) }}{{ $r := .Fill "720x540 Center webp q80" }}
+        <figure class="sp-step-img"><img src="{{ $r.RelPermalink }}" alt="" width="{{ $r.Width }}" height="{{ $r.Height }}" loading="lazy"></figure>
+        {{ end }}{{ end }}
+      </li>
+      {{ end }}
+    </ol>
+  </section>
+  {{ end }}
+
+  {{ with $c.visit }}
+  <section class="sp-visit" aria-labelledby="sp-visit-h">
+    <div class="sp-visit-copy">
+      {{ with .eyebrow }}<p class="sp-eyebrow">{{ . }}</p>{{ end }}
+      <h2 id="sp-visit-h">{{ .title }}</h2>
+      {{ with .note }}<p class="sp-note">{{ . }}</p>{{ end }}
+      <div class="sp-actions">
+        {{ with .contact_url }}<a class="sp-btn sp-btn-primary" href="{{ . | relLangURL }}">{{ cond $zh "预约参观" "Arrange a visit" }} <span aria-hidden="true">→</span></a>{{ end }}
+        {{ with .map_url }}<a class="sp-btn" href="{{ . | safeURL }}" target="_blank" rel="noopener noreferrer">{{ partial "functions/get_icon" (dict "name" "hero/map-pin" "attributes" "class=\"sp-btn-icon\" aria-hidden=\"true\"") }}{{ cond $zh "在地图中查看" "Open in Maps" }}</a>{{ end }}
+      </div>
+    </div>
+    {{ with .facts }}<dl class="sp-facts">{{ range . }}<div><dt>{{ .label }}</dt><dd>{{ .value }}</dd></div>{{ end }}</dl>{{ end }}
+  </section>
+  {{ end }}
+</div>

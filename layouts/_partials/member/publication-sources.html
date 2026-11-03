@@ -1,0 +1,28 @@
+{{/* Site.Pages is unavailable in content adapters. Read only YAML bundle front
+     matter to register routes; templates render the original Page and resources. */}}
+{{ $lang := . }}
+{{ $defaultLang := hugo.Sites.Default.Language.Lang }}
+{{ $sources := slice }}
+{{ range os.ReadDir "content/publications" }}
+  {{ if .IsDir }}
+    {{ $file := printf "content/publications/%s/index.md" .Name }}
+    {{ $localized := printf "content/publications/%s/index.%s.md" .Name $lang }}
+    {{/* Match Hugo's translation availability; do not invent localized sources. */}}
+    {{ if ne $lang $defaultLang }}{{ $file = $localized }}{{ end }}
+    {{ if os.FileExists $localized }}{{ $file = $localized }}{{ end }}
+    {{ if os.FileExists $file }}
+      {{ $front := findRE `(?s)^\x{FEFF}?---\r?\n(.*?)\r?\n---` (os.ReadFile $file) 1 }}
+      {{ with $front }}
+        {{ $yaml := replaceRE `(?s)^\x{FEFF}?---\r?\n|\r?\n---$` "" (index . 0) }}
+        {{ $meta := transform.Unmarshal $yaml }}
+        {{ $authors := slice }}
+        {{ $rawAuthors := $meta.authors | default slice }}
+        {{ if not (reflect.IsSlice $rawAuthors) }}{{ $rawAuthors = slice $rawAuthors }}{{ end }}
+        {{ range $rawAuthors }}{{ $authors = $authors | append (urlize .) }}{{ end }}
+        {{ $slug := path.Base (path.Dir $file) }}
+        {{ $sources = $sources | append (dict "slug" $slug "source" (printf "/publications/%s" $slug) "authors" $authors "meta" $meta) }}
+      {{ end }}
+    {{ end }}
+  {{ end }}
+{{ end }}
+{{ return $sources }}

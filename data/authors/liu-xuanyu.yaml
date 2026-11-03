@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: liu-xuanyu
+weight: 17
+user_groups: [PhD Students]
+name:
+  display: LIU Xuanyu
+  given: Xuanyu
+  family: LIU
+  alternate: ''  # TODO: Chinese name
+role: PhD Student (Year 2)
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Energy-system perception
+  - Solar & urban remote sensing
+# TODO: bio, education, links, avatar (assets/media/authors/liu-xuanyu.jpg)

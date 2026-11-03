@@ -1,0 +1,14 @@
+schema: hugoblox/author/v1
+slug: liao-xuan
+weight: 11
+user_groups: [Postdoctoral Fellows]
+name:
+  display: LIAO Xuan
+  given: Xuan
+  family: LIAO
+  alternate: ''  # TODO: Chinese name
+role: Postdoctoral Fellow
+interests:  # TODO: placeholder, align with the three research thrusts
+  - Energy-system perception
+  - Solar & urban remote sensing
+# TODO: bio, education, links, avatar (assets/media/authors/liao-xuan.jpg)

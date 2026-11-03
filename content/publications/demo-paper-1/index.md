@@ -1,0 +1,10 @@
+---
+title: 'Demo paper 1: replace with a real publication'
+authors: [zhiling-guo]
+date: '2025-03-01'
+publication_types: ['article-journal']
+publication: { name: 'Example Journal' }
+featured: true
+summary: Placeholder entry. Import real papers from BibTeX (see README).
+tags: [Demo]
+---

@@ -1,0 +1,42 @@
+{{/* Homepage hero over a live 3D scene (scenes/ project, embedded as an iframe).
+     content: eyebrow, title ([..] = gradient), text, primary_action {text,url}, secondary_action {text,url},
+              scene {theme, place, act, dim, shift, poster}   — poster: path under assets/, shown until the scene is ready
+     Scene URL comes from site params `scenes.src` (dev: Vite server, prod: /scenes/). The scene loads only on
+     wide screens without reduced-motion / data-saver; everyone else keeps the poster. JS: assets/js/hero-scene.js */}}
+{{ $page := .wcPage }}
+{{ $c := .wcBlock.content }}
+{{ if not (reflect.IsMap $c) }}{{ $c = dict }}{{ end }}
+{{ $scene := index $c "scene" | default dict }}
+{{ $lang := cond (eq $page.Language.Lang "zh") "zh" "en" }}
+
+{{ $q := dict "theme" ($scene.theme | default "pv") "place" ($scene.place | default "polyu") "hud" "lite" "lang" $lang "dim" (string ($scene.dim | default 0.15)) "shift" (string ($scene.shift | default 0.18)) }}
+{{ if isset $scene "act" }}{{ $q = merge $q (dict "act" (string $scene.act)) }}{{ end }}
+{{ $qs := slice }}{{ range $k, $v := $q }}{{ $qs = $qs | append (printf "%s=%s" $k (urlquery $v)) }}{{ end }}
+{{ $base := site.Params.scenes.src | default "/scenes/" }}
+{{ $src := printf "%s?%s" $base (delimit $qs "&") }}
+
+{{ $title := $c.title | default "" }}
+{{ $title = replaceRE `\[([^\]]+)\]` `<span class="hs-grad">$1</span>` $title }}
+
+<div class="hs" data-hero-scene>
+  <div class="hs-media" aria-hidden="true">
+    {{ with $scene.poster }}{{ with resources.Get . }}
+      {{ $img := .Resize "1920x webp q78" }}
+      <img class="hs-poster" src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="" fetchpriority="high">
+    {{ end }}{{ end }}
+    <iframe class="hs-frame" data-src="{{ $src }}" title="{{ $page.Site.Title }} 3D scene" tabindex="-1"></iframe>
+  </div>
+  <div class="hs-veil"></div>
+  <div class="hs-inner">
+    {{ with $c.eyebrow }}<p class="hs-eyebrow">{{ . }}</p>{{ end }}
+    <h1 class="hs-title">{{ $title | safeHTML }}</h1>
+    {{ with $c.text }}<div class="hs-text">{{ . | markdownify }}</div>{{ end }}
+    <div class="hs-actions">
+      {{ with $c.primary_action }}{{ if .url }}<a class="hs-btn" href="{{ .url }}">{{ .text }}</a>{{ end }}{{ end }}
+      {{ with $c.secondary_action }}{{ if .url }}<a class="hs-link" href="{{ .url }}">{{ .text }} <span aria-hidden="true">→</span></a>{{ end }}{{ end }}
+    </div>
+  </div>
+</div>
+{{ with resources.Get "js/hero-scene.js" }}{{ $js := . | minify | fingerprint }}
+<script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
+{{ end }}
