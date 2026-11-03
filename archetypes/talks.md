@@ -18,4 +18,10 @@ figure: ""             # optional figure, e.g. the first slide
 figure_caption: ""
 tags: []
 draft: false
+zh:                    # Chinese page; empty fields fall back to English (scripts/build-zh.mjs)
+  title: ""
+  event: ""
+  location: ""
+  summary: ""
+  abstract: ""
 ---

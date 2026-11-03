@@ -6,9 +6,16 @@ name:
   display: XU Xin
   given: Xin
   family: XU
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: PhD Student (Year 3)
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Embodied decision & control
   - Low-altitude / eVTOL energy
+zh:
+  role: 博士生（三年级）
+  interests:
+    - 具身决策与控制
+    - 低空 / eVTOL 能源
+
 # TODO: bio, education, links, avatar (assets/media/authors/xu-xin.jpg)

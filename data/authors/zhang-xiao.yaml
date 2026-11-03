@@ -6,9 +6,16 @@ name:
   display: ZHANG Xiao
   given: Xiao
   family: ZHANG
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: Research Assistant
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Embodied decision & control
   - Low-altitude / eVTOL energy
+zh:
+  role: 研究助理
+  interests:
+    - 具身决策与控制
+    - 低空 / eVTOL 能源
+
 # TODO: bio, education, links, avatar (assets/media/authors/zhang-xiao.jpg)

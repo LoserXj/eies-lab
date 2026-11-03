@@ -10,6 +10,10 @@ cover: ""              # 16:9 image under assets/, e.g. media/members/figure.jpg
 links: []              # e.g. - { type: code, url: https://github.com/... }   types: site paper code dataset slides video pdf
 tags: []
 draft: false
+zh:                    # Chinese page; empty fields fall back to English (scripts/build-zh.mjs)
+  title: ""
+  summary: ""
+  body: ""             # Chinese page text (Markdown); empty = English text
 ---
 ## Overview
 

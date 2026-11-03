@@ -26,6 +26,9 @@ importers:
       three:
         specifier: ^0.180.0
         version: 0.180.0
+      yaml:
+        specifier: ^2.8.1
+        version: 2.8.1
 
   scenes:
     dependencies:
@@ -38,7 +41,7 @@ importers:
     devDependencies:
       vite:
         specifier: ^6.3.5
-        version: 6.4.5(jiti@2.6.1)(lightningcss@1.32.0)
+        version: 6.4.5(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.1)
 
 packages:
 
@@ -831,6 +834,11 @@ packages:
       yaml:
         optional: true
 
+  yaml@2.8.1:
+    resolution: {integrity: sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw==}
+    engines: {node: '>= 14.6'}
+    hasBin: true
+
 snapshots:
 
   3d-tiles-renderer@0.5.3(three@0.180.0):
@@ -1391,7 +1399,7 @@ snapshots:
 
   util-deprecate@1.0.2: {}
 
-  vite@6.4.5(jiti@2.6.1)(lightningcss@1.32.0):
+  vite@6.4.5(jiti@2.6.1)(lightningcss@1.32.0)(yaml@2.8.1):
     dependencies:
       esbuild: 0.25.12
       fdir: 6.5.0(picomatch@4.0.4)
@@ -1403,3 +1411,6 @@ snapshots:
       fsevents: 2.3.3
       jiti: 2.6.1
       lightningcss: 1.32.0
+      yaml: 2.8.1
+
+  yaml@2.8.1: {}

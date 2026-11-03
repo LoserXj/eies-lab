@@ -7,10 +7,8 @@
 {{ $collection := "" }}{{ $file := "" }}
 {{ range $p.Params.sections }}
   {{ if eq .block "member-profile" }}
-    {{ $slug := .content.username }}
-    {{ $zhFile := printf "data/zh/authors/%s.yaml" $slug }}
-    {{ if and $zh (fileExists $zhFile) }}{{ $collection = "members-zh" }}{{ $file = $zhFile }}
-    {{ else }}{{ $collection = "members" }}{{ $file = printf "data/authors/%s.yaml" $slug }}{{ end }}
+    {{/* Chinese text lives in the same file (中文 group); data/zh/authors/ is generated. */}}
+    {{ $collection = "members" }}{{ $file = printf "data/authors/%s.yaml" .content.username }}
   {{ else if eq .block "member-paper" }}
     {{ $collection = "publications" }}{{ $file = printf "content%s/index.md" .content.source }}
   {{ end }}
@@ -19,7 +17,7 @@
   {{ $collection = "publications" }}
   {{ if and $p.IsPage $p.File }}{{ $file = printf "content/publications/%s/index.md" $p.File.ContentBaseName }}{{ end }}
 {{ end }}
-{{ if and (not $collection) (in (slice "talks" "projects") $p.Section) }}
+{{ if and (not $collection) (in (slice "talks" "projects" "news") $p.Section) }}
   {{ $collection = $p.Section }}
   {{ if and $p.IsPage $p.File }}{{ $file = printf "content/%s/%s/index.md" $p.Section $p.File.ContentBaseName }}{{ end }}
 {{ end }}

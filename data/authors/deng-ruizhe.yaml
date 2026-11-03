@@ -6,9 +6,16 @@ name:
   display: DENG Ruizhe
   given: Ruizhe
   family: DENG
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: PhD Student (Year 3)
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Physics-grounded world models
   - PV output forecasting
+zh:
+  role: 博士生（三年级）
+  interests:
+    - 基于物理的世界模型
+    - 光伏出力预测
+
 # TODO: bio, education, links, avatar (assets/media/authors/deng-ruizhe.jpg)

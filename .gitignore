@@ -68,6 +68,13 @@ Desktop.ini
 *.log
 npm-debug.log*
 
+# Chinese pages and member data: generated from each file's `zh:` group by scripts/build-zh.mjs
+/content/publications/*/index.zh.md
+/content/talks/*/index.zh.md
+/content/projects/*/index.zh.md
+/content/news/*/index.zh.md
+/data/zh/authors/
+
 # 3D scenes (scenes/): build output of `pnpm scenes:build`, generated into static/, never committed
 /static/scenes/
 # 3D tiles data: served by the server at /scene-data/, never in git

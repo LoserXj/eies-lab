@@ -129,8 +129,8 @@ jobs:
     - name: Build 3D scenes (scenes/ -> static/scenes/)
       run: pnpm scenes:build
 
-    - name: Mirror untranslated publications, talks and projects to Chinese
-      run: bash scripts/mirror-zh-publications.sh
+    - name: Generate Chinese pages from the zh groups
+      run: node scripts/build-zh.mjs
 
     - name: Build with Hugo
       env:

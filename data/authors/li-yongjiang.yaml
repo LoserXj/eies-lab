@@ -6,9 +6,16 @@ name:
   display: LI Yongjiang
   given: Yongjiang
   family: LI
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: Affiliated Member
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Embodied decision & control
   - Low-altitude / eVTOL energy
+zh:
+  role: 编外成员
+  interests:
+    - 具身决策与控制
+    - 低空 / eVTOL 能源
+
 # TODO: bio, education, links, avatar (assets/media/authors/li-yongjiang.jpg)

@@ -5,10 +5,11 @@
   "packageManager": "pnpm@10.14.0",
   "description": "EIES-Lab (PolyU) website: Hugo + HugoBlox, with a three.js homepage scene",
   "scripts": {
-    "dev": "hugo server --disableFastRender",
+    "zh": "node scripts/build-zh.mjs",
+    "dev": "node scripts/build-zh.mjs && hugo server --disableFastRender",
     "scenes:dev": "pnpm --filter scenes dev",
     "scenes:build": "pnpm --filter scenes build",
-    "build": "pnpm scenes:build && hugo --minify && pnpm run pagefind",
+    "build": "pnpm scenes:build && node scripts/build-zh.mjs && hugo --minify && pnpm run pagefind",
     "pagefind": "pagefind --site public"
   },
   "dependencies": {
@@ -17,6 +18,7 @@
     "pagefind": "^1.4.0",
     "preact": "^10.27.2",
     "tailwindcss": "^4.1.12",
-    "three": "^0.180.0"
+    "three": "^0.180.0",
+    "yaml": "^2.8.1"
   }
 }

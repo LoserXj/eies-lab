@@ -3,7 +3,7 @@ title: 'Demo paper 4: replace with a real publication'
 authors: [zhiling-guo]
 date: '2025-11-10'
 publication_types: ['article-journal']
-publication: { name: 'Example Journal' }
+publication: {name: 'Example Journal'}
 featured: true
 summary: Placeholder entry. Import real papers from BibTeX (see README).
 tags: [Demo]
@@ -13,4 +13,6 @@ build:
   list: never
   render: never
   publishResources: false
+zh:
+  summary: 占位论文，之后可从 BibTeX 批量导入真实论文。
 ---

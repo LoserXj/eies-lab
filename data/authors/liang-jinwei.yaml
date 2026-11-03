@@ -6,9 +6,16 @@ name:
   display: LIANG Jinwei
   given: Jinwei
   family: LIANG
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: Research Assistant
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Energy-system perception
   - Solar & urban remote sensing
+zh:
+  role: 研究助理
+  interests:
+    - 能源系统感知
+    - 太阳能与城市遥感
+
 # TODO: bio, education, links, avatar (assets/media/authors/liang-jinwei.jpg)

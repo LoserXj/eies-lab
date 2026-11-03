@@ -1,4 +1,6 @@
-# Pages CMS (https://pagescms.org): browser editor for publications, talks, projects and team members.
+# Pages CMS (https://pagescms.org): browser editor for publications, talks, projects, news and team members.
+# Chinese: every form ends with a "中文" group saved as `zh:` in the same file; scripts/build-zh.mjs turns it into
+# the Chinese pages at build time. Empty Chinese fields fall back to English.
 # Editors sign in at https://app.pagescms.org; every save is a commit to this repo,
 # and the deploy workflow rebuilds the static site. See docs/editing.md.
 
@@ -93,12 +95,42 @@ content:
             options:
               values: [pdf, code, dataset, slides, video, poster, site]
           - { name: url, label: URL, type: string }
+      - { name: author_notes, label: "Author notes (e.g. Equal contribution), in author order", type: string, list: true }
       - { name: summary, label: One-line summary, type: text }
       - { name: abstract, label: Abstract, type: text }
       - { name: tags, label: Tags, type: string, list: true }
+      - name: image
+        label: Figure
+        type: object
+        fields:
+          - { name: caption, label: Figure caption, type: string }
       - { name: featured, label: Featured on homepage, type: boolean, default: false }
       - { name: draft, label: Hide (draft), type: boolean, default: false }
+      - { name: member_preview, type: string, hidden: true }
+      - name: build
+        type: object
+        hidden: true
+        fields:
+          - { name: list, type: string }
+          - { name: render, type: string }
+          - { name: publishResources, type: boolean }
       - { name: body, label: Notes (optional), type: rich-text }
+      - name: zh
+        label: 中文
+        description: 中文页面显示的内容。留空的项沿用英文；论文题目通常保留英文。
+        type: object
+        fields:
+          - { name: title, label: 中文标题（可选）, type: string }
+          - { name: author_notes, label: 作者备注（如“共同第一作者”）, type: string, list: true }
+          - { name: summary, label: 一句话简介, type: text }
+          - { name: abstract, label: 摘要, type: text }
+          - { name: tags, label: 标签, type: string, list: true }
+          - name: image
+            label: 配图
+            type: object
+            fields:
+              - { name: caption, label: 图注, type: string }
+          - { name: body, label: 备注（可选）, type: rich-text }
 
   # ─── Talks: one folder per talk, content/talks/<folder>/index.md (fixed page: layouts/works/) ───
   - name: talks
@@ -146,6 +178,21 @@ content:
       - { name: sample, label: Sample (placeholder; shows a "Sample" label), type: boolean, default: false }
       - { name: draft, label: Hide (draft), type: boolean, default: false }
       - { name: body, label: More text (optional), type: rich-text, options: { media: work-files } }
+      - name: zh
+        label: 中文
+        description: 中文页面显示的内容。留空的项沿用英文。
+        type: object
+        fields:
+          - { name: title, label: 标题, type: string }
+          - { name: event, label: 会议/活动名称, type: string }
+          - { name: format, label: "形式（口头报告 / 海报 / 特邀报告 ...）", type: string }
+          - { name: location, label: 地点, type: string }
+          - { name: address, label: 地址（第二行，可选）, type: string }
+          - { name: summary, label: 一句话简介, type: text }
+          - { name: abstract, label: 摘要, type: text }
+          - { name: figure_caption, label: 图注, type: string }
+          - { name: tags, label: 主题, type: string, list: true }
+          - { name: body, label: 更多内容（可选）, type: rich-text, options: { media: work-files } }
 
   # ─── Projects: one folder per project, content/projects/<folder>/index.md (fixed page: layouts/works/) ───
   - name: projects
@@ -189,8 +236,51 @@ content:
         type: rich-text
         options: { media: work-files }
         default: "## Overview\n\n## Method\n\n## Data and code\n\n## Research uses\n"
+      - name: zh
+        label: 中文
+        description: 中文页面显示的内容。留空的项沿用英文。
+        type: object
+        fields:
+          - { name: title, label: 标题, type: string }
+          - { name: tag, label: "类型（模型 / 数据集 / 代码 / 平台 ...）", type: string }
+          - { name: summary, label: 一句话简介（卡片和正文第一段）, type: text }
+          - { name: tags, label: 主题, type: string, list: true }
+          - name: body
+            label: 正文
+            description: 每个“二级标题”会出现在页面右侧的“本页目录”里。
+            type: rich-text
+            options: { media: work-files }
 
-  # ─── Team: one YAML file per person, data/authors/<slug>.yaml (English) ───
+  # ─── News: one folder per post, content/news/<folder>/index.md ───
+  - name: news
+    label: News / 新闻
+    type: collection
+    path: content/news
+    format: yaml-frontmatter
+    filename: "{year}-{month}-{primary}/index.md"
+    exclude: [_index.md, _index.zh.md]
+    view:
+      node: { filename: index.md, hideDirs: nodes }
+      primary: title
+      fields: [title, date]
+      sort: [date, title]
+      default: { sort: date, order: desc }
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: summary, label: One-line summary (news list), type: text, required: true }
+      - { name: draft, label: Hide (draft), type: boolean, default: false }
+      - { name: body, label: Text, type: rich-text, options: { media: work-files } }
+      - name: zh
+        label: 中文
+        description: 中文页面显示的内容。留空的项沿用英文。
+        type: object
+        fields:
+          - { name: title, label: 标题, type: string }
+          - { name: summary, label: 一句话简介, type: text }
+          - { name: body, label: 正文, type: rich-text, options: { media: work-files } }
+
+  # ─── Team: one YAML file per person, data/authors/<slug>.yaml (English, plus the 中文 group) ───
   - name: members
     label: Team members / 团队
     type: collection
@@ -210,6 +300,12 @@ content:
         required: true
         pattern: { regex: "^[a-z0-9-]+$", message: "Lowercase letters, digits and dashes only" }
       - { name: schema, type: string, hidden: true, default: hugoblox/author/v1 }
+      - { name: is_owner, type: boolean, hidden: true }
+      - name: status
+        type: object
+        hidden: true
+        fields:
+          - { name: icon, type: string }
       - name: name
         label: Name
         type: object
@@ -233,6 +329,7 @@ content:
       - { name: joined, label: Joined the lab, type: date }
       - { name: interests, label: Research interests, type: string, list: true }
       - { name: bio, label: Bio, type: text }
+      - { name: website, label: Personal website, type: string }
       - name: links
         label: Links
         type: object
@@ -278,42 +375,64 @@ content:
           - { name: awarder, label: Awarded by, type: string }
           - { name: date, label: Date, type: date }
           - { name: summary, label: Note, type: text }
+          - { name: sample, type: boolean, hidden: true }
       - name: skills
         label: Skills & hobbies (groups, e.g. Technical Skills / Hobbies)
         type: object
         list: true
         fields:
           - { name: name, label: Group name, type: string }
+          - { name: sample, type: boolean, hidden: true }
           - name: items
             label: Items
             type: object
             list: true
             fields:
               - { name: name, label: Item, type: string }
-  # ─── Team, Chinese overrides: data/zh/authors/<slug>.yaml (same file name as English) ───
-  - name: members-zh
-    label: 团队（中文信息）
-    description: 只填需要中文显示的字段，留空的会沿用英文。文件名必须与英文成员的 slug 相同。
-    type: collection
-    path: data/zh/authors
-    format: yaml
-    filename: "{slug}.yaml"
-    view:
-      primary: name.display
-      fields: [name.display, role]
-    fields:
-      - { name: slug, label: Slug（与英文相同）, type: string, required: true }
-      - name: name
-        label: 姓名
+      - name: zh
+        label: 中文
+        description: 中文个人页显示的内容。留空的项沿用英文；分组按上面的英文自动显示为中文。教育背景、奖项、技能按和英文相同的顺序填写，对应第几条就填第几条。
         type: object
         fields:
-          - { name: display, label: 显示名称, type: string }
-      - name: user_groups
-        label: 分组
-        type: select
-        options:
-          multiple: true
-          values: [课题组负责人, 博士后, 博士生, 硕士研究生（MPhil）, 研究助理, 编外成员, 已毕业]
-      - { name: role, label: 职位, type: string }
-      - { name: interests, label: 研究兴趣, type: string, list: true }
-      - { name: bio, label: 简介, type: text }
+          - name: name
+            label: 姓名
+            type: object
+            fields:
+              - { name: display, label: 中文显示名称（如 董克川）, type: string }
+          - { name: role, label: 职位（如 博士生（一年级））, type: string }
+          - { name: interests, label: 研究兴趣, type: string, list: true }
+          - { name: bio, label: 简介, type: text }
+          - name: education
+            label: 教育背景（与英文顺序一致）
+            type: object
+            list: true
+            fields:
+              - { name: degree, label: 学位, type: string }
+              - { name: institution, label: 学校, type: string }
+              - { name: summary, label: 备注（实验室 / 导师 / 主修课程）, type: text }
+          - name: affiliations
+            label: 所属单位（与英文顺序一致）
+            type: object
+            list: true
+            fields:
+              - { name: name, label: 名称, type: string }
+          - name: awards
+            label: 荣誉奖项（与英文顺序一致）
+            type: object
+            list: true
+            fields:
+              - { name: title, label: 奖项, type: string }
+              - { name: awarder, label: 颁发单位, type: string }
+              - { name: summary, label: 备注, type: text }
+          - name: skills
+            label: 技能与爱好（与英文顺序一致）
+            type: object
+            list: true
+            fields:
+              - { name: name, label: 分组名称, type: string }
+              - name: items
+                label: 条目
+                type: object
+                list: true
+                fields:
+                  - { name: name, label: 条目, type: string }

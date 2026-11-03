@@ -6,9 +6,16 @@ name:
   display: JIANG Yujie
   given: Yujie
   family: JIANG
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: PhD Student (Year 1)
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Physics-grounded world models
   - Building & storage dynamics
+zh:
+  role: 博士生（一年级）
+  interests:
+    - 基于物理的世界模型
+    - 建筑与储能动态
+
 # TODO: bio, education, links, avatar (assets/media/authors/jiang-yujie.jpg)

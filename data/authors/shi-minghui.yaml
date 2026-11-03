@@ -6,9 +6,16 @@ name:
   display: SHI Minghui
   given: Minghui
   family: SHI
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: Research Assistant
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Embodied decision & control
   - Electric mobility & charging
+zh:
+  role: 研究助理
+  interests:
+    - 具身决策与控制
+    - 电动交通与充电
+
 # TODO: bio, education, links, avatar (assets/media/authors/shi-minghui.jpg)

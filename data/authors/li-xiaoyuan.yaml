@@ -6,9 +6,16 @@ name:
   display: LI Xiaoyuan
   given: Xiaoyuan
   family: LI
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: Postdoctoral Fellow
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Physics-grounded world models
   - Building & storage dynamics
+zh:
+  role: 博士后研究员
+  interests:
+    - 基于物理的世界模型
+    - 建筑与储能动态
+
 # TODO: bio, education, links, avatar (assets/media/authors/li-xiaoyuan.jpg)

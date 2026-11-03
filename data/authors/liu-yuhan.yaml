@@ -6,9 +6,16 @@ name:
   display: LIU Yuhan
   given: Yuhan
   family: LIU
-  alternate: ''  # TODO: Chinese name
+  alternate: '' # TODO: Chinese name
 role: Affiliated Member
-interests:  # TODO: placeholder, align with the three research thrusts
+interests:
+  # TODO: placeholder, align with the three research thrusts
   - Physics-grounded world models
   - PV output forecasting
+zh:
+  role: 编外成员
+  interests:
+    - 基于物理的世界模型
+    - 光伏出力预测
+
 # TODO: bio, education, links, avatar (assets/media/authors/liu-yuhan.jpg)
