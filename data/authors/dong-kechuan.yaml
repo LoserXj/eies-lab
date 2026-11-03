@@ -10,6 +10,7 @@ name:
   family: DONG
   alternate: 董克川
 role: PhD Student (Year 1)
+role_zh: 博士生（一年级）
 bio: |
   Kechuan Dong joined EIES-Lab as a PhD student in September 2026. His research sits at the
   intersection of artificial intelligence, geospatial analysis and urban energy systems, with a
@@ -17,11 +18,20 @@ bio: |
   estimation. He has also worked on 3D human pose estimation for prosthesis users through
   multi-source data fusion, and is interested in interpretable, physics-informed AI for
   real-world sustainability problems.
+bio_zh: |
+  2026 年 9 月加入 EIES-Lab 攻读博士学位。研究方向是人工智能、地理空间分析与城市能源系统的交叉，
+  重点是面向大规模屋顶与立面太阳能潜力估算的时空深度学习。此前也从事过基于多源数据融合的
+  假肢用户 3D 人体姿态估计研究，关注可解释、物理信息驱动的 AI 在真实可持续问题中的应用。
 interests:
   - Spatiotemporal deep learning
   - Urban solar potential (rooftop & facade PV)
   - Geospatial AI & 3D city models
   - Physics-informed AI
+interests_zh:
+  - 时空深度学习
+  - 城市太阳能潜力（屋顶与立面光伏）
+  - 地理空间 AI 与三维城市模型
+  - 物理信息驱动的 AI
 links:
   - icon: at-symbol
     url: mailto:kechuan.dong@outlook.com
@@ -37,15 +47,21 @@ links:
     label: Homepage
 education:
   - degree: PhD in Building Environment and Energy Engineering
+    degree_zh: 博士，建筑环境及能源工程
     institution: The Hong Kong Polytechnic University
+    institution_zh: 香港理工大学
     start: 2026-09-01
   - degree: MS in Information and Communication Engineering
+    degree_zh: 硕士，信息与通信工程（电子情报学）
     institution: The University of Tokyo
+    institution_zh: 东京大学
     start: 2023-04-01
     end: 2026-03-31
     summary: Interactive Visual Intelligence Lab
   - degree: BS in Electronic Information Science and Technology
+    degree_zh: 学士，电子信息科学与技术
     institution: Lanzhou University
+    institution_zh: 兰州大学
     start: 2018-09-01
     end: 2022-06-30
 
@@ -54,48 +70,17 @@ joined: 2026-09-01
 # ── SAMPLE CONTENT (sample: true) ── placeholders to preview the page layout; replace with real entries.
 skills:
   - name: Technical Skills
+    name_zh: 技术能力
     sample: true
-    items: [{name: Python}, {name: PyTorch}, {name: GIS}, {name: 3D city models}, {name: Remote sensing}]
+    items: [{name: Python}, {name: PyTorch}, {name: GIS}, {name: 3D city models, name_zh: 三维城市模型}, {name: Remote sensing, name_zh: 遥感}]
   - name: Hobbies
+    name_zh: 爱好
     sample: true
-    items: [{name: Hiking}, {name: Photography}]
+    items: [{name: Hiking, name_zh: 徒步}, {name: Photography, name_zh: 摄影}]
 awards:
   - title: Research Postgraduate Scholarship
+    title_zh: 研究生奖学金
     awarder: The Hong Kong Polytechnic University
+    awarder_zh: 香港理工大学
     date: 2026-09-01
     sample: true
-zh:
-  name:
-    display: 董克川
-  role: 博士生（一年级）
-  bio: |
-    2026 年 9 月加入 EIES-Lab 攻读博士学位。研究方向是人工智能、地理空间分析与城市能源系统的交叉，
-    重点是面向大规模屋顶与立面太阳能潜力估算的时空深度学习。此前也从事过基于多源数据融合的
-    假肢用户 3D 人体姿态估计研究，关注可解释、物理信息驱动的 AI 在真实可持续问题中的应用。
-  interests:
-    - 时空深度学习
-    - 城市太阳能潜力（屋顶与立面光伏）
-    - 地理空间 AI 与三维城市模型
-    - 物理信息驱动的 AI
-  education:
-    - degree: 博士，建筑环境及能源工程
-      institution: 香港理工大学
-    - degree: 硕士，信息与通信工程（电子情报学）
-      institution: 东京大学
-    - degree: 学士，电子信息科学与技术
-      institution: 兰州大学
-  skills:
-    - name: 技术能力
-      items:
-        - name: Python
-        - name: PyTorch
-        - name: GIS
-        - name: 三维城市模型
-        - name: 遥感
-    - name: 爱好
-      items:
-        - name: 徒步
-        - name: 摄影
-  awards:
-    - title: 研究生奖学金
-      awarder: 香港理工大学

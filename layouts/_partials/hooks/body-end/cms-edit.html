@@ -7,7 +7,7 @@
 {{ $collection := "" }}{{ $file := "" }}
 {{ range $p.Params.sections }}
   {{ if eq .block "member-profile" }}
-    {{/* Chinese text lives in the same file (中文 group); data/zh/authors/ is generated. */}}
+    {{/* Chinese text lives in the same file (*_zh fields); data/zh/authors/ is generated. */}}
     {{ $collection = "members" }}{{ $file = printf "data/authors/%s.yaml" .content.username }}
   {{ else if eq .block "member-paper" }}
     {{ $collection = "publications" }}{{ $file = printf "content%s/index.md" .content.source }}

@@ -13,14 +13,20 @@ name:
 status:
   icon: "⚡"
 role: Assistant Professor
+role_zh: 助理教授
 website: https://example.com/ # TODO: replace with the personal website URL
 bio: |
   Zhiling Guo is an Assistant Professor in the Department of Building Environment
   and Energy Engineering (BEEE) at The Hong Kong Polytechnic University.
   The research develops digital, intelligent, and efficient urban energy systems for sustainable and
   resilient cities, integrating machine learning, geoscience, IoT, and renewable energy.
+bio_zh: |
+  香港理工大学建筑环境及能源工程学系（BEEE）助理教授。
+  研究聚焦数字化、智能化、高效的城市能源系统，
+  融合机器学习、地球科学、物联网与可再生能源技术，服务于可持续、有韧性的城市。
 affiliations:
   - name: Dept. of Building Environment and Energy Engineering, PolyU
+    name_zh: 香港理工大学 建筑环境及能源工程学系
     url: https://www.polyu.edu.hk/beee/
 links:
   - icon: at-symbol
@@ -35,21 +41,13 @@ interests:
   - Solar and wind resource mapping
   - Spatiotemporal machine learning
   - Climate-resilient infrastructure
+interests_zh:
+  - 城市能源系统
+  - 太阳能与风能资源制图
+  - 时空机器学习
+  - 气候韧性基础设施
 education:
   - degree: PhD # TODO
     institution: TODO University
     start: 2015-09-01
     end: 2019-06-30
-zh:
-  role: 助理教授
-  bio: |
-    香港理工大学建筑环境及能源工程学系（BEEE）助理教授。
-    研究聚焦数字化、智能化、高效的城市能源系统，
-    融合机器学习、地球科学、物联网与可再生能源技术，服务于可持续、有韧性的城市。
-  affiliations:
-    - name: 香港理工大学 建筑环境及能源工程学系
-  interests:
-    - 城市能源系统
-    - 太阳能与风能资源制图
-    - 时空机器学习
-    - 气候韧性基础设施

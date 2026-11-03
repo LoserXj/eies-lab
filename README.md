@@ -25,7 +25,7 @@ Structure, parameters, deployment and how to add a research theme: `scenes/READM
 ## Add a member (no page file needed)
 
 1. `data/authors/<slug>.yaml` — English profile; copy an existing member such as `tan-hongjun.yaml`. Set the role, interests and ordering weight.
-2. Chinese: the `zh:` group in the same file (name, role, bio, ...). `scripts/build-zh.mjs` generates `data/zh/authors/` from it at build time; empty fields fall back to English.
+2. Chinese: in the same file, each text field has a `_zh` twin (`role_zh`, `bio_zh`, `education[].degree_zh`, ...) and `name.alternate` is the Chinese name. `scripts/build-zh.mjs` generates `data/zh/authors/` from them at build time; empty ones fall back to English.
 3. Avatar: `assets/media/authors/<slug>.jpg` (square).
 
 The Team directory has two sections: Faculty contains `zhiling-guo`; every other author appears in Members, ordered by `weight`. This display grouping does not overwrite author roles or `user_groups`. Portraits are shared with member profiles and oriented before circular cropping. The 11 portraits imported from https://www.chokurei.net/team are recorded in `docs/design/team-portrait-sources.json`; unmatched members keep their initials. The source page labels Zhang Yong'an with an image filename containing “Zhang Rongan”; the visible member caption was used for the match.

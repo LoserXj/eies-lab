@@ -8,14 +8,13 @@ name:
   family: PAN
   alternate: '' # TODO: Chinese name
 role: MPhil Student (Year 1)
+role_zh: MPhil 研究生（一年级）
 interests:
   # TODO: placeholder, align with the three research thrusts
   - Physics-grounded world models
   - PV output forecasting
-zh:
-  role: MPhil 研究生（一年级）
-  interests:
-    - 基于物理的世界模型
-    - 光伏出力预测
+interests_zh:
+  - 基于物理的世界模型
+  - 光伏出力预测
 
 # TODO: bio, education, links, avatar (assets/media/authors/pan-yuyang.jpg)

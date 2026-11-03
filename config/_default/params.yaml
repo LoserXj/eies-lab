@@ -298,5 +298,5 @@ scenes:
 
 # Pages CMS: repository the "Edit" button opens (see .pages.yml, docs/editing.md).
 cms:
-  repo: LoserXj/eies-lab-demo
+  repo: LoserXj/eies-lab
   branch: main

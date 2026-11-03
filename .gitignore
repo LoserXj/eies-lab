@@ -68,7 +68,7 @@ Desktop.ini
 *.log
 npm-debug.log*
 
-# Chinese pages and member data: generated from each file's `zh:` group by scripts/build-zh.mjs
+# Chinese pages and member data: generated from each file's *_zh fields by scripts/build-zh.mjs
 /content/publications/*/index.zh.md
 /content/talks/*/index.zh.md
 /content/projects/*/index.zh.md
