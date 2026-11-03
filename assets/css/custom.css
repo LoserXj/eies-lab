@@ -335,8 +335,26 @@ section.hbb-section#section-hero-scene { padding: 0 !important; }
 .hs-media { z-index: -2; }
 .hs-poster { object-fit: cover; object-position: 50% 50%; }
 @media (max-width: 767px) { .hs-poster { object-position: 72% 50%; } } /* phones: keep the campus in frame */
-.hs-frame { opacity: 0; transition: opacity 1.4s ease; pointer-events: none; }
-.hs.is-live .hs-frame { opacity: 1; }
+.hs-frame, .hs-video, .hs-vignette { opacity: 0; transition: opacity 1.4s ease; pointer-events: none; }
+.hs.is-live .hs-frame, .hs.is-live .hs-video, .hs.is-live .hs-vignette { opacity: 1; }
+.hs-video { object-fit: cover; }
+/* recorded scene: the live scene's own vignette and dimming (scenes/index.html #veil), plus a floor for the act bar */
+.hs-vignette { background: linear-gradient(0deg, rgba(0,0,0,.55) 0%, rgba(0,0,0,0) 22%), radial-gradient(ellipse at 50% 45%, transparent 45%, rgba(4,8,16,.65) 100%), rgba(4,8,16,var(--dim, .15)); }
+/* act buttons over the recorded scene: progress line, number, title; the current act fills its line */
+.hs-acts { position: absolute; left: 0; right: 0; bottom: 0; z-index: 1; max-width: 80rem; margin: 0 auto; padding: 0 2rem 1.25rem; box-sizing: content-box; opacity: 0; visibility: hidden; transition: opacity .6s ease .3s, visibility 0s .9s; }
+.hs.is-live .hs-acts { opacity: 1; visibility: visible; transition-delay: .3s, 0s; }
+@media (max-width: 1023px) { .hs-acts { padding: 0 1.5rem 1rem; } }
+.hs-acts ol { display: flex; gap: .375rem; margin: 0; padding: 0; list-style: none; }
+.hs-acts li { flex: 1 1 0; min-width: 0; }
+.hs-act { display: grid; grid-template-columns: auto minmax(0, 1fr); column-gap: .5rem; row-gap: .625rem; width: 100%; padding: .5rem 0; background: none; border: 0; color: rgba(255,255,255,.6); font: inherit; font-size: .8125rem; line-height: 1.3; text-align: left; cursor: pointer; transition: color .2s; }
+.hs-act:hover, .hs-act.is-on { color: #fff; }
+.hs-act:focus-visible { outline: 2px solid #fff; outline-offset: 2px; border-radius: 2px; }
+.hs-act-bar { grid-column: 1 / -1; grid-row: 1; position: relative; height: 2px; overflow: hidden; background: rgba(255,255,255,.25); }
+.hs-act-bar::after { content: ""; position: absolute; inset: 0; background: #fff; transform-origin: left; transform: scaleX(var(--p, 0)); }
+.hs-act-n, .hs-act-t { grid-row: 2; }
+.hs-act-n { font-variant-numeric: tabular-nums; opacity: .7; }
+.hs-act-t { overflow: hidden; white-space: nowrap; text-overflow: ellipsis; font-weight: 500; }
+.hs-credit { margin: .25rem 0 0; font-size: .6875rem; color: rgba(255,255,255,.45); text-align: right; }
 /* functional scrim only: keeps white copy legible over any frame */
 .hs-veil { z-index: -1; pointer-events: none; background: linear-gradient(90deg, rgba(0,0,0,.82) 0%, rgba(0,0,0,.55) 38%, rgba(0,0,0,0) 66%); }
 @media (max-width: 767px) { .hs-veil { background: rgba(0,0,0,.66); } }

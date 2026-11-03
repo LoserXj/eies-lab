@@ -1,0 +1,61 @@
+{
+ "_about": "Acts of the recorded homepage scene (pv-polyu.mp4 / pv-polyu-av1.mp4); matches scenes/src/themes/pv/acts.js. Re-record: scenes/tools/README.md.",
+ "total": 65,
+ "credit": "Data: Lands Department, HKSAR · PolyU",
+ "acts": [
+  {
+   "key": "env",
+   "start": 0,
+   "dur": 9,
+   "title": {
+    "en": "Energy Environment",
+    "zh": "物理能源环境"
+   }
+  },
+  {
+   "key": "perceive",
+   "start": 9,
+   "dur": 15,
+   "title": {
+    "en": "Active Perception",
+    "zh": "主动感知"
+   }
+  },
+  {
+   "key": "model",
+   "start": 24,
+   "dur": 9,
+   "title": {
+    "en": "World Model",
+    "zh": "世界模型"
+   }
+  },
+  {
+   "key": "rollout",
+   "start": 33,
+   "dur": 11,
+   "title": {
+    "en": "Rollout & Planning",
+    "zh": "推演与决策"
+   }
+  },
+  {
+   "key": "act",
+   "start": 44,
+   "dur": 11,
+   "title": {
+    "en": "Embodied Action",
+    "zh": "具身行动"
+   }
+  },
+  {
+   "key": "feedback",
+   "start": 55,
+   "dur": 10,
+   "title": {
+    "en": "Feedback & Learning",
+    "zh": "反馈与学习"
+   }
+  }
+ ]
+}

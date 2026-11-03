@@ -21,6 +21,7 @@ sections:
         place: polyu
         dim: 0.15
         poster: media/scenes/pv-polyu.jpg
+        video: media/scenes/pv-polyu.mp4   # recorded loop (+ pv-polyu-av1.mp4, pv-polyu.json); remove to embed the live scene
 
   - block: markdown
     id: mission

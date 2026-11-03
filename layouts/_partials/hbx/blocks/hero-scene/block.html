@@ -1,8 +1,12 @@
-{{/* Homepage hero over a live 3D scene (scenes/ project, embedded as an iframe).
+{{/* Homepage hero over the 3D scene (scenes/ project).
      content: eyebrow, title ([..] = gradient), text, primary_action {text,url}, secondary_action {text,url},
-              scene {theme, place, act, dim, shift, poster}   — poster: path under assets/, shown until the scene is ready
-     Scene URL comes from site params `scenes.src` (dev: Vite server, prod: /scenes/). The scene loads only on
-     wide screens without reduced-motion / data-saver; everyone else keeps the poster. JS: assets/js/hero-scene.js */}}
+              scene {theme, place, act, dim, shift, poster, video}   — poster: path under assets/, shown until the scene is ready
+     scene.video: a recording of the scene loop (assets/, H.264 .mp4), optionally with an AV1 copy beside it
+     (<name>-av1.mp4, preferred where supported) and a .json listing its acts {total, credit, acts: [{start, dur,
+     title: {en, zh}}]}; plays instead of the live scene, with buttons that jump to each act. How to re-record:
+     scenes/tools/README.md. Without it the live scene is embedded as an iframe from site params `scenes.src` (dev: Vite server).
+     Either one loads only on wide screens without reduced-motion / data-saver; everyone else keeps the poster.
+     JS: assets/js/hero-scene.js */}}
 {{ $page := .wcPage }}
 {{ $c := .wcBlock.content }}
 {{ if not (reflect.IsMap $c) }}{{ $c = dict }}{{ end }}
@@ -15,6 +19,13 @@
 {{ $base := site.Params.scenes.src | default "/scenes/" }}
 {{ $src := printf "%s?%s" $base (delimit $qs "&") }}
 
+{{ $video := false }}{{ $av1 := false }}{{ $rec := dict }}
+{{ with $scene.video }}
+  {{ with resources.Get . }}{{ $video = . }}{{ end }}
+  {{ with resources.Get (replaceRE `\.mp4$` "-av1.mp4" .) }}{{ $av1 = . }}{{ end }}
+  {{ with resources.Get (replaceRE `\.mp4$` ".json" .) }}{{ $rec = . | transform.Unmarshal }}{{ end }}
+{{ end }}
+
 {{ $title := $c.title | default "" }}
 {{ $title = replaceRE `\[([^\]]+)\]` `<span class="hs-grad">$1</span>` $title }}
 
@@ -24,7 +35,15 @@
       {{ $img := .Resize "1920x webp q78" }}
       <img class="hs-poster" src="{{ $img.RelPermalink }}" width="{{ $img.Width }}" height="{{ $img.Height }}" alt="" fetchpriority="high">
     {{ end }}{{ end }}
+    {{ with $video }}
+    <video class="hs-video" muted playsinline loop preload="none" tabindex="-1">
+      {{ with $av1 }}<source data-src="{{ .RelPermalink }}" type='video/mp4; codecs="av01.0.08M.10"'>{{ end }}
+      <source data-src="{{ .RelPermalink }}" type='video/mp4; codecs="avc1.640029"'>
+    </video>
+    <div class="hs-vignette" style="--dim: {{ $scene.dim | default 0.15 }}"></div>
+    {{ else }}
     <iframe class="hs-frame" data-src="{{ $src }}" title="{{ $page.Site.Title }} 3D scene" tabindex="-1"></iframe>
+    {{ end }}
   </div>
   <div class="hs-veil"></div>
   <div class="hs-inner">
@@ -36,6 +55,18 @@
       {{ with $c.secondary_action }}{{ if .url }}<a class="hs-link" href="{{ .url }}">{{ .text }} <span aria-hidden="true">→</span></a>{{ end }}{{ end }}
     </div>
   </div>
+  {{ if and $video $rec.acts }}
+  <div class="hs-acts">
+    <ol aria-label="{{ cond (eq $lang "zh") "场景" "Scenes" }}">
+      {{ range $i, $a := $rec.acts }}
+      <li><button type="button" class="hs-act" data-start="{{ $a.start }}" data-dur="{{ $a.dur }}">
+        <span class="hs-act-n">{{ printf "%02d" $i }}</span><span class="hs-act-t">{{ index $a.title $lang | default $a.title.en }}</span><span class="hs-act-bar" aria-hidden="true"></span>
+      </button></li>
+      {{ end }}
+    </ol>
+    {{ with $rec.credit }}<p class="hs-credit">{{ . }}</p>{{ end }}
+  </div>
+  {{ end }}
 </div>
 {{ with resources.Get "js/hero-scene.js" }}{{ $js := . | minify | fingerprint }}
 <script src="{{ $js.RelPermalink }}" integrity="{{ $js.Data.Integrity }}" defer></script>
