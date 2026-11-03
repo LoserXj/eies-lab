@@ -1,6 +1,7 @@
-{{/* Member Talks (dated rows) or Projects (cards): the entries in content/talks/ or content/projects/ whose `authors`
+{{/* Member Talks (dated rows) or Projects (cards): the pages in content/talks/ or content/projects/ whose `authors`
      include this member, newest first; each opens its own page (layouts/works/single.html). content.kind: talks | projects.
-     Entries are added in Pages CMS ("Talks / 学术报告", "Projects / 项目与成果"); fields: archetypes/talks.md, archetypes/projects.md.
+     Entries are edited in each member's profile (Pages CMS "Team / 团队" → Talks / Projects, data/authors/<slug>.yaml);
+     scripts/build-zh.mjs generates the pages, with the owner first in `authors` and the co-members after.
      sample: true marks placeholder entries with a small "Sample" label until real content replaces them. */}}
 {{ $slug := .wcBlock.content.username }}
 {{ $kind := .wcBlock.content.kind }}

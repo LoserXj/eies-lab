@@ -30,162 +30,153 @@ settings:
     identity: user
 
 content:
-  # ─── Team: member profiles, plus the talks and projects shown on each member's page ───
-  - name: team
+  # ─── Team: one YAML file per person, data/authors/<slug>.yaml (both languages, plus the person's talks and projects;
+  #     scripts/build-zh.mjs turns each talk and project into its page) ───
+  - name: members
     label: Team / 团队
-    type: group
-    items:
-      # ─── Team: one YAML file per person, data/authors/<slug>.yaml (both languages) ───
-      - name: members
-        label: Profiles / 个人资料
-        type: collection
-        path: data/authors
-        format: yaml
-        filename: "{slug}.yaml"
-        view:
-          primary: name.display
-          fields: [name.display, name.alternate, role, user_groups]
-          sort: [weight]
-          default: { sort: weight, order: asc }
+    type: collection
+    path: data/authors
+    format: yaml
+    filename: "{slug}.yaml"
+    view:
+      primary: name.display
+      fields: [name.display, name.alternate, role, user_groups]
+      sort: [weight]
+      default: { sort: weight, order: asc }
+    fields:
+      - name: slug
+        label: Slug / 网址标识（如 chen-xiaoming）
+        description: Lowercase family-given name. Do not change after creation; papers link to it. / 小写“姓-名”，创建后不要修改，论文靠它关联到成员。
+        type: string
+        required: true
+        pattern: { regex: "^[a-z0-9-]+$", message: "Lowercase letters, digits and dashes only" }
+      - { name: schema, type: string, hidden: true, default: hugoblox/author/v1 }
+      - { name: is_owner, type: boolean, hidden: true }
+      - name: status
+        type: object
+        hidden: true
         fields:
-          - name: slug
-            label: Slug / 网址标识（如 chen-xiaoming）
-            description: Lowercase family-given name. Do not change after creation; papers link to it. / 小写“姓-名”，创建后不要修改，论文靠它关联到成员。
-            type: string
-            required: true
-            pattern: { regex: "^[a-z0-9-]+$", message: "Lowercase letters, digits and dashes only" }
-          - { name: schema, type: string, hidden: true, default: hugoblox/author/v1 }
-          - { name: is_owner, type: boolean, hidden: true }
-          - name: status
-            type: object
-            hidden: true
-            fields:
-              - { name: icon, type: string }
-          - name: name
-            label: Name / 姓名
-            type: object
-            fields:
-              - { name: display, label: English name / 英文显示名（如 CHEN Xiaoming）, type: string, required: true }
-              - { name: alternate, label: 中文姓名（如 陈晓明）, description: 中文页面显示这个名字，英文页面也会在旁边显示。, type: string }
-              - { name: given, label: Given name / 名（英文）, type: string }
-              - { name: family, label: Family name / 姓（英文）, type: string }
-          - name: avatar
-            label: Photo / 照片（正方形）
-            type: image
-            options: { media: avatars }
-          - name: user_groups
-            label: Group / 分组
-            description: The Chinese page shows the Chinese group name automatically. / 中文页面自动显示中文分组名。
+          - { name: icon, type: string }
+      - name: name
+        label: Name / 姓名
+        type: object
+        fields:
+          - { name: display, label: English name / 英文显示名（如 CHEN Xiaoming）, type: string, required: true }
+          - { name: alternate, label: 中文姓名（如 陈晓明）, description: 中文页面显示这个名字，英文页面也会在旁边显示。, type: string }
+          - { name: given, label: Given name / 名（英文）, type: string }
+          - { name: family, label: Family name / 姓（英文）, type: string }
+      - name: avatar
+        label: Photo / 照片（正方形）
+        type: image
+        options: { media: avatars }
+      - name: user_groups
+        label: Group / 分组
+        description: The Chinese page shows the Chinese group name automatically. / 中文页面自动显示中文分组名。
+        type: select
+        options:
+          multiple: true
+          values:
+            - { value: Principal Investigator, label: Principal Investigator / 课题组负责人 }
+            - { value: Postdoctoral Fellows, label: Postdoctoral Fellows / 博士后 }
+            - { value: PhD Students, label: PhD Students / 博士生 }
+            - { value: MPhil Students, label: MPhil Students / 硕士研究生（MPhil） }
+            - { value: Research Assistants, label: Research Assistants / 研究助理 }
+            - { value: Affiliated Members, label: Affiliated Members / 编外成员 }
+            - { value: Alumni, label: Alumni / 已毕业 }
+      - { name: role, label: "Role / 职位（英文，如 PhD Student (Year 2)）", type: string, required: true }
+      - { name: role_zh, label: 职位（中文，如 博士生（二年级））, type: string, required: true }
+      - { name: weight, label: Order on team page / 团队页排序（数字小的在前）, type: number }
+      - { name: joined, label: Joined the lab / 加入课题组日期, type: date }
+      - { name: interests, label: Research interests / 研究兴趣（英文）, type: string, list: true }
+      - { name: interests_zh, label: 研究兴趣（中文）, type: string, list: true }
+      - { name: bio, label: Bio / 简介（英文）, type: text }
+      - { name: bio_zh, label: 简介（中文）, type: text }
+      - { name: website, label: Personal website / 个人网站, type: string }
+      - name: links
+        label: Links / 链接
+        type: object
+        list: true
+        fields:
+          - name: icon
+            label: Icon / 图标
             type: select
             options:
-              multiple: true
               values:
-                - { value: Principal Investigator, label: Principal Investigator / 课题组负责人 }
-                - { value: Postdoctoral Fellows, label: Postdoctoral Fellows / 博士后 }
-                - { value: PhD Students, label: PhD Students / 博士生 }
-                - { value: MPhil Students, label: MPhil Students / 硕士研究生（MPhil） }
-                - { value: Research Assistants, label: Research Assistants / 研究助理 }
-                - { value: Affiliated Members, label: Affiliated Members / 编外成员 }
-                - { value: Alumni, label: Alumni / 已毕业 }
-          - { name: role, label: "Role / 职位（英文，如 PhD Student (Year 2)）", type: string, required: true }
-          - { name: role_zh, label: 职位（中文，如 博士生（二年级））, type: string, required: true }
-          - { name: weight, label: Order on team page / 团队页排序（数字小的在前）, type: number }
-          - { name: joined, label: Joined the lab / 加入课题组日期, type: date }
-          - { name: interests, label: Research interests / 研究兴趣（英文）, type: string, list: true }
-          - { name: interests_zh, label: 研究兴趣（中文）, type: string, list: true }
-          - { name: bio, label: Bio / 简介（英文）, type: text }
-          - { name: bio_zh, label: 简介（中文）, type: text }
-          - { name: website, label: Personal website / 个人网站, type: string }
-          - name: links
-            label: Links / 链接
+                - { value: at-symbol, label: E-mail }
+                - { value: academicons/google-scholar, label: Google Scholar }
+                - { value: academicons/orcid, label: ORCID }
+                - { value: academicons/researchgate, label: ResearchGate }
+                - { value: brands/github, label: GitHub }
+                - { value: brands/linkedin, label: LinkedIn }
+                - { value: globe-alt, label: Website }
+          - { name: url, label: URL (mailto:… for e-mail), type: string }
+          - { name: label, label: Label / 显示文字（英文）, type: string }
+          - { name: label_zh, label: 显示文字（中文）, type: string }
+      - name: education
+        label: Education / 教育背景
+        type: object
+        list: true
+        fields:
+          - { name: degree, label: "Degree / 学位（英文，如 PhD, Building Energy）", type: string }
+          - { name: degree_zh, label: 学位（中文，如 博士，建筑环境及能源工程）, type: string }
+          - { name: institution, label: Institution / 学校（英文）, type: string }
+          - { name: institution_zh, label: 学校（中文）, type: string }
+          - { name: start, label: Start / 开始, type: date }
+          - { name: end, label: End / 结束（在读留空）, type: date }
+          - { name: summary, label: Notes / 备注（英文：实验室 / 导师 / 主修课程）, type: text }
+          - { name: summary_zh, label: 备注（中文）, type: text }
+      - name: affiliations
+        label: Affiliation / 所属单位（显示在职位下方，默认 EIES-Lab · PolyU）
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Name / 名称（英文）, type: string }
+          - { name: name_zh, label: 名称（中文）, type: string }
+          - { name: url, label: URL, type: string }
+      - name: awards
+        label: Awards / 荣誉奖项
+        type: object
+        list: true
+        fields:
+          - { name: title, label: Award / 奖项（英文）, type: string }
+          - { name: title_zh, label: 奖项（中文）, type: string }
+          - { name: awarder, label: Awarded by / 颁发单位（英文）, type: string }
+          - { name: awarder_zh, label: 颁发单位（中文）, type: string }
+          - { name: date, label: Date / 日期, type: date }
+          - { name: summary, label: Note / 备注（英文）, type: text }
+          - { name: summary_zh, label: 备注（中文）, type: text }
+          - { name: sample, type: boolean, hidden: true }
+      - name: skills
+        label: Skills & hobbies / 技能与爱好（按组，如 Technical Skills / Hobbies）
+        type: object
+        list: true
+        fields:
+          - { name: name, label: Group name / 分组名称（英文）, type: string }
+          - { name: name_zh, label: 分组名称（中文，如 技术能力 / 爱好）, type: string }
+          - { name: sample, type: boolean, hidden: true }
+          - name: items
+            label: Items / 条目
             type: object
             list: true
             fields:
-              - name: icon
-                label: Icon / 图标
-                type: select
-                options:
-                  values:
-                    - { value: at-symbol, label: E-mail }
-                    - { value: academicons/google-scholar, label: Google Scholar }
-                    - { value: academicons/orcid, label: ORCID }
-                    - { value: academicons/researchgate, label: ResearchGate }
-                    - { value: brands/github, label: GitHub }
-                    - { value: brands/linkedin, label: LinkedIn }
-                    - { value: globe-alt, label: Website }
-              - { name: url, label: URL (mailto:… for e-mail), type: string }
-              - { name: label, label: Label / 显示文字（英文）, type: string }
-              - { name: label_zh, label: 显示文字（中文）, type: string }
-          - name: education
-            label: Education / 教育背景
-            type: object
-            list: true
-            fields:
-              - { name: degree, label: "Degree / 学位（英文，如 PhD, Building Energy）", type: string }
-              - { name: degree_zh, label: 学位（中文，如 博士，建筑环境及能源工程）, type: string }
-              - { name: institution, label: Institution / 学校（英文）, type: string }
-              - { name: institution_zh, label: 学校（中文）, type: string }
-              - { name: start, label: Start / 开始, type: date }
-              - { name: end, label: End / 结束（在读留空）, type: date }
-              - { name: summary, label: Notes / 备注（英文：实验室 / 导师 / 主修课程）, type: text }
-              - { name: summary_zh, label: 备注（中文）, type: text }
-          - name: affiliations
-            label: Affiliation / 所属单位（显示在职位下方，默认 EIES-Lab · PolyU）
-            type: object
-            list: true
-            fields:
-              - { name: name, label: Name / 名称（英文）, type: string }
-              - { name: name_zh, label: 名称（中文）, type: string }
-              - { name: url, label: URL, type: string }
-          - name: awards
-            label: Awards / 荣誉奖项
-            type: object
-            list: true
-            fields:
-              - { name: title, label: Award / 奖项（英文）, type: string }
-              - { name: title_zh, label: 奖项（中文）, type: string }
-              - { name: awarder, label: Awarded by / 颁发单位（英文）, type: string }
-              - { name: awarder_zh, label: 颁发单位（中文）, type: string }
-              - { name: date, label: Date / 日期, type: date }
-              - { name: summary, label: Note / 备注（英文）, type: text }
-              - { name: summary_zh, label: 备注（中文）, type: text }
-              - { name: sample, type: boolean, hidden: true }
-          - name: skills
-            label: Skills & hobbies / 技能与爱好（按组，如 Technical Skills / Hobbies）
-            type: object
-            list: true
-            fields:
-              - { name: name, label: Group name / 分组名称（英文）, type: string }
-              - { name: name_zh, label: 分组名称（中文，如 技术能力 / 爱好）, type: string }
-              - { name: sample, type: boolean, hidden: true }
-              - name: items
-                label: Items / 条目
-                type: object
-                list: true
-                fields:
-                  - { name: name, label: Item / 条目（英文）, type: string }
-                  - { name: name_zh, label: 条目（中文，相同可不填）, type: string }
-
-      # ─── Talks (shown on the speakers' member pages): one folder per talk, content/talks/<folder>/index.md (fixed page: layouts/works/) ───
+              - { name: name, label: Item / 条目（英文）, type: string }
+              - { name: name_zh, label: 条目（中文，相同可不填）, type: string }
       - name: talks
         label: Talks / 学术报告
-        type: collection
-        path: content/talks
-        format: yaml-frontmatter
-        filename: "{year}-{primary}/index.md"
-        exclude: [_index.md, _index.zh.md]
-        view:
-          node: { filename: index.md, hideDirs: nodes }
-          primary: title
-          fields: [title, title_zh, date, event]
-          sort: [date, title]
-          default: { sort: date, order: desc }
+        description: Each talk gets its own page and appears on this profile. / 每场报告有自己的页面，并显示在个人页。
+        type: object
+        list: true
         fields:
+          - name: id
+            label: Web address / 网址名（可选，如 2026-icae-facade-solar）
+            description: Lowercase letters, digits and dashes. Leave empty to use the year and title. Do not change once published. / 留空则用年份加标题；发布后不要再改。
+            type: string
+            pattern: { regex: "^[a-z0-9-]*$", message: "Lowercase letters, digits and dashes only" }
           - { name: title, label: Title / 英文标题, type: string, required: true }
           - { name: title_zh, label: 中文标题, type: string, required: true }
-          - name: authors
-            label: Speakers / 报告人
-            description: Shown on each selected member's page, in this order. / 按顺序选择课题组成员，报告会出现在他们的个人页。
+          - name: with
+            label: Other lab speakers / 其他课题组报告人（可选）
+            description: The talk also appears on their pages. / 选中的成员个人页也会显示这一条。
             type: reference
             options: { collection: members, multiple: true, value: "{slug}", label: "{name.display}", search: "name.display" }
           - { name: date, label: Start / 开始时间, type: date, required: true, options: { time: true } }
@@ -223,27 +214,22 @@ content:
           - { name: draft, label: Hide (draft) / 隐藏（草稿）, type: boolean, default: false }
           - { name: body, label: More text / 更多内容（英文，可选）, type: rich-text, options: { media: work-files } }
           - { name: body_zh, label: 更多内容（中文，可选）, type: rich-text, options: { media: work-files } }
-
-      # ─── Projects (shown on the members' pages): one folder per project, content/projects/<folder>/index.md (fixed page: layouts/works/) ───
       - name: projects
         label: Projects / 项目与成果
-        type: collection
-        path: content/projects
-        format: yaml-frontmatter
-        filename: "{year}-{primary}/index.md"
-        exclude: [_index.md, _index.zh.md]
-        view:
-          node: { filename: index.md, hideDirs: nodes }
-          primary: title
-          fields: [title, title_zh, date, tag]
-          sort: [date, title]
-          default: { sort: date, order: desc }
+        description: Each project gets its own page and appears on this profile. / 每个项目有自己的页面，并显示在个人页。
+        type: object
+        list: true
         fields:
+          - name: id
+            label: Web address / 网址名（可选，如 2026-icae-facade-solar）
+            description: Lowercase letters, digits and dashes. Leave empty to use the year and title. Do not change once published. / 留空则用年份加标题；发布后不要再改。
+            type: string
+            pattern: { regex: "^[a-z0-9-]*$", message: "Lowercase letters, digits and dashes only" }
           - { name: title, label: Title / 英文标题, type: string, required: true }
           - { name: title_zh, label: 中文标题, type: string, required: true }
-          - name: authors
-            label: Lab members / 课题组成员
-            description: Shown on each selected member's page, in this order. / 项目会出现在所选成员的个人页。
+          - name: with
+            label: Other lab members / 其他课题组成员（可选）
+            description: The project also appears on their pages. / 选中的成员个人页也会显示这一条。
             type: reference
             options: { collection: members, multiple: true, value: "{slug}", label: "{name.display}", search: "name.display" }
           - { name: date, label: Date / 日期, type: date, required: true }
