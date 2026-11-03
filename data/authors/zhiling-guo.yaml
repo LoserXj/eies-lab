@@ -1,53 +1,58 @@
-# Lab member profile (English). Chinese overrides: data/zh/authors/zhiling-guo.yaml
-# Avatar: assets/media/authors/zhiling-guo.jpg (square, ~400x400)
-schema: hugoblox/author/v1
 slug: zhiling-guo
+schema: hugoblox/author/v1
 is_owner: true
-weight: 1
-user_groups: [Principal Investigator]
+status:
+  icon: ⚡
 name:
   display: Zhiling Guo
   given: Zhiling
   family: Guo
-  alternate: '' # TODO: Chinese name
-status:
-  icon: "⚡"
+user_groups:
+  - Principal Investigator
 role: Assistant Professor
 role_zh: 助理教授
-website: https://example.com/ # TODO: replace with the personal website URL
-bio: |
-  Zhiling Guo is an Assistant Professor in the Department of Building Environment
+weight: 1
+joined: 2026-11-03
+interests:
+  - Urban energy systems
+  - Geospatial Al
+  - Physics-informed Al
+  - Climate-resilient infrastructure
+interests_zh:
+  - 城市能源系统
+  - 地理空间AI
+  - 物理信息驱动的AI
+  - 气候韧性基础设施
+bio: >
+  Zhiling Guo is an Assistant Professor in the Department of Building
+  Environment
+
   and Energy Engineering (BEEE) at The Hong Kong Polytechnic University.
-  The research develops digital, intelligent, and efficient urban energy systems for sustainable and
-  resilient cities, integrating machine learning, geoscience, IoT, and renewable energy.
+
+  The research develops digital, intelligent, and efficient urban energy systems
+  for sustainable and
+
+  resilient cities, integrating machine learning, geoscience, IoT, and renewable
+  energy.
 bio_zh: |
   香港理工大学建筑环境及能源工程学系（BEEE）助理教授。
   研究聚焦数字化、智能化、高效的城市能源系统，
   融合机器学习、地球科学、物联网与可再生能源技术，服务于可持续、有韧性的城市。
-affiliations:
-  - name: Dept. of Building Environment and Energy Engineering, PolyU
-    name_zh: 香港理工大学 建筑环境及能源工程学系
-    url: https://www.polyu.edu.hk/beee/
+website: https://example.com/
 links:
   - icon: at-symbol
     url: mailto:TODO@polyu.edu.hk
     label: E-mail
   - icon: academicons/google-scholar
-    url: https://scholar.google.com/ # TODO: profile URL
+    url: https://scholar.google.com/
   - icon: academicons/researchgate
-    url: https://www.researchgate.net/ # TODO: profile URL
-interests:
-  - Urban energy systems
-  - Solar and wind resource mapping
-  - Spatiotemporal machine learning
-  - Climate-resilient infrastructure
-interests_zh:
-  - 城市能源系统
-  - 太阳能与风能资源制图
-  - 时空机器学习
-  - 气候韧性基础设施
+    url: https://www.researchgate.net/
 education:
-  - degree: PhD # TODO
+  - degree: PhD
     institution: TODO University
     start: 2015-09-01
     end: 2019-06-30
+affiliations:
+  - name: Dept. of Building Environment and Energy Engineering, PolyU
+    name_zh: 香港理工大学 建筑环境及能源工程学系
+    url: https://www.polyu.edu.hk/beee/
