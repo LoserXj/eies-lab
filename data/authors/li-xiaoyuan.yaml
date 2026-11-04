@@ -14,20 +14,31 @@ role_zh: 博士后研究员
 weight: 12
 joined: 2026-11-04
 interests:
-  - building energy modeling and optimization
-  - Building & storage dynamics
+  - Optimal design and operation of building energy systems
+  - Building energy flexibility
+  - Rural water–energy–food system modeling and optimization
 interests_zh:
   - 建筑能源系统设计与运行优化
-  - 建筑灵活性资源参与电力市场
+  - 建筑灵活性资源
   - 农村水能粮建模与优化
-bio_zh: 于2020年天津大学建筑环境与能源应用工程专业获取的学士学位，并以专业第一的成绩推送面试攻读硕士学位，于2022年获得硕士学历，硕博连读转读攻博，2023年开始于中科院深圳先进研究院开展联合培养，于2026年获得天津大学建筑能源与环境工程博士学位，博士论文获得天津大学优秀博士学位论文。2026年加入香港理工大学做博士后
+bio: I received my bachelor’s degree in Building Environment and Energy
+  Application Engineering from Tianjin University in 2020. I ranked first in my
+  major and was admitted to the university’s master’s program without an
+  entrance exam. I began doctoral studies in 2022 and joint doctoral training at
+  the Shenzhen Institutes of Advanced Technology, Chinese Academy of Sciences,
+  in 2023. In 2026, I received my PhD in Building Environment and Energy
+  Application Engineering from Tianjin University. My dissertation received the
+  university’s Outstanding Doctoral Dissertation Award. Later that year, I began
+  postdoctoral research at The Hong Kong Polytechnic University.
+bio_zh: 2020年获天津大学建筑环境与能源应用工程专业学士学位，并以专业第一的成绩获推荐免试攻读硕士研究生资格。2022年转入博士阶段学习，2023年起在中国科学院深圳先进技术研究院接受联合培养。2026年获天津大学建筑环境与能源应用工程专业博士学位，博士学位论文获评天津大学优秀博士学位论文。同年起在香港理工大学从事博士后研究。
 links:
   - icon: academicons/google-scholar
     url: https://scholar.google.com/citations?hl=zh-CN&user=6O5374wAAAAJ
   - icon: at-symbol
     url: xiaoyuan.li@polyu.edu.hk
 education:
-  - degree_zh: 博士，建筑环境与能源应用工程
+  - degree: PhD, Building Environment and Energy Engineering
+    degree_zh: 博士，建筑环境与能源应用工程
     institution: Tianjin University
     institution_zh: 天津大学
     start: 2022-09-01
@@ -58,7 +69,7 @@ skills:
     name_zh: 技能
     sample: false
     items:
-      - name: Gurobi
+      - name_zh: 数学规划
       - name: Building Energy Performance Simulation
   - name: Hobbies
     sample: false
