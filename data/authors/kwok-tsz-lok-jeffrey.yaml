@@ -3,6 +3,8 @@ schema: hugoblox/author/v1
 is_owner: false
 name:
   display: KWOK Tsz Lok Jeffrey
+user_groups:
+  - PhD Students
 role: PhD Student (Year 3)
 role_zh: 博士生（三年级）
 weight: 0
