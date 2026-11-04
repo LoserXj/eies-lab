@@ -1,20 +1,20 @@
-schema: hugoblox/author/v1
 slug: li-xiaoyuan
-weight: 12
-user_groups: [Postdoctoral Fellows]
+schema: hugoblox/author/v1
+is_owner: false
 name:
   display: LI Xiaoyuan
+  alternate: 李啸远
   given: Xiaoyuan
   family: LI
-  alternate: '' # TODO: Chinese name
+user_groups:
+  - Postdoctoral Fellows
 role: Postdoctoral Fellow
 role_zh: 博士后研究员
+weight: 12
+joined: 2026-11-04
 interests:
-  # TODO: placeholder, align with the three research thrusts
   - Physics-grounded world models
   - Building & storage dynamics
 interests_zh:
   - 基于物理的世界模型
   - 建筑与储能动态
-
-# TODO: bio, education, links, avatar (assets/media/authors/li-xiaoyuan.jpg)
