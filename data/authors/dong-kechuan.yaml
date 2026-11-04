@@ -1,27 +1,17 @@
-# Lab member profile (English). Chinese overrides: data/zh/authors/dong-kechuan.yaml
-# Source: https://kechuan-ln.github.io/ (personal homepage); paper metadata from Crossref.
-schema: hugoblox/author/v1
 slug: dong-kechuan
-weight: 18
-user_groups: [PhD Students]
+schema: hugoblox/author/v1
+is_owner: false
 name:
   display: DONG Kechuan
+  alternate: 董克川
   given: Kechuan
   family: DONG
-  alternate: 董克川
+user_groups:
+  - PhD Students
 role: PhD Student (Year 1)
 role_zh: 博士生（一年级）
-bio: |
-  Kechuan Dong joined EIES-Lab as a PhD student in September 2026. His research sits at the
-  intersection of artificial intelligence, geospatial analysis and urban energy systems, with a
-  focus on spatiotemporal deep learning for large-scale rooftop and facade solar potential
-  estimation. He has also worked on 3D human pose estimation for prosthesis users through
-  multi-source data fusion, and is interested in interpretable, physics-informed AI for
-  real-world sustainability problems.
-bio_zh: |
-  2026 年 9 月加入 EIES-Lab 攻读博士学位。研究方向是人工智能、地理空间分析与城市能源系统的交叉，
-  重点是面向大规模屋顶与立面太阳能潜力估算的时空深度学习。此前也从事过基于多源数据融合的
-  假肢用户 3D 人体姿态估计研究，关注可解释、物理信息驱动的 AI 在真实可持续问题中的应用。
+weight: 18
+joined: 2026-09-01
 interests:
   - Spatiotemporal deep learning
   - Urban solar potential (rooftop & facade PV)
@@ -32,6 +22,26 @@ interests_zh:
   - 城市太阳能潜力（屋顶与立面光伏）
   - 地理空间 AI 与三维城市模型
   - 物理信息驱动的 AI
+bio: >
+  Kechuan Dong joined EIES-Lab as a PhD student in September 2026. His research
+  sits at the
+
+  intersection of artificial intelligence, geospatial analysis and urban energy
+  systems, with a
+
+  focus on spatiotemporal deep learning for large-scale rooftop and facade solar
+  potential
+
+  estimation. He has also worked on 3D human pose estimation through
+
+  multi-source data fusion, and is interested in interpretable, physics-informed
+  AI for
+
+  real-world sustainability problems.
+bio_zh: |
+  2026 年 9 月加入 EIES-Lab 攻读博士学位。研究方向是人工智能、地理空间分析与城市能源系统的交叉，
+  重点是面向大规模屋顶与立面太阳能潜力估算的时空深度学习。此前也从事过基于多源数据融合的
+  人体姿态估计等研究，关注可解释、物理信息驱动的 AI 在真实可持续问题中的应用。
 links:
   - icon: at-symbol
     url: mailto:kechuan.dong@outlook.com
@@ -51,6 +61,7 @@ education:
     institution: The Hong Kong Polytechnic University
     institution_zh: 香港理工大学
     start: 2026-09-01
+    end: 2026-11-04
   - degree: MS in Information and Communication Engineering
     degree_zh: 硕士，信息与通信工程（电子情报学）
     institution: The University of Tokyo
@@ -64,19 +75,6 @@ education:
     institution_zh: 兰州大学
     start: 2018-09-01
     end: 2022-06-30
-
-joined: 2026-09-01
-# Talks and projects: the talks / projects lists at the end of this file (each one gets its own page).
-# ── SAMPLE CONTENT (sample: true) ── placeholders to preview the page layout; replace with real entries.
-skills:
-  - name: Technical Skills
-    name_zh: 技术能力
-    sample: true
-    items: [{name: Python}, {name: PyTorch}, {name: GIS}, {name: 3D city models, name_zh: 三维城市模型}, {name: Remote sensing, name_zh: 遥感}]
-  - name: Hobbies
-    name_zh: 爱好
-    sample: true
-    items: [{name: Hiking, name_zh: 徒步}, {name: Photography, name_zh: 摄影}]
 awards:
   - title: Research Postgraduate Scholarship
     title_zh: 研究生奖学金
@@ -84,18 +82,40 @@ awards:
     awarder_zh: 香港理工大学
     date: 2026-09-01
     sample: true
+skills:
+  - name: Technical Skills
+    name_zh: 技术能力
+    sample: true
+    items:
+      - name: Python
+      - name: PyTorch
+      - name: GIS
+      - name: 3D city models
+        name_zh: 三维城市模型
+      - name: Remote sensing
+        name_zh: 遥感
+  - name: Hobbies
+    name_zh: 爱好
+    sample: true
+    items:
+      - name: Hiking
+        name_zh: 徒步
+      - name: Photography
+        name_zh: 摄影
 talks:
   - id: 2026-eies-seminar-rooftop-pv
     title: Spatiotemporal deep learning for rooftop PV potential
     title_zh: 面向屋顶光伏潜力的时空深度学习
-    date: 2026-10-15T16:00:00
+    date: 2026-11-04T14:21
+    date_end: 2026-11-04T14:21
     event: EIES-Lab seminar
     event_zh: EIES-Lab 组会
     format: Seminar
     format_zh: 研讨会
     location: PolyU, Hong Kong
     location_zh: 香港理工大学
-    summary: A learned shading model that replaces hours of simulation for city-wide rooftop PV.
+    summary: A learned shading model that replaces hours of simulation for city-wide
+      rooftop PV.
     summary_zh: 用学习得到的遮挡模型替代耗时数小时的模拟，实现城市级屋顶光伏评估。
     tags:
       - Rooftop PV
@@ -104,11 +124,12 @@ talks:
       - 屋顶光伏
       - 深度学习
     sample: true
+    draft: false
   - id: 2026-icae-facade-solar
     title: City-scale facade solar potential through AIoT, GIS and meteorology synergy
     title_zh: 融合 AIoT、GIS 与气象数据的城市级建筑立面光伏潜力评估
-    date: 2026-08-20T10:30:00
-    date_end: 2026-08-20T10:50:00
+    date: 2026-11-04T14:21
+    date_end: 2026-11-04T14:21
     event: ICAE 2026
     event_url: https://www.applied-energy.org/
     format: Oral
@@ -117,14 +138,23 @@ talks:
     location_zh: 国际应用能源大会（ICAE）
     summary: How facade parsing and 3D shading change urban PV potential estimates.
     summary_zh: 立面解析与三维遮挡如何改变城市光伏潜力的估算结果。
-    abstract: |
-      Facades offer far more surface than roofs in dense cities, yet most urban solar assessments stop at
-      the rooftop. This talk combines street-view facade parsing, 3D building models and hourly meteorology
-      to estimate facade PV potential building by building, and shows how shading from neighbouring
+    abstract: >
+      Facades offer far more surface than roofs in dense cities, yet most urban
+      solar assessments stop at
+
+      the rooftop. This talk combines street-view facade parsing, 3D building
+      models and hourly meteorology
+
+      to estimate facade PV potential building by building, and shows how
+      shading from neighbouring
+
       buildings changes the result compared with rooftop-only estimates.
     abstract_zh: |
       在高密度城市中，建筑立面的面积远大于屋顶，但大多数城市太阳能评估只考虑屋顶。本报告结合街景图像中的
       立面解析、三维建筑模型和逐时气象数据，逐栋估算立面光伏潜力，并说明周边建筑的遮挡如何使结果与只算屋顶时不同。
+    figure: media/members/dong-kechuan-facade.jpg
+    figure_caption: Facade elements parsed from street-view images.
+    figure_caption_zh: 从街景图像中解析出的立面元素。
     tags:
       - Facade PV
       - Urban energy
@@ -133,10 +163,8 @@ talks:
       - 立面光伏
       - 城市能源
       - GIS
-    figure: media/members/dong-kechuan-facade.jpg
-    figure_caption: Facade elements parsed from street-view images.
-    figure_caption_zh: 从街景图像中解析出的立面元素。
     sample: true
+    draft: false
 projects:
   - id: 2025-facade-parsing-toolkit
     title: Facade parsing toolkit
@@ -144,7 +172,8 @@ projects:
     date: 2025-03-01
     tag: Code
     tag_zh: 代码
-    summary: Street-view facade element parsing (window, wall) coupled to 3D shading for facade PV.
+    summary: Street-view facade element parsing (window, wall) coupled to 3D shading
+      for facade PV.
     summary_zh: 从街景图像中解析立面元素（窗户、墙面），并与三维遮挡计算耦合，用于立面光伏评估。
     cover: media/members/dong-kechuan-facade.jpg
     tags:
@@ -154,13 +183,33 @@ projects:
       - 代码
       - 立面光伏
     sample: true
+    draft: false
+    body: |+
+      ## Overview
+
+      ## Method
+
+      ## Data and code
+
+      ## Research uses
+
+    body_zh: |+
+      ## 概述
+
+      ## 方法
+
+      ## 数据与代码
+
+      ## 研究用途
+
   - id: 2025-global-facade-rooftop-pv-dataset
     title: Global facade & rooftop PV potential dataset
     title_zh: 全球建筑立面与屋顶光伏潜力数据集
     date: 2025-06-01
     tag: Dataset
     tag_zh: 数据集
-    summary: Building-level facade and rooftop PV potential for 120 cities, from 3D footprints and meteorology.
+    summary: Building-level facade and rooftop PV potential for 120 cities, from 3D
+      footprints and meteorology.
     summary_zh: 基于三维建筑轮廓与气象数据，给出 120 座城市逐栋建筑的立面与屋顶光伏潜力。
     cover: media/members/dong-kechuan-bipv.jpg
     tags:
@@ -172,6 +221,32 @@ projects:
       - 立面光伏
       - 屋顶光伏
     sample: true
+    draft: false
+    body: >-
+      ## What it contains
+
+
+      For every building in each city, the dataset gives annual and hourly solar
+      irradiation on the roof and on each facade, the usable area after windows
+      and obstructions are removed, and the resulting PV generation potential.
+
+
+      ## How it is built
+
+
+      - Building footprints and heights come from open 3D city models.
+
+      - Facade elements (windows, walls) are parsed from street-view images.
+
+      - Hourly irradiation uses local meteorology and the shading cast by
+      neighbouring buildings.
+
+
+      ## Research uses
+
+
+      The dataset supports city-level planning of building-integrated PV,
+      comparisons between cities, and training data for faster learned models.
     body_zh: |-
       ## 数据内容
 
@@ -186,27 +261,14 @@ projects:
       ## 研究用途
 
       可用于城市级建筑光伏规划、城市之间的比较，也可作为训练更快的学习模型的数据。
-    body: |
-      ## What it contains
-
-      For every building in each city, the dataset gives annual and hourly solar irradiation on the roof and on each facade, the usable area after windows and obstructions are removed, and the resulting PV generation potential.
-
-      ## How it is built
-
-      - Building footprints and heights come from open 3D city models.
-      - Facade elements (windows, walls) are parsed from street-view images.
-      - Hourly irradiation uses local meteorology and the shading cast by neighbouring buildings.
-
-      ## Research uses
-
-      The dataset supports city-level planning of building-integrated PV, comparisons between cities, and training data for faster learned models.
   - id: 2025-shadow-aware-rooftop-pv-model
     title: Shadow-aware rooftop PV model
     title_zh: 考虑遮挡的屋顶光伏模型
     date: 2025-09-01
     tag: Model
     tag_zh: 模型
-    summary: Spatiotemporal deep learning that predicts shading and rooftop PV potential about 158 times faster than simulation.
+    summary: Spatiotemporal deep learning that predicts shading and rooftop PV
+      potential about 158 times faster than simulation.
     summary_zh: 时空深度学习模型，预测遮挡与屋顶光伏潜力，速度约为模拟方法的 158 倍。
     cover: media/members/dong-kechuan-rooftop.jpg
     tags:
@@ -218,7 +280,34 @@ projects:
       - 屋顶光伏
       - 深度学习
     sample: true
-    body_zh: |-
+    draft: false
+    body: >+
+      ## Model structure
+
+
+      The model takes a height map of the surrounding buildings and the sun
+      position, and predicts the shading on each roof for every hour of the
+      year. A temporal branch then turns hourly shading and weather into PV
+      output.
+
+
+      ## Why it is fast
+
+
+      Ray-traced shading has to be recomputed for every hour and every building.
+      The learned model replaces that step, which is what makes city-wide runs
+      about 158 times faster than simulation.
+
+
+      ## Inputs and outputs
+
+
+      - **Inputs:** building heights, roof geometry, sun position, hourly
+      weather.
+
+      - **Outputs:** hourly shading masks and rooftop PV potential per building.
+
+    body_zh: |+
       ## 模型结构
 
       模型输入周边建筑的高度图和太阳位置，预测一年中每个小时每个屋顶上的遮挡；时间分支再把逐时遮挡和天气转换为光伏出力。
@@ -231,16 +320,4 @@ projects:
 
       - **输入：** 建筑高度、屋顶几何、太阳位置、逐时天气。
       - **输出：** 逐时遮挡掩膜和每栋建筑的屋顶光伏潜力。
-    body: |
-      ## Model structure
 
-      The model takes a height map of the surrounding buildings and the sun position, and predicts the shading on each roof for every hour of the year. A temporal branch then turns hourly shading and weather into PV output.
-
-      ## Why it is fast
-
-      Ray-traced shading has to be recomputed for every hour and every building. The learned model replaces that step, which is what makes city-wide runs about 158 times faster than simulation.
-
-      ## Inputs and outputs
-
-      - **Inputs:** building heights, roof geometry, sun position, hourly weather.
-      - **Outputs:** hourly shading masks and rooftop PV potential per building.
