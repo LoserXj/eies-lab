@@ -6,6 +6,7 @@ name:
   alternate: 李啸远
   given: Xiaoyuan
   family: LI
+avatar: media/authors/微信图片_20260329101512_94_5-1.jpg
 user_groups:
   - Postdoctoral Fellows
 role: Postdoctoral Fellow
@@ -18,3 +19,42 @@ interests:
 interests_zh:
   - 基于物理的世界模型
   - 建筑与储能动态
+links:
+  - icon: academicons/google-scholar
+    url: https://scholar.google.com/citations?hl=zh-CN&user=6O5374wAAAAJ
+  - icon: at-symbol
+    url: xiaoyuan.li@polyu.edu.hk
+education:
+  - degree_zh: 博士，建筑环境与能源应用工程
+    institution: Tianjin University
+    institution_zh: 天津大学
+    start: 2022-09-01
+    end: 2026-06-30
+  - degree: " Master"
+    degree_zh: 硕士，建筑环境与能源应用工程
+    institution: Tianjin University
+    institution_zh: 天津大学
+    start: 2020-09-01
+    end: 2022-09-01
+    summary_zh: 硕博连读
+  - degree: Bachelor
+    degree_zh: 学士，建筑环境与能源应用工程
+    institution: Tianjin University
+    institution_zh: 天津大学
+    start: 2016-09-01
+    end: 2020-06-30
+awards:
+  - title_zh: 天津大学优秀博士论文
+    awarder: 天津大学
+    awarder_zh: 天津大学
+    date: 2026-11-01
+    sample: false
+  - date: 2026-11-04
+    sample: false
+skills:
+  - name: Skills
+    name_zh: 技能
+    sample: false
+    items:
+      - name: Gurobi
+      - name: Building Energy Simulation
