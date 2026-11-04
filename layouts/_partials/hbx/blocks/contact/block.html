@@ -1,0 +1,62 @@
+{{/* Contact page (content/contact/_index*.md), in the style of the Spaces page (shares its .sp-* type and buttons).
+     content: eyebrow, title, lead,
+              channels [{label, value, url, icon, note}],
+              visit {eyebrow, title, facts [{label, value}], note, image (under assets/media/), image_alt, credit, map_url, osm_url},
+              join {eyebrow, title, text, roles [], email, subject, cta} */}}
+{{ $c := .wcBlock.content }}
+{{ $zh := eq site.Language.Lang "zh" }}
+<div class="sp ct">
+  <header class="sp-hero">
+    {{ with $c.eyebrow }}<p class="sp-eyebrow">{{ . }}</p>{{ end }}
+    <h1>{{ $c.title }}</h1>
+    {{ with $c.lead }}<p class="sp-lead">{{ . | markdownify }}</p>{{ end }}
+  </header>
+
+  {{ with $c.channels }}
+  <ul class="ct-channels">
+    {{ range . }}
+    <li>
+      {{ $inner := printf "<span class=\"sp-iface-icon\">%s</span><span class=\"ct-ch-label\">%s</span><span class=\"ct-ch-value\">%s</span>%s"
+           (partial "functions/get_icon" (dict "name" (.icon | default "hero/envelope") "attributes" "aria-hidden=\"true\""))
+           .label .value (cond (isset . "note") (printf "<span class=\"ct-ch-note\">%s</span>" .note) "") }}
+      {{ with .url }}<a class="ct-ch" href="{{ . | safeURL }}"{{ if hasPrefix . "http" }} target="_blank" rel="noopener noreferrer"{{ end }}>{{ $inner | safeHTML }}<span class="ct-ch-arrow" aria-hidden="true">→</span></a>
+      {{ else }}<div class="ct-ch">{{ $inner | safeHTML }}</div>{{ end }}
+    </li>
+    {{ end }}
+  </ul>
+  {{ end }}
+
+  {{ with $c.visit }}
+  <section class="ct-visit" aria-labelledby="ct-visit-h">
+    {{ with .image }}{{ with resources.Get (printf "media/%s" .) }}{{ $r := .Fill "1200x900 Right webp q80" }}
+    <figure class="ct-photo">
+      <img src="{{ $r.RelPermalink }}" alt="{{ $c.visit.image_alt }}" width="{{ $r.Width }}" height="{{ $r.Height }}" loading="lazy">
+      <figcaption>{{ partial "functions/get_icon" (dict "name" "hero/map-pin" "attributes" "aria-hidden=\"true\"") }}{{ $c.visit.title }}</figcaption>
+      {{ with $c.visit.credit }}<small>{{ . }}</small>{{ end }}
+    </figure>
+    {{ end }}{{ end }}
+    <div class="ct-visit-copy">
+      {{ with .eyebrow }}<p class="sp-eyebrow">{{ . }}</p>{{ end }}
+      <h2 id="ct-visit-h">{{ .title }}</h2>
+      {{ with .facts }}<dl class="sp-facts">{{ range . }}<div><dt>{{ .label }}</dt><dd>{{ .value }}</dd></div>{{ end }}</dl>{{ end }}
+      {{ with .note }}<p class="sp-note">{{ . }}</p>{{ end }}
+      <div class="sp-actions">
+        {{ with .map_url }}<a class="sp-btn sp-btn-primary" href="{{ . | safeURL }}" target="_blank" rel="noopener noreferrer">{{ partial "functions/get_icon" (dict "name" "hero/map-pin" "attributes" "class=\"sp-btn-icon\" aria-hidden=\"true\"") }}{{ cond $zh "在 Google 地图中查看" "Open in Google Maps" }}</a>{{ end }}
+        {{ with .osm_url }}<a class="sp-btn" href="{{ . | safeURL }}" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>{{ end }}
+      </div>
+    </div>
+  </section>
+  {{ end }}
+
+  {{ with $c.join }}
+  <section class="ct-join" aria-labelledby="ct-join-h">
+    <div>
+      {{ with .eyebrow }}<p class="sp-eyebrow">{{ . }}</p>{{ end }}
+      <h2 id="ct-join-h">{{ .title }}</h2>
+      {{ with .text }}<p class="ct-join-text">{{ . | markdownify }}</p>{{ end }}
+      {{ with .roles }}<ul class="ct-roles">{{ range . }}<li>{{ . }}</li>{{ end }}</ul>{{ end }}
+    </div>
+    {{ with .email }}<a class="sp-btn ct-join-btn" href="{{ printf "mailto:%s%s" . (cond (isset $c.join "subject") (printf "?subject=%s" (replace (urlquery $c.join.subject) "+" "%20")) "") | safeURL }}">{{ $c.join.cta | default (cond $zh "发送简历" "Send your CV") }} <span aria-hidden="true">→</span></a>{{ end }}
+  </section>
+  {{ end }}
+</div>

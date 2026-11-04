@@ -950,3 +950,50 @@ a.mp-talk:hover .mp-talk-arrow { background: var(--u-black); color: var(--u-whit
   .sp-visit { padding: 1.5rem; }
   .sp-facts > div { grid-template-columns: 4.5rem minmax(0, 1fr); }
 }
+
+/* ---------- Contact page (layouts/_partials/hbx/blocks/contact; type and buttons shared with Spaces) ---------- */
+#contact.hbb-section { padding: 4rem 0 6rem !important; }
+.ct-channels { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: .75rem; margin: 2.5rem 0 0; padding: 0; list-style: none; }
+.ct-ch { position: relative; display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "icon label" "icon value" "icon note"; column-gap: 1rem; align-content: start; height: 100%; box-sizing: border-box; padding: 1.25rem 2.75rem 1.25rem 1.25rem; border-radius: 12px; background: var(--u-chip); color: var(--u-black) !important; text-decoration: none; transition: background-color .2s ease; }
+a.ct-ch:hover { background: var(--u-hover); }
+a.ct-ch:focus-visible { outline: 2px solid var(--u-black); outline-offset: 3px; }
+.ct-ch .sp-iface-icon { grid-area: icon; width: 40px; height: 40px; }
+.ct-ch-label { grid-area: label; color: var(--u-muted); font-size: .8125rem; line-height: 1.4; }
+.ct-ch-value { grid-area: value; margin-top: .125rem; font-size: 1rem; font-weight: 600; line-height: 1.4; overflow-wrap: anywhere; }
+.ct-ch-note { grid-area: note; margin-top: .125rem; color: var(--u-body); font-size: .875rem; line-height: 1.4; }
+.ct-ch-arrow { position: absolute; top: 1.25rem; right: 1.25rem; color: var(--u-muted); transition: transform .2s ease, color .2s ease; }
+a.ct-ch:hover .ct-ch-arrow { color: var(--u-black); transform: translateX(3px); }
+
+.ct-visit { display: grid; grid-template-columns: minmax(0, 7fr) minmax(0, 5fr); gap: 2rem 4rem; align-items: center; margin-top: 6rem; }
+.ct-visit h2, .ct-join h2 { margin: 0; font-size: clamp(1.75rem, 3vw, 2.25rem); line-height: 1.2; font-weight: 700; letter-spacing: -.02em; }
+.ct-visit .sp-facts { margin-top: 1.75rem; }
+.ct-visit .sp-facts > div { border-color: var(--u-line); }
+.ct-visit .sp-btn:not(.sp-btn-primary) { background: var(--u-chip); }
+.ct-visit .sp-btn:not(.sp-btn-primary):hover { background: var(--u-hover); }
+.ct-photo { position: relative; margin: 0; overflow: hidden; aspect-ratio: 4 / 3; border-radius: 16px; background: #0b111c; }
+.ct-photo img { display: block; width: 100%; height: 100%; object-fit: cover; filter: brightness(1.35) saturate(1.1); }
+.ct-photo figcaption { position: absolute; left: 1rem; bottom: 1rem; display: inline-flex; align-items: center; gap: .5rem; padding: .5rem .875rem .5rem .625rem; border-radius: 999px; background: #fff; color: #000; font-size: .875rem; font-weight: 600; box-shadow: 0 4px 16px rgba(0,0,0,.24); }
+.ct-photo figcaption svg { width: 18px; height: 18px; }
+.ct-photo small { position: absolute; right: .875rem; bottom: .75rem; color: rgba(255,255,255,.7); font-size: .6875rem; }
+
+.ct-join { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 2rem 3rem; margin-top: 6rem; padding: 3rem; border-radius: 16px; background: var(--u-black); color: var(--u-white); }
+.ct-join > div { max-width: 44rem; }
+.ct-join h2 { color: var(--u-white) !important; }
+.ct-join .sp-eyebrow { color: var(--u-muted) !important; }
+.ct-join-text { margin: 1rem 0 0; color: color-mix(in srgb, var(--u-white) 78%, transparent) !important; font-size: 1.0625rem; line-height: 1.6; }
+.ct-roles { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1.5rem 0 0; padding: 0; list-style: none; }
+.ct-roles li { padding: .3rem .875rem; border-radius: 999px; border: 1px solid color-mix(in srgb, var(--u-white) 28%, transparent); font-size: .875rem; font-weight: 500; }
+.ct .ct-join-btn { flex: none; background: var(--u-white); color: var(--u-black) !important; }
+.ct .ct-join-btn:hover { background: var(--u-hover); }
+
+@media (max-width: 1023px) {
+  .ct-channels { grid-template-columns: 1fr; }
+  .ct-visit { grid-template-columns: 1fr; }
+}
+@media (max-width: 639px) {
+  #contact.hbb-section { padding: 2.5rem 0 4rem !important; }
+  .ct-channels { margin-top: 2rem; }
+  .ct-visit, .ct-join { margin-top: 4rem; }
+  .ct-join { padding: 2rem 1.5rem; }
+  .ct .ct-join-btn { width: 100%; justify-content: center; }
+}
