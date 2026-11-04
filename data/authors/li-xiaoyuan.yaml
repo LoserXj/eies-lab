@@ -14,11 +14,12 @@ role_zh: 博士后研究员
 weight: 12
 joined: 2026-11-04
 interests:
-  - Physics-grounded world models
+  - building energy modeling and optimization
   - Building & storage dynamics
 interests_zh:
-  - 基于物理的世界模型
-  - 建筑与储能动态
+  - 建筑能源系统设计与运行优化
+  - 分布式资源参与电力市场
+  - 农村水能粮建模与优化
 links:
   - icon: academicons/google-scholar
     url: https://scholar.google.com/citations?hl=zh-CN&user=6O5374wAAAAJ
