@@ -59,7 +59,7 @@ skills:
     sample: false
     items:
       - name: Gurobi
-      - name: Building Energy Simulation
+      - name: Building Energy Performance Simulation
   - name: Hobbies
     sample: false
     items:
